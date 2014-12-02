@@ -17,7 +17,7 @@
 class Helpers extends Controller {
 
     function resizer(){
-        $controller = new timthumb();
+        $controller = new timthumb(); // ToDo тут дыра, нужно запретить выход наружу
         $controller->start();
     }
 
@@ -69,8 +69,22 @@ class Helpers extends Controller {
         echo 'Error: '.$HTTPcode[$params[0]];
     }
 
-    function files($file){
-        if(file_exists($file)){
+    function files($params){
+
+        $path = implode('/',$params); // ToDo проверить на выход из директории
+
+        if(!isset($params[0])) header("Location: /error/404");
+        if(file_exists(FILES_DIRECTORY.$path)){
+            $file = new Download(FILES_DIRECTORY.$path);
+            $file->download_file();
+        } else {
+            $model = new helpersModel();
+            if ($real = $model->getFileHash($path)){
+                $file = new Download(FILES_DIRECTORY.'private/'.$real, $path); // ToDo вырезать имя файла из пути
+                $file->download_file();
+            } else {
+                header("Location: /error/404");
+            }
         }
     }
 

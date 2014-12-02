@@ -58,6 +58,11 @@ define('VIEWS_PATH', '../application/views/');
  * TimThumb configuration
  */
 define ('FILE_CACHE_DIRECTORY', '../data/cache/thumb/');
+define ('LOCAL_FILE_BASE_DIRECTORY', '../data/files/');
+/**
+ * Private files directory
+ */
+define ('FILES_DIRECTORY', '../data/files/');
 
 /**
  * Configuration for: Cookies

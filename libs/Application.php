@@ -136,7 +136,7 @@ class Application
         $systemPage = [
             'resizer' => 'helpers',
             'error' => 'helpers',
-            'download' => 'helpers',
+            'files' => 'helpers',
         ];
 
         foreach ($systemPage as $key => $value){

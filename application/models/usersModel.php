@@ -91,7 +91,7 @@ class usersModel extends Model
             return 'User already exist';
         } else {
 
-            $salt = $this->saltGen();
+            $salt = $this->randomString();
             $password = hash('sha512', $password.$salt);
 
             $groupId = $this->database->select('authGroups','id', ['name' => DEFAULT_GROUP])[0];
@@ -126,14 +126,4 @@ class usersModel extends Model
 
     }
 
-    private function saltGen($lenght = 128) {
-        $characterList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $num = 0;
-        $salt = "";
-        while ($num < $lenght) {
-            $salt .= $characterList{mt_rand(0, (strlen($characterList) - 1))};
-            $num++;
-        }
-        return $salt;
-    }
 }
