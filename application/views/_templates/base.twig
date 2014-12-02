@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Loyality programs">
+    <meta name="author" content="Supme">
+
+    <title>{{ constant('SITE_NAME') }} :: {{ page_title }}</title>
+
+    <link rel="stylesheet" href="/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link href="/css/dashboard.css" rel="stylesheet"/>
+    <link href="/css/loyalty.css" rel="stylesheet"/>
+    <link href="/css/jquery.datetimepicker.css" rel="stylesheet"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    {% if _user.isLogin %}
+        <script src="/js/jquery.datetimepicker.js"></script>
+        <script src="/js/tinymce/tinymce.min.js"></script>
+        <script src="/js/loyalty.js"></script>
+
+    {% endif %}
+
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container-fluid mce"></div>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ constant('URL') }}">Loyality programs</a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                {% if _user.edit %}
+                    <li>
+                        <a onclick="edit()">Edit</a>
+                    </li>
+                {% endif %}
+                <li>
+                    {% if _user.isLogin %}
+                        <a href="{{ constant('URL') }}login/">You login as {{ _user.userName }}</a>
+                    {% else %}
+                        <a href="{{ constant('URL') }}login/">Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+
+            {% import '_templates/menu.twig' as macros %}
+            <ul class="nav nav-sidebar">
+                <li{% if map.segment == _page.segment %} class="active"{% endif %}>
+                    <a href="{{ constant('URL') }}{{ _siteTree.0.segment }}">{{ _siteTree.0.title }}</a>
+                </li>
+                {{ macros.menu(_siteTree.0.childs) }}
+            </ul>
+
+        </div>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        {% if notifications is defined  %}
+            {% for type,notification in notifications %}
+                {% for notes in notification %}
+                    <div class="alert alert-{{ type }} fade in">
+                        {{ notes|e}} <a class="close" data-dismiss="alert" href="#">&times;</a>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+        {% include _view %}
+
+        {% if debug is defined  %}
+            <div class="alert alert-warning  alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {% for key,value in debug %}
+                    <h4>{{ key }}</h4>
+                    {{ value|e }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

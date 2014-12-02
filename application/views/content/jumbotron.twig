@@ -1,0 +1,19 @@
+{% for key, content in result %}
+    {% if loop.first %}
+        <div class="jumbotron">
+            <div class="container content" positionId="{{ loop.index }}">
+                {{ content.text|raw }}
+            </div>
+        </div>
+        <div class="row">
+    {% else %}
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption content" positionId="{{ loop.index }}">
+                        {{ content.text|raw }}
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+{% endfor %}
+</div>

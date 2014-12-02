@@ -1,0 +1,6 @@
+{% for key, content in result %}
+    <div class="content" positionId="{{ loop.index }}">
+        {{ content.text|raw }}
+    </div>
+{% endfor %}
+

@@ -1,0 +1,34 @@
+.editable{
+    border: 1px solid red;
+}
+.mce-edit-focus{
+    border: 1px solid green;
+}
+.mce{
+    position: fixed;
+    top: 0px;
+    margin-left: -15px;
+    width: 100%;
+}
+
+#newsTitle, #newsDate{
+    border: 1px solid red;
+}
+
+#newsTitle:read-only, #newsDate:read-only{
+    border: 0px;
+}
+
+#newsTitle::selection, #newsDate::selection{
+    border: 1px solid green;
+}
+
+#newsTitle{
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+#newsDate{
+    font-size: 12px;
+}

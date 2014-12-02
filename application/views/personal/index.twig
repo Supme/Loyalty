@@ -1,0 +1,91 @@
+{% if is_login %}
+    <a href="./personal/add">Add entry</a>
+{% endif %}
+
+    {% for kcity,city in result %}
+        <h3><strong>{{ kcity }}</strong></h3>
+
+        <table class="table">
+            <colgroup>
+                <col width="150" />
+                <col width="150" />
+                <col width="200" />
+                <col width="150" />
+                <col width="150" />
+                <col width="200" />
+                <col width="300" />
+            </colgroup>
+            <tbody>
+            {% for kdepartment,department in city %}
+                <tr>
+                    <td colspan="7" style="background: #CCCCCC">
+                        <h4><strong>{{ kdepartment }}</strong></h4>
+                    </td>
+                </tr>
+                <tr style="background: #EEEEEE">
+                    <th><strong>ФИО</strong></th>
+                    <th><strong>Должность</strong></th>
+                    <th><strong>Функции</strong></th>
+                    <th><strong>E-mail</strong></th>
+                    <th><strong>День рождения</strong></th>
+                    <th><strong>Номер тел.</strong></th>
+                    <th><strong>Замена</strong></th>
+                </tr>
+                {% for kpeople,people in department %}
+                    <tr>
+                        <td>
+                            {{ kpeople }}<br/>
+                            {% if people.photo %}
+                                <img src="resizer?src=/files/personal/{{ people.photo }}&w=150&h=200" type="button" data-toggle="modal" data-target="#Modal" onclick="modalPhoto('{{ kpeople }}','resizer?src=/files/personal/{{ people.photo }}&w=480&h=640')"/>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if people.position %}{{ people.position }}{% endif %}
+                        </td>
+                        <td>
+                            {% if people.function %}{{ people.function  }}{% endif %}
+                        </td>
+                        <td>
+                            {% if people.email %}<a href="mailto:{{ people.email }}">{{ people.email }}</a>{% endif %}
+                        </td>
+                        <td>
+                            {% if people.birthday %}{{ people.birthday }}{% endif %}
+                        </td>
+                        <td>
+                            {% if people.telephone_internal %}{{ people.telephone_internal }}<br />{% endif %}
+                            {% if people.telephone_mobile %}{{ people.telephone_mobile }}<br />{% endif %}
+                            {% if people.telephone_external %}{{ people.telephone_external }}<br />{% endif %}
+                        </td>
+                        <td>
+                            {% if people.change %}{{ people.change }}{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    {% endfor %}
+
+<!-- Modal -->
+<script type="text/JavaScript">
+    function modalPhoto(name, photo){
+        $('#personal-body').html('<img src="'+photo+'"/>');
+        $('#personal-title').html(name);
+    }
+</script>
+<div class="modal fade in" id="Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="personal-title"></h4>
+            </div>
+            <div class="modal-body" align="center" id="personal-body"></div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal -->

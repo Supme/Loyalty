@@ -1,0 +1,15 @@
+{% macro menu(links, prefix) %}
+    {% for link in links %}
+        {% if link.visible  %}
+        <li{% if link.segment == _page.segment %} class="active"{% endif %}>
+            <a href="{{ prefix }}/{{ link.segment }}">{{ link.title }}</a>
+            {% if link.childs %}
+                <ul>
+                    {%  set preseg = prefix ~ '/' ~ link.segment %}
+                    {{ _self.menu(link.childs, preseg) }}
+                </ul>
+            {% endif %}
+        </li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

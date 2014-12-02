@@ -1,0 +1,29 @@
+{
+    "name": "Supme/Loyalty",
+    "type": "project",
+    "description": "Web tools for loyalty programs",
+    "keywords": ["mvc", "application"],
+    "homepage": "https://github.com/Supme/Loyalty",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Supme",
+            "homepage": "https://github.com/Supme",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Supme/Loyalty/issues",
+        "source": "https://github.com/Supme/Loyalty"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "twig/twig": "1.*",
+        "taha/timthumb": "dev-master",
+        "phpmailer/phpmailer": "dev-master",
+        "catfan/medoo": "dev-master"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "1.*"
+    }
+}
