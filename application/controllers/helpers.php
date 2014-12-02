@@ -17,7 +17,13 @@
 class Helpers extends Controller {
 
     function resizer(){
-        $controller = new timthumb(); // ToDo тут дыра, нужно запретить выход наружу
+
+        if (strpos($_SERVER['QUERY_STRING'], '../') !== false) {
+            header("Location: /error/400");
+            exit;
+        }
+
+        $controller = new timthumb();
         $controller->start();
     }
 
@@ -71,7 +77,7 @@ class Helpers extends Controller {
 
     function files($params){
 
-        $path = implode('/',$params); // ToDo проверить на выход из директории
+        $path = str_replace('..','',implode('/',$params));
 
         if(!isset($params[0])) header("Location: /error/404");
         if(file_exists(FILES_DIRECTORY.$path)){
@@ -80,7 +86,8 @@ class Helpers extends Controller {
         } else {
             $model = new helpersModel();
             if ($real = $model->getFileHash($path)){
-                $file = new Download(FILES_DIRECTORY.'private/'.$real, $path); // ToDo вырезать имя файла из пути
+                $name = substr(strrchr($real, "/"), 1);
+                $file = new Download(PRIVATE_FILES_DIRECTORY.$real, $name);
                 $file->download_file();
             } else {
                 header("Location: /error/404");

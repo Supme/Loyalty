@@ -63,6 +63,7 @@ define ('LOCAL_FILE_BASE_DIRECTORY', '../data/files/');
  * Private files directory
  */
 define ('FILES_DIRECTORY', '../data/files/');
+define ('PRIVATE_FILES_DIRECTORY', '../data/private/');
 
 /**
  * Configuration for: Cookies
