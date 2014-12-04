@@ -22,7 +22,7 @@
         "taha/timthumb": "dev-master",
         "phpmailer/phpmailer": "dev-master",
         "catfan/medoo": "dev-master",
-        "almasaeed2010/adminlte": "dev-master"
+        "kendu/sb-admin-2": "dev-master"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.*"

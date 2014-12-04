@@ -26,6 +26,21 @@ class Content extends Controller {
             echo 'Ok';
         } else {
             $result = $content->get();
+
+            if (Registry::get('_auth')->edit){
+
+                Registry::css([
+                    "/css/loyalty.css"
+                ]);
+
+                Registry::js([
+                    "/js/jquery.datetimepicker.js",
+                    "/js/tinymce/tinymce.min.js",
+                    "/js/loyalty.js",
+                ]);
+
+            }
+
             if(!$result){
                 $result = [0 => ['text' => 'No content', 'position' => 1]];
             }
@@ -34,4 +49,5 @@ class Content extends Controller {
             ]);
         }
     }
+
 }
