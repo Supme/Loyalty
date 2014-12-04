@@ -4,20 +4,58 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "21d361938150f056964e5ec232a33771",
+    "hash": "9eeb605b9dda852c5344fcca991c930f",
     "packages": [
+        {
+            "name": "almasaeed2010/adminlte",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/almasaeed2010/AdminLTE.git",
+                "reference": "ff0bce1faed41973154d5f0b3619a9344978c1c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/ff0bce1faed41973154d5f0b3619a9344978c1c7",
+                "reference": "ff0bce1faed41973154d5f0b3619a9344978c1c7",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abdullah Almsaeed",
+                    "email": "support@almsaeedstudio.com"
+                }
+            ],
+            "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 3",
+            "homepage": "http://almsaeedstudio.com/",
+            "keywords": [
+                "JS",
+                "back-end",
+                "css",
+                "less",
+                "responsive",
+                "template",
+                "web"
+            ],
+            "time": "2014-11-26 21:26:15"
+        },
         {
             "name": "catfan/medoo",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/catfan/Medoo.git",
-                "reference": "e489311409b18b06614d52a225d785419562de5d"
+                "reference": "019e4f60aa756adae12643c3c6a851dd9c468c08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/catfan/Medoo/zipball/e489311409b18b06614d52a225d785419562de5d",
-                "reference": "e489311409b18b06614d52a225d785419562de5d",
+                "url": "https://api.github.com/repos/catfan/Medoo/zipball/019e4f60aa756adae12643c3c6a851dd9c468c08",
+                "reference": "019e4f60aa756adae12643c3c6a851dd9c468c08",
                 "shasum": ""
             },
             "require": {
@@ -28,7 +66,8 @@
                 "ext-pdo-mysql": "For MySQL or MariaDB databases",
                 "ext-pdo-pqsql": "For PostgreSQL databases",
                 "ext-pdo-sqlite": "For SQLite databases",
-                "ext-pdo_dblib": "For MSSQL databases on Liunx/UNIX platform",
+                "ext-pdo_dblib": "For MSSQL or Sybase databases on Liunx/UNIX platform",
+                "ext-pdo_oci": "For Oracle databases",
                 "ext-pdo_sqlsrv": "For MSSQL databases on Windows platform"
             },
             "type": "framework",
@@ -51,12 +90,14 @@
             "homepage": "http://medoo.in",
             "keywords": [
                 "database",
+                "lightweight",
                 "mssql",
                 "mysql",
+                "php framework",
                 "sql",
                 "sqlite"
             ],
-            "time": "2014-08-15 12:29:42"
+            "time": "2014-12-04 07:52:42"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -281,7 +322,8 @@
     "stability-flags": {
         "taha/timthumb": 20,
         "phpmailer/phpmailer": 20,
-        "catfan/medoo": 20
+        "catfan/medoo": 20,
+        "almasaeed2010/adminlte": 20
     },
     "prefer-stable": false,
     "platform": {

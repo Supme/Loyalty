@@ -21,7 +21,8 @@
         "twig/twig": "1.*",
         "taha/timthumb": "dev-master",
         "phpmailer/phpmailer": "dev-master",
-        "catfan/medoo": "dev-master"
+        "catfan/medoo": "dev-master",
+        "almasaeed2010/adminlte": "dev-master"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.*"
