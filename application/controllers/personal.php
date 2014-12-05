@@ -17,7 +17,23 @@
 class Personal extends Controller {
 
     function __init(){
+
         $this->personal = new personalModel();
+
+        // add submenu
+        if (Registry::get('_auth')->add)
+            Registry::menu([
+                'Add' => [
+                    'href'=>'./'.Registry::get('_page')['segment'].'/add',
+                ]
+            ]);
+        if (Registry::get('_auth')->edit)
+            Registry::menu([
+                'Edit' => [
+                    'href'=>'./'.Registry::get('_page')['segment'].'/edit',
+                ]
+            ]);
+
     }
 
     function index(){
@@ -30,7 +46,7 @@ class Personal extends Controller {
 
     function add() {
 
-        if(isset($_POST['submit_add_personal']) && Registry::get('_auth')->is_login){
+        if (isset($_POST['submit_add_personal']) && Registry::get('_auth')->is_login){
 
             //ToDo save data
             header('location: ' . URL . 'personal');

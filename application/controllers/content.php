@@ -39,6 +39,12 @@ class Content extends Controller {
                     "/js/loyalty.js",
                 ]);
 
+                Registry::menu([
+                    'Edit' => [
+                        'onclick'=>'edit()',
+                    ]
+                ]);
+
             }
 
             if(!$result){

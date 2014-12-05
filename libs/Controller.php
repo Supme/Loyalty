@@ -55,6 +55,7 @@ class Controller
         $twig->addGlobal('_view', Registry::get('_page')['view'].PATH_VIEWS_FILE_TYPE);
         $twig->addGlobal('_css', Registry::get('_css'));
         $twig->addGlobal('_js', Registry::get('_js'));
+        $twig->addGlobal('_menu', Registry::get('_menu'));
         $twig->addGlobal('_siteTree', Registry::get('siteTree'));
         $twig->addGlobal('_user', $this->auth);
 

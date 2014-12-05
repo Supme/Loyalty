@@ -57,14 +57,16 @@ class Registry
     }
 
     /**
-     * Упаковка CSS файлов в переменную
+     * Add css in page
      *
      * @param $css
      */
     public static function css($css){
         if (!isset(self::$store['_css'])) self::$store['_css'] = [];
-        if (is_array($css)){
-            foreach ($css as $file){
+        if (is_array($css))
+        {
+            foreach ($css as $file)
+            {
                 array_push(self::$store['_css'],$file);
                 //self::$store['_css'] .= "/*".$file."*/\n".self::compressCss($file)."\n\r";
             }
@@ -74,10 +76,17 @@ class Registry
         }
     }
 
+    /**
+     * Add javascript in page
+     *
+     * @param $css
+     */
     public static function js($js){
         if (!isset(self::$store['_js'])) self::$store['_js'] = [];
-        if (is_array($js)){
-            foreach ($js as $file){
+        if (is_array($js))
+        {
+            foreach ($js as $file)
+            {
                 array_push(self::$store['_js'],$file);
                 //self::$store['_js'] .= "/*".$file."*/\n".self::compressJs($file)."\n\r";
             }
@@ -87,35 +96,24 @@ class Registry
         }
     }
 
-    private static function compressCss($file){
-        if(file_exists($file)){
-            return
-                str_replace(
-                    array("\r\n", "\r", "\n", "\t", 'Â  ', 'Â Â Â  ', 'Â Â Â  '),
-                    '',
-                    preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '',
-                        file_get_contents($file)
-                    )
-                );
-
-        } else {
-            return "";
+    /**
+     * Add menu links in page
+     *
+     * @param array $items
+     */
+    public static function menu($items){
+        if (!isset(self::$store['_menu'])) self::$store['_menu'] = [];
+        if (is_array($items))
+        {
+            foreach ($items as $i => $item)
+            {
+                self::$store['_menu'][$i] = $item;
+                /*foreach ($item as $key => $value)
+                {
+                    array_push(self::$store['_menu'][$i], [$key => $value]);
+                }*/
+            }
         }
     }
-
-    private static function compressJs($file){
-        if(file_exists($file)){
-            return
-                str_replace(
-                    array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '),
-                    '',
-                        file_get_contents($file)
-                );
-
-        } else {
-            return "";
-        }
-    }
-
 }
 ?>

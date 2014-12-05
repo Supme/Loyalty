@@ -66,48 +66,51 @@
         </div>
         <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-messages">
-                <li>
-                    <a href="#">
-                        <div>
-                            <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                        </div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a class="text-center" href="#">
-                        <strong>Read All Messages</strong>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </li>
-            </ul>
-            <!-- /.dropdown-messages -->
-            </li>
 
+            <!-- page additional menu -->
+            {% if _menu %}
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-edit fa-fw"></i>  <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
-                    {% if _user.edit %}
-                        <li>
-                            <a onclick="edit()">Edit</a>
-                        </li>
-                    {% endif %}
-                    <li class="divider"></li>
+                    {% for name, item in _menu %}
+                    <li>
+                        <a {% for param, value in item %} {{ param }}='{{ value }}'{% endfor %}>{{ name }}</a>
+                    </li>
+                    {% endfor %}
                 </ul>
-                <!-- /.dropdown-messages -->
             </li>
-            <!-- /.dropdown -->
+            {% endif %}
+
+            <!-- user messages -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                            </div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="text-center" href="#">
+                            <strong>Read All Messages</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- user profile -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -117,8 +120,8 @@
                         <li>
                             <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
+                        <li class="divider"></li>
                     {% endif %}
-                    <li class="divider"></li>
                     <li>
                         {% if _user.isLogin %}
                             <a href="{{ constant('URL') }}login/">You login as {{ _user.userName }}</a>
@@ -138,41 +141,36 @@
                 {% import '_templates/menu.twig' as macros %}
                 <ul class="nav" id="side-menu">
 
-                    <!-- li{% if map.segment == _page.segment %} class="active"{% endif %}>
+                    <li{% if map.segment == _page.segment %} class="active"{% endif %}>
                         <a href="{{ constant('URL') }}{{ _siteTree.0.segment }}">{{ _siteTree.0.title }}</a>
-                    </li -->
+                    </li>
 
-                    {% for link in _siteTree.0.childs %}
-                        {% if link.visible %}
-                            <li>
-                                <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ link.segment }}">{{ link.title }}</a>
+                    {% for link in _siteTree.0.childs if link.visible%}
+                        <li>
+                            <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ constant('URL') }}{{ link.segment }}">{{ link.title }}</a>
 
-                                {% if link.childs %}
+                            {% if link.childs %}
                                 <ul class="nav nav-second-level">
-                                    {% for lin in link.childs %}
-                                        {% if lin.visible %}
-                                            <li>
-                                                <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ lin.segment }}">{{ lin.title }}</a>
+                                    {% for lin in link.childs if lin.visible%}
+                                        <li>
+                                            <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ constant('URL') }}{{ link.segment }}/{{ lin.segment }}">{{ lin.title }}</a>
 
-                                                {% if lin.childs %}
-                                                    <ul class="nav nav-third-level">
-                                                        {% for li in lin.childs %}
-                                                            {% if li.visible %}
-                                                                <li>
-                                                                    <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ li.segment }}">{{ li.title }}</a>
-                                                                </li>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                {% endif %}
+                                            {% if lin.childs %}
+                                                <ul class="nav nav-third-level">
+                                                    {% for li in lin.childs if li.visible %}
+                                                        <li>
+                                                            <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ constant('URL') }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}">{{ li.title }}</a>
+                                                        </li>
 
-                                            </li>
-                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+
+                                        </li>
                                     {% endfor %}
                                 </ul>
-                                {% endif %}
 
-                            </li>
+                        </li>
                         {% endif %}
                     {% endfor %}
 

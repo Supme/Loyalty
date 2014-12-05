@@ -24,10 +24,21 @@ In Twig templates you must use:
 In PHP:
 
 Registry::get(var);
+
 var:
 * _db
-* _auth
+* _auth (
+  * ->read
+  * ->add
+  * ->edit
+  * .......
 * _page
+  * ['id']
+  * ['pid']
+  * ['segment']
+  * ['title']
+  * ['visible']
+  * .......
 * _params
 
 Comming soon...
