@@ -8,6 +8,7 @@
     "authors": [
         {
             "name": "Supme",
+            "email": "supmea@gmail.com",
             "homepage": "https://github.com/Supme",
             "role": "Developer"
         }
@@ -20,11 +21,22 @@
         "php": ">=5.4.0",
         "twig/twig": "1.*",
         "taha/timthumb": "dev-master",
-        "phpmailer/phpmailer": "dev-master",
         "catfan/medoo": "dev-master",
-        "kendu/sb-admin-2": "dev-master"
+        "swiftmailer/swiftmailer": "@stable"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+
+        },
+        "classmap": [
+            "application/controllers",
+            "application/models",
+            "libs/"
+        ],
+        "files": [
+        ]
     }
 }

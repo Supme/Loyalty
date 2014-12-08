@@ -14,16 +14,10 @@
  *
  */
 
-// load the (optional) Composer auto-loader
-if (file_exists('../vendor/autoload.php')) {
-    require '../vendor/autoload.php';
-}
+require '../vendor/autoload.php';
 
-// load application config (error reporting etc.)
+// load application config
 require '../application/config/config.php';
-
-// The auto-loader to load project classes
-require '../libs/_autoload.php';
 
 // start the application
 $app = new Application();

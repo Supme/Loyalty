@@ -107,8 +107,6 @@ define('PATH_VIEWS_FILE_TYPE', '.twig');
  *
  * It's really recommended to use SMTP!
  */
-// Options: 0 = off, 1 = commands, 2 = commands and data, perfect to see SMTP errors, see the PHPMailer manual for more
-define("PHPMAILER_DEBUG_MODE", 0);
 // use SMTP or basic mail() ? SMTP is strongly recommended
 define("EMAIL_USE_SMTP", false);
 // name of your host

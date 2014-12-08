@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    $vendorDir . '/kriswallsmith/assetic/src/functions.php',
     $vendorDir . '/catfan/medoo/medoo.php',
+    $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
 );
