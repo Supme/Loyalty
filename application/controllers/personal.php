@@ -49,7 +49,7 @@ class Personal extends Controller {
         if (isset($_POST['submit_add_personal']) && Registry::get('_auth')->is_login){
 
             //ToDo save data
-            header('location: ' . URL . 'personal');
+            header('location: ' . URL .Registry::get('_page')['segment']);
         }
 
         $this->render([

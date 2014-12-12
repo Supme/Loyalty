@@ -17,7 +17,7 @@
 class newsModel extends Model
 {
 
-    function last($from = 0, $count = 10){
+    function last($count, $from = 0){
 
         return $this->database->select(
             'news',

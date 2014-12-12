@@ -43,8 +43,7 @@ class Controller
 
     public function render($data_array = array())
     {
-        // load Twig, the template engine
-        // @see http://twig.sensiolabs.org
+
         $twig_loader = new Twig_Loader_Filesystem(PATH_VIEWS);
         $twig = new Twig_Environment($twig_loader,
             [
@@ -59,7 +58,6 @@ class Controller
         $twig->addGlobal('_siteTree', Registry::get('siteTree'));
         $twig->addGlobal('_user', $this->auth);
 
-        // render a view while passing the to-be-rendered data
         echo $twig->render('_templates/'.Registry::get('_page')['layout'].PATH_VIEWS_FILE_TYPE, $data_array);
     }
 

@@ -163,6 +163,7 @@ return array(
     'PSR2_Sniffs_Namespaces_UseDeclarationSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PSR2/Sniffs/Namespaces/UseDeclarationSniff.php',
     'Personal' => $baseDir . '/application/controllers/personal.php',
     'Registry' => $baseDir . '/libs/Registry.php',
+    'Sender' => $baseDir . '/application/controllers/sender.php',
     'Squiz_Sniffs_Arrays_ArrayBracketSpacingSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/Arrays/ArrayBracketSpacingSniff.php',
     'Squiz_Sniffs_Arrays_ArrayDeclarationSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/Arrays/ArrayDeclarationSniff.php',
     'Squiz_Sniffs_CSS_ClassDefinitionClosingBraceSpaceSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/CSS/ClassDefinitionClosingBraceSpaceSniff.php',
@@ -265,6 +266,7 @@ return array(
     'Squiz_Sniffs_WhiteSpace_ScopeKeywordSpacingSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/WhiteSpace/ScopeKeywordSpacingSniff.php',
     'Squiz_Sniffs_WhiteSpace_SemicolonSpacingSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/WhiteSpace/SemicolonSpacingSniff.php',
     'Squiz_Sniffs_WhiteSpace_SuperfluousWhitespaceSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/WhiteSpace/SuperfluousWhitespaceSniff.php',
+    'Table' => $baseDir . '/libs/Table.php',
     'Test' => $baseDir . '/application/controllers/test.php',
     'Tree' => $baseDir . '/libs/Tree.php',
     'Users' => $baseDir . '/application/controllers/users.php',
@@ -275,6 +277,7 @@ return array(
     'helpersModel' => $baseDir . '/application/models/helpersModel.php',
     'newsModel' => $baseDir . '/application/models/newsModel.php',
     'personalModel' => $baseDir . '/application/models/personalModel.php',
+    'senderModel' => $baseDir . '/application/models/senderModel.php',
     'timthumb' => $vendorDir . '/taha/timthumb/timthumb.php',
     'usersModel' => $baseDir . '/application/models/usersModel.php',
 );

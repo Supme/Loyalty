@@ -1,0 +1,50 @@
+<!--
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#example').dataTable( {
+            "ordering": false,
+            "bFilter": false,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": "./sender"
+        } );
+    } );
+</script>
+
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Gender</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Gender</th>
+            </tr>
+            </tfoot>
+        </table>
+
+-->
+
+{{ table|raw }}
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('#noname').dataTable({
+            'columns': [
+                { 'data': 'name' },
+                { 'data': 'phone' },
+                { 'data': 'gender' }
+            ],
+            'ordering': ,'bFilter': ,
+            'language': {'url': '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json'},'processing': true,'serverSide': true,'ajax': './noname'});});</script>

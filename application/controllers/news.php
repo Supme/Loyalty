@@ -35,7 +35,7 @@ class News extends Controller {
                     break;
 
                 case 2:
-                    $news = $this->news_model->last($params[0], $params[1]);
+                    $news = $this->news_model->last($params[1], $params[0]);
                     $this->render([
                         'count' => count($news),
                         'news' => $news,
@@ -43,7 +43,7 @@ class News extends Controller {
                     break;
 
                 default:
-                    $news = $this->news_model->last();
+                    $news = $this->news_model->last(10);
                     $this->render([
                         'count' => count($news),
                         'news' => $news,
