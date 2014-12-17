@@ -14,8 +14,10 @@
  *
  */
 
+
 class senderModel extends Table
 {
+    public $campaignId;
 
     /**
      * Get campaign list
@@ -23,13 +25,14 @@ class senderModel extends Table
      * @param $from
      * @return array|bool
      */
-    function getCampaigns($count, $from = 0){
+    function getCampaigns( $lenght, $start = 0 )
+    {
         return $this->database->select(
             'senderCampaigns',
             '*',
             [
                 'ORDER' => 'date DESC',
-                'LIMIT' => [$from, $count]
+                'LIMIT' => [$start, $lenght]
             ]
         );
     }
@@ -41,11 +44,12 @@ class senderModel extends Table
      * @param string $name
      * @param string $subject
      * @param string $message
-     * @param int $id
-     * @param int $time
+     * @param $id
+     * @param $time
      * @return int
      */
-    function campaign($name, $subject, $message = '', $id = false, $time = false){
+    function campaign( $name, $subject, $message = '', $id = false, $time = false )
+    {
         if ($time == false) $time = time();
         if ($id != false ) {
             $result = $this->database->update( 'senderCampaigns',
@@ -79,15 +83,15 @@ class senderModel extends Table
      *
      * @param $count
      * @param int $from
-     * @param int $campaignId
      * @return array|bool
      */
-    function getRecipients($campaignId, $count, $from = 0){
+    function getRecipients( $lenght, $start = 0 )
+    {
 
         $data =  $this->database->select(
             'senderRecipient',
             ["id"],
-            ['campaignId' => $campaignId, 'LIMIT' => [$from, $count]]);
+            ['campaignId' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
         $recipient = [];
         foreach($data as $id){
             $params = $this->database->select(
@@ -120,10 +124,11 @@ class senderModel extends Table
      *                      ...
      *                    ]
      */
-    function addRecipients($campaignId, $data){
-        if( is_array( $this->database->select( 'senderCampaigns', '*', ['id' => $campaignId] ) ) ){
+    function addRecipients( $data )
+    {
+        if( is_array( $this->database->select( 'senderCampaigns', '*', ['id' => $this->campaignId] ) ) ){
             foreach($data as $recipient){
-                $id = $this->database->insert('senderRecipient',['campaignId'=>$campaignId]);
+                $id = $this->database->insert('senderRecipient',['campaignId'=>$this->campaignId]);
                 foreach($recipient as $name => $value){
                     $this->database->insert( 'senderParams',
                         [
@@ -137,30 +142,32 @@ class senderModel extends Table
         }
     }
 
-    function column($campaignId){
+    function column()
+    {
         $data = $this->database->query(
                 'SELECT DISTINCT sp.name
                   FROM senderParams sp
                   INNER JOIN senderRecipient sr
                   ON sr.id=sp.recipientId
-                  AND sr.campaignId='.$this->database->quote((int)$campaignId)
+                  AND sr.campaignId='.$this->database->quote((int)$this->campaignId)
             )
             ->fetchAll();
         $result = [];
         foreach($data as $column){
-            array_push($result,$column['name']);
+            $result[] = $column['name'];
         }
+
         return $result;
     }
 
 
 
-    function data($campaignId, $from, $count, $order, $filter)
+    function data( $start, $lenght, $order, $filter )
     {
         $data =  $this->database->select(
             'senderRecipient',
             ["id"],
-            ['campaignId' => $campaignId, 'LIMIT' => [$from, $count]]);
+            ['campaignId' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
         $recipient = [];
         $i = 0;
         foreach($data as $id){
@@ -173,7 +180,7 @@ class senderModel extends Table
                 ['recipientId' => $id['id']]
             );
             foreach($params as $param){
-                $recipient[$i][] = $param['value'];
+                $recipient[$i][$param['name']] = $param['value'];
             }
             ++$i;
         }
@@ -181,17 +188,15 @@ class senderModel extends Table
         return $recipient;
     }
 
-    function total($campaignId)
+    function total()
     {
         return $this->database->count(
             'senderRecipient',
             ["id"],
-            ['campaignId' => $campaignId]);
+            ['campaignId' => $this->campaignId]);
     }
 
-    function filtered($params)
-    {
-        return $this->total($params);
+    function filtered(){
+        return $this->total();
     }
-
 }

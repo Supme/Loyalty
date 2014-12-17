@@ -13,117 +13,41 @@
  *	Please see the license.txt file for more information.
  *
  */
-class usersModel extends Model
+class usersModel extends Table
 {
-    function get($user = false, $count = false){
-        if ($user === false) {
-            $users = $this->database->select(
-                'authUsers',
-                [
-                    '[>]authGroups' => ['groupId' => 'id']
-                ],
-                [
-                    'authUsers.id(userId)',
-                    'authUsers.userName',
-                    'authUsers.email(userEmail)',
-                    'authGroups.name(userGroup)'
-                ],
-                [
-                    "ORDER" => ['authUsers.userName ASC']
-                ]
+    function total(){
+        return $this->database->count('authUsers');
+    }
 
+    function filtred(){
+        return $this->total();
+    }
 
-            );
-        } elseif ($count === false){
-            $users = $this->database->select(
-                'authUsers',
-                [
-                    '[>]authGroups' => ['groupId' => 'id']
-                ],
-                [
-                    'authUsers.id(userId)',
-                    'authUsers.userName',
-                    'authUsers.email(userEmail)',
-                    'authGroups.name(userGroup)'
-                ],
-                [
-                    'OR' =>[
-                        'authUsers.userName' => $user,
-                        'authUsers.email' => $user
-                        ]
-                ]
-            );
-        } else {
-            $users = $this->database->select(
-                'authUsers',
-                [
-                    '[>]authGroups' => ['groupId' => 'id']
-                ],
-                [
-                    'authUsers.id(userId)',
-                    'authUsers.userName',
-                    'authUsers.email(userEmail)',
-                    'authGroups.name(userGroup)'
-                ],
-                [
-                    'LIMIT' => [$user,$count]
-                ]
-            );
-        }
+    function column(){
+        return ['userId', 'userName', 'userEmail', 'userGroup'];
+    }
 
-        return $users;
+    function filtered(){
 
     }
 
-    function add($userName, $email, $password){
-        $userName = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $userName);
-
-        if($this->database->has('authUsers',
+    function data($start, $lenght, $order, $filter){
+        return $this->database->select(
+            'authUsers',
             [
-                'OR' => [
-                    'userName' => $userName,
-                    'email' => $email
-                ]
-            ]
-        )){
-            // User already exist
-
-            return 'User already exist';
-        } else {
-
-            $salt = $this->randomString();
-            $password = hash('sha512', $password.$salt);
-
-            $groupId = $this->database->select('authGroups','id', ['name' => DEFAULT_GROUP])[0];
-
-            return $this->database->insert( 'authUsers',
-                [
-                    'groupId' => $groupId,
-                    'userName' => $userName,
-                    'email' => $email,
-                    'password' => $password,
-                    'salt' => $salt
-                ]
-
-            );
-        }
-    }
-
-    function update($userName, $groupId, $email, $password){
-        $salt = $this->saltGen();
-        $password = hash('sha512', $password.$salt);
-
-        return $this->database->update( 'authUsers',
+                '[>]authGroups' => ['groupId' => 'id']
+            ],
             [
-                'groupId' => $groupId,
-                'userName' => $userName,
-                'email' => $email,
-                'password' => $password,
-                'salt' => $salt
+                'authUsers.id(userId)',
+                'authUsers.userName',
+                'authUsers.email(userEmail)',
+                'authGroups.name(userGroup)',
+            ],
+            [
+                "ORDER" => ['authUsers.userName ASC'],
+                "LIMIT" => [[$start, $lenght]],
             ]
-
         );
-
     }
 
 }

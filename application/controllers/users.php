@@ -18,10 +18,20 @@ class Users extends Controller {
 
     function __init(){
         if(!Registry::get('_auth')->read) header("Location: ../error/403");
-
-        $this->users = new usersModel();
     }
-    function index(){
+
+    function index()
+    {
+        $users = new usersModel(['name' => 'users']);
+
+        if (!$users->isRequest()) {
+            $table = $users->html();
+            $this->render(['table' => $table]);
+        } else {
+            $users->ajax();
+        }
+    }
+    function _index(){
         $this->render(['users' => $this->users->get()]);
     }
 

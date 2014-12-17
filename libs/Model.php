@@ -9,8 +9,6 @@ class Model
 
     function __construct()
     {
-        $this->db = Registry::get('_db');
-
 
         /**
          * Medoo
@@ -20,7 +18,7 @@ class Model
                 'database_type' => DB_TYPE,
                 'database_file' => DB_HOST,
                 'charset'       =>  'utf8',
-                ];
+            ];
         } else {
             $connect = [
                 'database_type' =>  DB_TYPE,

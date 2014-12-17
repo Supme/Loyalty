@@ -16,21 +16,19 @@
 
 class Sender extends Controller {
 
-    //private $sender;
-
     function __init($params){
 
     }
 
-    function index($params)
+    function index()
     {
-        $sender = new senderModel(2);
+        $sender = new senderModel(['name' => 'recipients']);
+        $sender->campaignId = 2;
 
         if (!$sender->isRequest()) {
-            $table = $sender->html(); //$sender->recipientDatas(2));
+            $table = $sender->html();
             $this->render(['table' => $table]);
         } else {
-
             $sender->ajax();
         }
     }

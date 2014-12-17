@@ -30,28 +30,29 @@ class Application
     public function __construct()
     {
 
-        $this->dbConnect();
+        //$this->dbConnect();
 
         // authorize and session
         Registry::set('_auth', new Auth());
 
-        $siteMap = $this->getSiteMap();
-        Registry::set('_page', $siteMap['page']);
+        $route = new Route();
+        Registry::set('_page', $route->sitePage);
+        Registry::set('siteTree', $route->siteTree);
 
         // Run application
-        if (file_exists(CONTROLLER_PATH .$siteMap['page']['controller'].'.php')){
-            require CONTROLLER_PATH .$siteMap['page']['controller']. '.php';
-            $controller = new $siteMap['page']['controller']();
+        if (file_exists(CONTROLLER_PATH .$route->sitePage['controller'].'.php')){
+            require CONTROLLER_PATH .$route->sitePage['controller'].'.php';
+            $controller = new $route->sitePage['controller']();
             if (method_exists($controller, '__init')) {
-                $controller->{'__init'}($siteMap['params']);
+                $controller->{'__init'}($route->pageParams);
             }
-            if (method_exists($controller, $siteMap['page']['action'])) {
-                $controller->{$siteMap['page']['action']}($siteMap['params']);
+            if (method_exists($controller, $route->sitePage['action'])) {
+                $controller->{$route->sitePage['action']}($route->pageParams);
             } else {
-                $controller->index($siteMap['params']);
+                $controller->index($route->pageParams);
             }
             if (method_exists($controller, '__close')) {
-                $controller->{'_close'}($siteMap['params']);
+                $controller->{'_close'}($route->pageParams);
             }
         } else {
             // redirect user to error page (there's a controller for that)
@@ -73,88 +74,4 @@ class Application
         Registry::set('_db', $this->db);
 
     }
-
-    private function getSiteMap(){
-
-        $query = $this->db->prepare('SELECT * FROM siteMap WHERE pid = 0');
-        $query->execute();
-        $main = $query->fetch();
-
-        $query = $this->db->prepare("
-          SELECT t1.id, t1.pid, t1.segment, t1.view, t1.layout, t1.controller, t1.action, t1.title, t1.visible
-          FROM siteMap t1
-          LEFT JOIN authAccess t2 ON t1.id = t2.smapId AND (t2.userId = ? OR t2.groupId = ?)
-          WHERE t2.smapId IS NULL OR (NOT t2.smapId IS NULL AND t2.right <> '0')
-              ");
-        $query->execute([Registry::get('_auth')->userId, Registry::get('_auth')->groupId]);
-        $siteMap = $query->fetchAll();
-
-        $this->addSystemPage($siteMap);
-
-        $tree = new Tree($siteMap);
-        $tree->each();
-        $siteTree = $tree->get();
-
-        Registry::set('siteTree', $siteTree);
-
-        if (isset($_GET['url'])) {
-            $url = rtrim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-        } else {
-
-            $url = $main['segment'];
-        }
-        $segments = explode('/', $url);
-
-
-        /*
-         *   найти в массиве $segments последнее существующее в массиве $siteTree "childs",
-         *   остальное параметры в GET запросе
-         */
-        $page  =  $siteTree[0];
-        $params = [];
-        $run = '';
-        foreach($segments as $segment){
-            $isAction = false;
-            if(isset($page['childs'])){
-                foreach($page['childs'] as $child){
-                    if($child['segment'] == $segment){
-                        $page = $child;
-                        $run = $segment;
-                        $isAction = true;
-                    }
-                }
-            }
-            if(!$isAction) $params[] = $segment;
-
-        }
-
-        return ['page'=>$page, 'params'=>$params];
-    }
-
-    private function addSystemPage(&$siteMap){
-        $systemPage = [
-            'resizer' => 'helpers',
-            'error' => 'helpers',
-            'files' => 'helpers',
-        ];
-
-        foreach ($systemPage as $key => $value){
-            array_push($siteMap,
-                [
-                    'id' => '',
-                    'pid' => '1',
-                    'segment' => $key,
-                    'view' => NULL,
-                    'layout' => NULL,
-                    'controller' => $value,
-                    'action' => $key,
-                    'title' => '',
-                    'visible' => '0',
-                ]
-            );
-
-        }
-    }
-
  }

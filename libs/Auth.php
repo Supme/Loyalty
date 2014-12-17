@@ -13,7 +13,7 @@
  *
  */
 
-class Auth
+class Auth extends Model
 {
     public
         $userName = 'Guest',
@@ -26,12 +26,10 @@ class Auth
         $delete,
         $userId,
         $groupId;
-    private
-        $db;
-
 
     function __construct() {
-        $this->db = Registry::get('_db');
+        parent::__construct();
+        //$this->db = Registry::get('_db');
 
         $this->sec_session_start();
 
@@ -68,8 +66,8 @@ class Auth
         $db_password = '';
         $salt = '';
         // Using prepared statements means that SQL injection is not possible.
-        $query = $this->db->prepare(
-            "SELECT t1.id AS id, t1.userName AS userName, t1.password AS password, t1.salt AS salt, t2.name AS groupName
+        $query = $this->database->pdo->prepare("
+              SELECT t1.id AS id, t1.userName AS userName, t1.password AS password, t1.salt AS salt, t2.name AS groupName
               FROM authUsers t1
               LEFT JOIN authGroups t2 ON t1.groupId = t2.id
               WHERE t1.email = ?
@@ -114,7 +112,7 @@ class Auth
                     // Password is not correct
                     // We record this attempt in the database
                     $now = time();
-                    $this->db->exec("INSERT INTO authLogins(userId, time) VALUES ('$this->userId', '$now')");
+                    $this->database->pdo->exec("INSERT INTO authLogins(userId, time) VALUES ('$this->userId', '$now')");
                     $this->isLogin = false;
                 }
             }
@@ -155,7 +153,7 @@ class Auth
         // All login attempts are counted from the past 2 hours.
         $valid_attempts = $now - (2 * 60 * 60);
 
-        if ($query = $this->db->prepare("SELECT COUNT(*) FROM authLogins WHERE userId = ? AND time > ?")
+        if ($query = $this->database->pdo->prepare("SELECT COUNT(*) FROM authLogins WHERE userId = ? AND time > ?")
         ) {
             // Execute the prepared query.
             $query->execute([$this->userId, $valid_attempts]);
@@ -186,7 +184,7 @@ class Auth
             // Get the user-agent string of the user.
             $user_browser = $_SERVER['HTTP_USER_AGENT'];
 
-            if ($query = $this->db->prepare("
+            if ($query = $this->database->pdo->prepare("
             SELECT t1.username AS userName, t1.password AS password, t1.groupId AS groupId, t2.name AS groupName
               FROM authUsers t1
               LEFT JOIN authGroups t2 ON t1.groupId = t2.id
@@ -223,7 +221,7 @@ class Auth
             $this->delete = true;
         } else {
 
-            $query = $this->db->prepare("SELECT right FROM authAccess WHERE (userId = ? OR groupId = ?) AND smapId = ?");
+            $query = $this->database->pdo->prepare("SELECT right FROM authAccess WHERE (userId = ? OR groupId = ?) AND smapId = ?");
             $query->execute([$this->userId, $this->groupId, $smapId]);
             $query->bindColumn('right', $this->right);
             $query->fetch();

@@ -29,7 +29,7 @@ abstract class Table extends Model
 
     public $params;
 
-    function __construct($params){
+    function __construct($params=false){
         $this->params = $params;
         parent::__construct();
     }
@@ -39,33 +39,32 @@ abstract class Table extends Model
     }
 
     /**
-     * @param $params
      * @param $start
      * @param $lenght
      * @param $order
      * @param $filter
      * @return array
      */
-    abstract function data($params, $start, $lenght, $order, $filter);
+    abstract function data($start, $lenght, $order, $filter);
 
     /**
-     * @param $params
      * @return array
      */
-    abstract function column($params);
+    abstract function column();
 
     /**
-     * @param $params
      * @return int
      */
-    abstract function total($params);
+    abstract function total();
 
     /**
-     * @param $params
      * @return int
      */
-    abstract function filtered($params);
+    abstract function filtered();
 
+    /**
+     *
+     */
     function ajax(){
         {
             header('Content-type: application/json');
@@ -76,7 +75,6 @@ abstract class Table extends Model
                     "recordsFiltered" => intval( $this->filtered($this->params) ),
                     "data" =>
                         $this->data(
-                            $this->params,
                             intval($_REQUEST['start']),
                             intval($_REQUEST['length']),
                             'orderable', // ToDo вот тут нужно разбираться
@@ -87,6 +85,10 @@ abstract class Table extends Model
         }
     }
 
+    /**
+     * @param array|bool $params
+     * @return string
+     */
     function html( $params = false ){
 
         $name = isset($params['name'])?$params['name']:'noname';
@@ -97,10 +99,24 @@ abstract class Table extends Model
         Registry::js(["//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"]);
         Registry::css(["//cdn.datatables.net/1.10.4/css/jquery.dataTables.css"]);
 
-        $html  = "<script type='text/javascript'>";
+        $hcols = "";foreach ($this->column(1) as $col) $hcols .= "<th>$col</th>";
+        $html  = "
+        <table id='$name' class='display' cellspacing='0' width='100%'>\n
+        <thead>
+        <tr>$hcols</tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot>
+        <tr>$hcols</tr>
+        </tfoot>
+        </table>";
+
+        $html .= "<script type='text/javascript'>";
         $html .= "$(document).ready(function(){";
         $html .= "$('#$name').dataTable({";
-        //$html .= "'columns': ["; foreach ($columns as $col) $html .= "{ 'data': '$col' },"; $html = substr_replace($html, "],", -1);
+        $html .= "'columns': ["; foreach ($this->column($params) as $col) $html .= "{ 'data': '$col' },"; $html = substr_replace($html, "],", -1);
         $html .= "'ordering': $ordering,";
         $html .= "'bFilter': $filter,";
         $html .= "'language': {'url': '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/$lang.json'},";
@@ -108,9 +124,6 @@ abstract class Table extends Model
         $html .= "'serverSide': true,";
         $html .= "'ajax': ''";
         $html .= "});});</script>\n";
-
-        $hcols = "";foreach ($this->column(2) as $col) $hcols .= "<th>$col</th>";
-        $html .= "<table id='$name' class='display' cellspacing='0' width='100%'><thead><tr>$hcols</tr></thead><tbody></tbody><tfoot><tr>$hcols</tr></tfoot></table>";
 
         return $html;
     }
