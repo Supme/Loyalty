@@ -8,7 +8,7 @@
     <meta name="description" content="Loyality programs">
     <meta name="author" content="Supme">
 
-    <title>{{ constant('SITE_NAME') }} :: {{ page_title }}</title>
+    <title>{{ constant('SITE_NAME') }} :: {{ _page.title }}</title>
 
     <!-- core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -118,17 +118,17 @@
                 <ul class="dropdown-menu dropdown-user">
                     {% if _user.isLogin %}
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                            <a href="{{ constant('URL') }}login/"><i class="fa fa-user fa-fw"></i>{{ _user.userName }} Profile</a>
                         </li>
                         <li class="divider"></li>
+                    {% else %}
+                        <a href="{{ constant('URL') }}login/">Login</a>
                     {% endif %}
-                    <li>
-                        {% if _user.isLogin %}
-                            <a href="{{ constant('URL') }}login/">You login as {{ _user.userName }}</a>
-                        {% else %}
-                            <a href="{{ constant('URL') }}login/">Login</a>
-                        {% endif %}
-                    </li>
+                    {% if _user.isLogin %}
+                        <li>
+                            <a href="{{ constant('URL') }}login/?logout">Logout</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <!-- /.dropdown-user -->
             </li>
@@ -196,27 +196,17 @@
     <div id="page-wrapper">
         <div class="container-fluid">
 
-            {% if notifications is defined  %}
-                {% for type,notification in notifications %}
-                    {% for notes in notification %}
+            {% if _notification is defined  %}
+                {% for type,noti in _notification %}
+                    {% for n in noti %}
                         <div class="alert alert-{{ type }} fade in">
-                            {{ notes|e}} <a class="close" data-dismiss="alert" href="#">&times;</a>
+                            {{ n|e}} <a class="close" data-dismiss="alert" href="#">&times;</a>
                         </div>
                     {% endfor %}
                 {% endfor %}
             {% endif %}
 
             {% include _view %}
-
-            {% if debug is defined  %}
-                <div class="alert alert-warning  alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {% for key,value in debug %}
-                        <h4>{{ key }}</h4>
-                        {{ value|e }}
-                    {% endfor %}
-                </div>
-            {% endif %}
 
         </div>
     </div>

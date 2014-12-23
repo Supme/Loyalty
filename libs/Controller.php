@@ -56,6 +56,7 @@ class Controller
         $twig->addGlobal('_js', Registry::get('_js'));
         $twig->addGlobal('_menu', Registry::get('_menu'));
         $twig->addGlobal('_siteTree', Registry::get('siteTree'));
+        $twig->addGlobal('_notification', Registry::notification());
         $twig->addGlobal('_user', $this->auth);
 
         echo $twig->render('_templates/'.Registry::get('_page')['layout'].PATH_VIEWS_FILE_TYPE, $data_array);
@@ -65,6 +66,7 @@ class Controller
     {
         header('Content-type: application/json');
         echo json_encode($data_array);
+        exit(0);
     }
 
 }

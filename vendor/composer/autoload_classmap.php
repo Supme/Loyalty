@@ -10,7 +10,6 @@ return array(
     'Auth' => $baseDir . '/libs/Auth.php',
     'Content' => $baseDir . '/application/controllers/content.php',
     'Controller' => $baseDir . '/libs/Controller.php',
-    'Database' => $baseDir . '/libs/Database.php',
     'Download' => $baseDir . '/libs/Download.php',
     'Form' => $baseDir . '/libs/Form.php',
     'Generic_Sniffs_Classes_DuplicateClassNameSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Classes/DuplicateClassNameSniff.php',
@@ -271,6 +270,7 @@ return array(
     'Table' => $baseDir . '/libs/Table.php',
     'Test' => $baseDir . '/application/controllers/test.php',
     'Tree' => $baseDir . '/libs/Tree.php',
+    'User' => $baseDir . '/libs/User.php',
     'Users' => $baseDir . '/application/controllers/users.php',
     'Validator' => $baseDir . '/libs/Validator.php',
     'Zend_Sniffs_Debug_CodeAnalyzerSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Zend/Sniffs/Debug/CodeAnalyzerSniff.php',
@@ -282,6 +282,5 @@ return array(
     'personalModel' => $baseDir . '/application/models/personalModel.php',
     'senderModel' => $baseDir . '/application/models/senderModel.php',
     'timthumb' => $vendorDir . '/taha/timthumb/timthumb.php',
-    'userModel' => $baseDir . '/application/models/userModel.php',
     'usersModel' => $baseDir . '/application/models/usersModel.php',
 );

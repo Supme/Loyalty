@@ -22,26 +22,42 @@ class Main extends Controller
     }
     public function index()
     {
-        $this->render([
-            'result' => $this->content->get(),
-            'notifications' => [
-                'info' => [
-                    'This info notification',
-                    'And one more notification',
-                ],
-                'warning' => [
-                    'This warning notification',
-                ],
-                'success' => [
-                    'This success notification',
-                ],
-                'danger' => [
-                    'This danger notification',
-                ],
+        if (Registry::get('_auth')->edit){
+
+            Registry::css([
+                "/css/loyalty.css"
+            ]);
+
+            Registry::js([
+                "/js/jquery.datetimepicker.js",
+                "/js/tinymce/tinymce.min.js",
+                "/js/loyalty.js",
+            ]);
+
+            Registry::menu([
+                'Edit' => [
+                    'onclick'=>'edit()',
+                ]
+            ]);
+
+        }
+
+        Registry::notification([
+            'info' => [
+                'This info notification',
+                'And one more notification',
             ],
-            'debug' => [
-                'debug' => 'This debug message'
+            'warning' => [
+                'This warning notification',
+            ],
+            'success' => [
+                'This success notification',
+            ],
+            'danger' => [
+                'This danger notification',
             ],
         ]);
+
+        $this->render(['result' => $this->content->get()]);
     }
 }

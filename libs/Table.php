@@ -65,24 +65,24 @@ abstract class Table extends Model
     /**
      *
      */
-    function ajax(){
-        {
-            header('Content-type: application/json');
-            echo json_encode(
-                [
-                    "draw" => intval( $_REQUEST['draw'] ),
-                    "recordsTotal" => intval( $this->total($this->params) ),
-                    "recordsFiltered" => intval( $this->filtered($this->params) ),
-                    "data" =>
-                        $this->data(
-                            intval($_REQUEST['start']),
-                            intval($_REQUEST['length']),
-                            'orderable', // ToDo вот тут нужно разбираться
-                            $_REQUEST['search']['value'] // ToDo да и тут
-                        )
-                ]
-            );
-        }
+    function ajax()
+    {
+        header('Content-type: application/json');
+        echo json_encode(
+            [
+                "draw" => intval( $_REQUEST['draw'] ),
+                "recordsTotal" => intval( $this->total($this->params) ),
+                "recordsFiltered" => intval( $this->filtered($this->params) ),
+                "data" =>
+                    $this->data(
+                        intval($_REQUEST['start']),
+                        intval($_REQUEST['length']),
+                        'orderable', // ToDo вот тут нужно разбираться
+                        $_REQUEST['search']['value'] // ToDo да и тут
+                    )
+            ]
+        );
+        exit(0);
     }
 
     /**

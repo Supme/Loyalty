@@ -14,7 +14,9 @@ class Registry
      * Статическое хранилище для данных
      * ToDo использовать кэширование, но учитывая работу memcache с ресурсами (коннекты с базой, например)
      */
-    protected static $store = array();
+    protected static $store = [];
+    protected static $notification = [];
+    protected static $log = [];
 
     /**
      * Защита от создания экземпляров статического класса
@@ -55,6 +57,49 @@ class Registry
     {
         return self::$store[$name] = $obj;
     }
+
+    public static function notification($notification = false)
+    {
+        if(isset($_COOKIE['notification']) and is_array($_COOKIE['notification'])){
+            $note = $_COOKIE['notification'];
+        } else {
+            $note = [];
+        }
+
+        if($notification != false){
+            if(is_array($notification)){
+                $note = array_merge($note, $notification);
+            } else {
+                $note['info'][] = $notification;
+            }
+            $_COOKIE['notification'] = $note;
+
+            return true;
+        } else {
+            unset($_COOKIE['notification']);
+            return $note;
+        }
+    }
+
+    /**
+     * @param $log string
+     * @return array|bool
+     */
+    public static function log($log = false)
+    {
+        if($log){
+            if(is_array($log)){
+                foreach($log as $l){
+                    self::$log[] = $l;
+                }
+            } else {
+                self::$log[] = $log;
+            }
+            return true;
+        }
+        else return self::$log;
+    }
+
 
     /**
      * Add css in page

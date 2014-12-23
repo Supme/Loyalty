@@ -51,7 +51,6 @@ class Route extends Model
             'files' => 'helpers',
         ]);
 
-        //$this->_array = $siteMap;
         $this->each();
         $this->siteTree = $this->get();
 
@@ -59,8 +58,7 @@ class Route extends Model
             $url = rtrim($_GET['url'], '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
         } else {
-
-            $url = $main['segment'];
+            $url = isset($main['segment'])?$main['segment']:'/';
         }
         $segments = explode('/', $url);
 

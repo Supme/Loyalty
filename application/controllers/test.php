@@ -18,18 +18,38 @@ class Test extends Controller
 {
     function index()
     {
-        Registry::css([
-            '/home/aagafonov/PhpstormProjects/ly/vendor/almasaeed2010/adminlte/css/AdminLTE.css',
-            '/home/aagafonov/PhpstormProjects/ly/vendor/almasaeed2010/adminlte/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.css',
-        ]);
-        Registry::css('/home/aagafonov/PhpstormProjects/ly/vendor/almasaeed2010/adminlte/css/bootstrap-slider/slider.css');
-
-        Registry::js('/home/aagafonov/PhpstormProjects/ly/vendor/almasaeed2010/adminlte/js/AdminLTE/app.js');
-        Registry::js([
-            '/home/aagafonov/PhpstormProjects/ly/vendor/almasaeed2010/adminlte/js/AdminLTE/dashboard.js',
-            '/home/aagafonov/PhpstormProjects/ly/vendor/almasaeed2010/adminlte/js/AdminLTE/demo.js',
+        $form = new Form([
         ]);
 
-        echo Registry::get('_css').Registry::get('_js');
+        $form->legend('Test form');
+
+        $form->field([
+            'label'       => 'Email Address',
+            'name'        => 'email',
+            'input-prepend' => '<i class="icon-envelope"></i>',
+            'input-attributes' => ['placeholder' => 'example@example.com'],
+            'input-class' => 'input-small'
+
+        ]);
+
+        $form->field([
+            'type'  => 'select',
+            'label'       => 'Select form',
+            'name'        => 'select',
+            'options' => [
+                'first'=>'First',
+                'second'=>'Second',
+                ],
+            'input-class' => 'input-large'
+        ]);
+
+        $form->field([
+            'type'  => 'submit',
+            'value'        => 'Send',
+            'input-class' => 'input-large'
+        ]);
+
+        $this->render(['form' => $form->render()]);
     }
+
 }

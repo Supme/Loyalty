@@ -30,11 +30,10 @@ class Application
     public function __construct()
     {
 
-        //$this->dbConnect();
-
         // authorize and session
         Registry::set('_auth', new Auth());
 
+        // routing and site map
         $route = new Route();
         Registry::set('_page', $route->sitePage);
         Registry::set('siteTree', $route->siteTree);

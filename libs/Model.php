@@ -34,7 +34,8 @@ class Model
         $this->database = new medoo($connect);
     }
 
-    public function randomString($lenght = 128) {
+    public function randomString($lenght = 128)
+    {
         $characterList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $num = 0;
         $string = "";
@@ -43,5 +44,10 @@ class Model
             $num++;
         }
         return $string;
+    }
+
+    function __destruct()
+    {
+        Registry::log($this->database->log());
     }
 }

@@ -16,7 +16,7 @@
 class usersModel extends Table
 {
     function total(){
-        return $this->database->count('authUsers');
+        return $this->database->count('authUsers', ['id']);
     }
 
     function filtred(){

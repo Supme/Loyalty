@@ -14,10 +14,22 @@
  *
  */
 
+// what time is it?
+$start = microtime(true);
+
 require '../vendor/autoload.php';
 
 // load application config
-require '../application/config/config.php';
+require '../config.php';
 
 // start the application
 $app = new Application();
+
+if(DEBUG){
+    echo "<pre>Debug information:\n";
+    printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
+    var_dump(array_reverse ( Registry::log() ) );
+    echo "</pre>";
+}
+
+

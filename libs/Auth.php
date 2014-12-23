@@ -27,9 +27,9 @@ class Auth extends Model
         $userId,
         $groupId;
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
-        //$this->db = Registry::get('_db');
 
         $this->sec_session_start();
 
@@ -39,7 +39,8 @@ class Auth extends Model
 
     }
 
-    private function sec_session_start() {
+    private function sec_session_start()
+    {
         $session_name = 'sec_session_id';   // Set a custom session name
         $secure = SECURE;
         // This stops JavaScript being able to access the session id.
@@ -62,9 +63,11 @@ class Auth extends Model
         session_regenerate_id();    // regenerated the session, delete the old one.
     }
 
-    public function login($email, $password) {
-        $db_password = '';
-        $salt = '';
+    public function login($email, $password)
+    {
+
+        //$db_password = '';
+        //$salt = '';
         // Using prepared statements means that SQL injection is not possible.
         $query = $this->database->pdo->prepare("
               SELECT t1.id AS id, t1.userName AS userName, t1.password AS password, t1.salt AS salt, t2.name AS groupName
@@ -124,9 +127,10 @@ class Auth extends Model
         return $this->isLogin;
     }
 
-    public function logout() {
+    public function logout()
+    {
         // Unset all session values
-        $_SESSION = array();
+        $_SESSION = [];
 
         // get session parameters
         $params = session_get_cookie_params();
@@ -146,7 +150,8 @@ class Auth extends Model
         $this->isLogin = false;
     }
 
-    private function checkbrute() {
+    private function checkbrute()
+    {
         // Get timestamp of current time
         $now = time();
 
@@ -170,7 +175,8 @@ class Auth extends Model
     }
 
     private function login_check() {
-        $db_password = '';
+
+        //$db_password = '';
         $this->isLogin = false;
 
         // Check if all session variables are set
@@ -209,10 +215,12 @@ class Auth extends Model
                 }
             }
         }
+
         return $this->isLogin;
     }
 
-    public function access_check($smapId){
+    public function access_check($smapId)
+    {
         // Super admin user or group?
         if($this->groupId == 0 or $this->userId == 0){
             $this->read = true;
@@ -262,6 +270,7 @@ class Auth extends Model
         }
         return $this->right;
     }
+
     private function esc_url($url) {
 
         if ('' == $url) {

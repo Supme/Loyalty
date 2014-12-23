@@ -17,38 +17,36 @@
 class Login extends Controller {
     function index(){
 
-        $notification=[];
-
         // Login user
-        if (isset($_POST["login"])) {
+        if (isset($_REQUEST["login"])) {
             if(Registry::get('_auth')->login($_POST['email'], $_POST['password'])){
-                $notification = [
+                Registry::notification([
                     'success' => [
                         'You are login as '.Registry::get('_auth')->userName,
                     ]
-                ];
+                ]);
             } else {
-                $notification = [
+                Registry::notification([
                     'danger' => [
                         'Error login',
                     ]
-                ];
+                ]);
             }
 
         }
 
         // Logout user
-        if (isset($_POST["logout"])) {
+        if (isset($_REQUEST["logout"])) {
             Registry::get('_auth')->logout();
-            $notification = [
+            Registry::notification([
                 'info' => [
                     'Success logout',
                     'Thanks for using service',
                 ],
-            ];
+            ]);
         }
 
-        $this->render(['notifications' => $notification]);
+        $this->render();
     }
 
 }
