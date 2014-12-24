@@ -29,7 +29,6 @@ class Application
 
     public function __construct()
     {
-
         // authorize and session
         Registry::set('_auth', new Auth());
 
@@ -59,18 +58,4 @@ class Application
         }
     }
 
-    // create database connection
-    private function dbConnect(){
-
-        try {
-            if (DB_TYPE == 'sqlite')
-                $this->db = new Database(DB_TYPE, DB_HOST);
-            else
-                $this->db = new Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
-        } catch (PDOException $e) {
-            die('Database connection could not be established.');
-        }
-        Registry::set('_db', $this->db);
-
-    }
  }

@@ -28,6 +28,7 @@ $app = new Application();
 if(DEBUG){
     echo "<pre>Debug information:\n";
     printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
+    Registry::log(Cache::log());
     var_dump(array_reverse ( Registry::log() ) );
     echo "</pre>";
 }

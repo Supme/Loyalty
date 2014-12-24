@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Application' => $baseDir . '/libs/Application.php',
     'Auth' => $baseDir . '/libs/Auth.php',
+    'Cache' => $baseDir . '/libs/Cache.php',
     'Content' => $baseDir . '/application/controllers/content.php',
     'Controller' => $baseDir . '/libs/Controller.php',
     'Download' => $baseDir . '/libs/Download.php',

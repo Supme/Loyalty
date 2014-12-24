@@ -23,6 +23,15 @@ define('SITE_NAME', 'Loyality programm');
 define('DEBUG', true);
 
 /**
+ * Configuration for: Cache
+ */
+define('CACHE_TYPE', 'memcached'); // file, memcached
+define('CACHE_EXPIRATION', 120); // seconds
+define('CACHE_FILE', '../data/cache/cache.json');
+define('MEMCACHED_SERVER', 'localhost');
+define('MEMCACHED_PORT', 11211);
+
+/**
  * Configuration for: Database
  * This is the place where you define your database credentials, database type etc.
  * Example for MySql connect

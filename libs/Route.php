@@ -33,26 +33,36 @@ class Route extends Model
 
         $main = $this->database->select('siteMap', '*', ['pid' => 0]);
 
-        $this->_siteMap = $this->database->query("
+        $this->_siteMap = Cache::get('_siteMap');
+        if(empty($this->_siteMap)) {
+
+            $this->_siteMap = $this->database->query("
           SELECT t1.id, t1.pid, t1.segment, t1.view, t1.layout, t1.controller, t1.action, t1.title, t1.visible
           FROM siteMap t1
           LEFT JOIN authAccess t2
            ON t1.id = t2.smapId
-            AND (t2.userId = ".$this->database->quote(Registry::get('_auth')->userId)."
-            OR t2.groupId = ".$this->database->quote(Registry::get('_auth')->groupId).")
+            AND (t2.userId = " . $this->database->quote(Registry::get('_auth')->userId) . "
+            OR t2.groupId = " . $this->database->quote(Registry::get('_auth')->groupId) . ")
           WHERE t2.smapId IS NULL OR (NOT t2.smapId IS NULL AND t2.right <> '0')
               ")
-            ->fetchAll();
+                ->fetchAll();
 
-        // ToDo add static route for controllers
-        $this->addSystemPage([
-            'resizer' => 'helpers',
-            'error' => 'helpers',
-            'files' => 'helpers',
-        ]);
+            // ToDo add static route for controllers
+            $this->addSystemPage([
+                'resizer' => 'helpers',
+                'error' => 'helpers',
+                'files' => 'helpers',
+            ]);
 
-        $this->each();
-        $this->siteTree = $this->get();
+            Cache::set('_siteMap', $this->_siteMap);
+        }
+
+        $this->siteTree = Cache::get('siteTree');
+        if(empty($this->siteTree)){
+            $this->each();
+            $this->siteTree = $this->get();
+            Cache::set('siteTree', $this->siteTree);
+        }
 
         if (isset($_GET['url'])) {
             $url = rtrim($_GET['url'], '/');

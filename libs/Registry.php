@@ -24,6 +24,11 @@ class Registry
     protected function __construct() {}
     protected function __clone() {}
 
+    private static function memcache()
+    {
+
+    }
+
     /**
      * Проверяет существуют ли данные по ключу
      *
@@ -32,7 +37,7 @@ class Registry
      */
     public static function exists($name)
     {
-        return isset(self::$store[$name]);
+            return isset(self::$store[$name]);
     }
 
     /**
