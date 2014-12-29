@@ -23,35 +23,18 @@ class Controller
         //if(!$this->auth->read) header('location: ' . URL . 'error/403');
     }
 
-    /**
-     * loads the model with the given name.
-     * @param $name string name of the model
-     */
-    public function loadModel($name)
-    {
-        $path = MODELS_PATH.strtolower($name).'Model.php';
-
-        if (file_exists($path)) {
-            require $path;
-            // The "Model" has a capital letter as this is the second part of the model class name,
-            // all models have names like "LoginModel"
-            $modelName = $name.'Model';
-            // return the new model object while passing the database connection to the model
-            return new $modelName($this->db);
-        }
-    }
-
     public function render($data_array = array())
     {
 
-        $twig_loader = new Twig_Loader_Filesystem(PATH_VIEWS);
+        $twig_loader = new Twig_Loader_Filesystem(Registry::get('_config')['path']['views']);
         $twig = new Twig_Environment($twig_loader,
             [
-                'cache' => PATH_VIEWS_CACHE,
-                'debug' => DEBUG
+                'cache' => Registry::get('_config')['path']['views_cache'],
+                'debug' => Registry::get('_config')['site']['debug']
             ]);
+        $twig->addGlobal('_config', Registry::get('_config'));
         $twig->addGlobal('_page', Registry::get('_page'));
-        $twig->addGlobal('_view', Registry::get('_page')['view'].PATH_VIEWS_FILE_TYPE);
+        $twig->addGlobal('_view', Registry::get('_page')['view'].Registry::get('_config')['path']['file_type']);
         $twig->addGlobal('_css', Registry::get('_css'));
         $twig->addGlobal('_js', Registry::get('_js'));
         $twig->addGlobal('_menu', Registry::get('_menu'));
@@ -59,7 +42,7 @@ class Controller
         $twig->addGlobal('_notification', Registry::notification());
         $twig->addGlobal('_user', $this->auth);
 
-        echo $twig->render('_templates/'.Registry::get('_page')['layout'].PATH_VIEWS_FILE_TYPE, $data_array);
+        echo $twig->render('_templates/'.Registry::get('_page')['layout'].Registry::get('_config')['path']['file_type'], $data_array);
     }
 
     public function json($data_array = array())

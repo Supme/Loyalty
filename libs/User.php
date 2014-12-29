@@ -56,7 +56,7 @@ class User extends Model
             $salt = $this->randomString();
             $password = hash('sha512', $password.$salt);
 
-            $groupId = $this->database->select('authGroups','id', ['name' => DEFAULT_GROUP])[0];
+            $groupId = $this->database->select('authGroups','id', ['name' => Registry::get('_config')['user']['default_group']])[0];
 
             return $this->database->insert( 'authUsers',
                 [

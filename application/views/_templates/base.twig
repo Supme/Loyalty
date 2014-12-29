@@ -8,7 +8,7 @@
     <meta name="description" content="Loyality programs">
     <meta name="author" content="Supme">
 
-    <title>{{ constant('SITE_NAME') }} :: {{ _page.title }}</title>
+    <title>{{ _config.site.name }} :: {{ _page.title }}</title>
 
     <!-- core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -62,7 +62,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ constant('URL') }}">{{ constant('SITE_NAME') }}</a>
+            <a class="navbar-brand" href="{{ _config.site.url }}">{{ _config.site.name }}</a>
         </div>
         <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right">
@@ -118,15 +118,15 @@
                 <ul class="dropdown-menu dropdown-user">
                     {% if _user.isLogin %}
                         <li>
-                            <a href="{{ constant('URL') }}login/"><i class="fa fa-user fa-fw"></i>{{ _user.userName }} Profile</a>
+                            <a href="{{ _config.site.url }}login/"><i class="fa fa-user fa-fw"></i>{{ _user.userName }} Profile</a>
                         </li>
                         <li class="divider"></li>
                     {% else %}
-                        <a href="{{ constant('URL') }}login/">Login</a>
+                        <a href="{{ _config.site.url }}login/">Login</a>
                     {% endif %}
                     {% if _user.isLogin %}
                         <li>
-                            <a href="{{ constant('URL') }}login/?logout">Logout</a>
+                            <a href="{{ _config.site.url }}login/?logout">Logout</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -142,24 +142,24 @@
                 <ul class="nav" id="side-menu">
 
                     <li{% if map.segment == _page.segment %} class="active"{% endif %}>
-                        <a href="{{ constant('URL') }}{{ _siteTree.0.segment }}">{{ _siteTree.0.title }}</a>
+                        <a href="{{ _config.site.url }}{{ _siteTree.0.segment }}">{{ _siteTree.0.title }}</a>
                     </li>
 
                     {% for link in _siteTree.0.childs if link.visible%}
                         <li>
-                            <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ constant('URL') }}{{ link.segment }}">{{ link.title }}</a>
+                            <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}">{{ link.title }}</a>
 
                             {% if link.childs %}
                                 <ul class="nav nav-second-level">
                                     {% for lin in link.childs if lin.visible%}
                                         <li>
-                                            <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ constant('URL') }}{{ link.segment }}/{{ lin.segment }}">{{ lin.title }}</a>
+                                            <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}">{{ lin.title }}</a>
 
                                             {% if lin.childs %}
                                                 <ul class="nav nav-third-level">
                                                     {% for li in lin.childs if li.visible %}
                                                         <li>
-                                                            <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ constant('URL') }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}">{{ li.title }}</a>
+                                                            <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}">{{ li.title }}</a>
                                                         </li>
 
                                                     {% endfor %}

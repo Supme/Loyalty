@@ -17,6 +17,8 @@
 class Helpers extends Controller {
 
     function resizer(){
+        define('FILE_CACHE_DIRECTORY', Registry::get('_config')['path']['TimThumb_cache']);
+        define('LOCAL_FILE_BASE_DIRECTORY', Registry::get('_config')['path']['share_files']);
 
         if (strpos($_SERVER['QUERY_STRING'], '../') !== false) {
             header("Location: /error/400");
@@ -80,14 +82,14 @@ class Helpers extends Controller {
         $path = str_replace('..','',implode('/',$params));
 
         if(!isset($params[0])) header("Location: /error/404");
-        if(file_exists(FILES_DIRECTORY.$path)){
-            $file = new Download(FILES_DIRECTORY.$path);
+        if(file_exists(Registry::get('_config')['path']['share_files'].$path)){
+            $file = new Download(Registry::get('_config')['path']['share_files'].$path);
             $file->download_file();
         } else {
             $model = new helpersModel();
             if ($real = $model->getFileHash($path)){
                 $name = substr(strrchr($real, "/"), 1);
-                $file = new Download(PRIVATE_FILES_DIRECTORY.$real, $name);
+                $file = new Download(Registry::get('_config')['path']['private_files'].$real, $name);
                 $file->download_file();
             } else {
                 header("Location: /error/404");

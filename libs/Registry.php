@@ -12,7 +12,6 @@ class Registry
 {
     /**
      * Статическое хранилище для данных
-     * ToDo использовать кэширование, но учитывая работу memcache с ресурсами (коннекты с базой, например)
      */
     protected static $store = [];
     protected static $notification = [];

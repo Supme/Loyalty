@@ -32,13 +32,6 @@ class Tree {
         return $this->_three;
     }
 
-    public function debug()
-    {
-        echo '<pre>';
-        print_r($this->get());
-        echo '</pre>';
-    }
-
     /**
      *
      * @return \Tree

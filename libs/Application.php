@@ -38,8 +38,8 @@ class Application
         Registry::set('siteTree', $route->siteTree);
 
         // Run application
-        if (file_exists(CONTROLLER_PATH .$route->sitePage['controller'].'.php')){
-            require CONTROLLER_PATH .$route->sitePage['controller'].'.php';
+        if (file_exists(Registry::get('_config')['path']['controller'] .$route->sitePage['controller'].'.php')){
+            require Registry::get('_config')['path']['controller'] .$route->sitePage['controller'].'.php';
             $controller = new $route->sitePage['controller']();
             if (method_exists($controller, '__init')) {
                 $controller->{'__init'}($route->pageParams);
@@ -54,7 +54,7 @@ class Application
             }
         } else {
             // redirect user to error page (there's a controller for that)
-            header('location: ' . URL . 'error/502');
+            header('location: ' . Registry::get('_config')['site']['url'] . 'error/502');
         }
     }
 

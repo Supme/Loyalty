@@ -42,7 +42,7 @@ class Auth extends Model
     private function sec_session_start()
     {
         $session_name = 'sec_session_id';   // Set a custom session name
-        $secure = SECURE;
+        $secure = Registry::get('_config')['user']['secure'];
         // This stops JavaScript being able to access the session id.
         $httponly = true;
         // Forces sessions to only use cookies.

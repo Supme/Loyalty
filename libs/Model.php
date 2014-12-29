@@ -13,20 +13,20 @@ class Model
         /**
          * Medoo
          */
-        if (DB_TYPE == 'sqlite'){
+        if (Registry::get('_config')['db']['type'] == 'sqlite'){
             $connect = [
-                'database_type' => DB_TYPE,
-                'database_file' => DB_HOST,
+                'database_type' => Registry::get('_config')['db']['type'],
+                'database_file' => Registry::get('_config')['db']['host'],
                 'charset'       =>  'utf8',
             ];
         } else {
             $connect = [
-                'database_type' =>  DB_TYPE,
-                'database_name' =>  DB_NAME,
-                'server'        =>  DB_HOST,
-                'port'          =>  DB_PORT,
-                'username'      =>  DB_USER,
-                'password'      =>  DB_PASS,
+                'database_type' =>  Registry::get('_config')['db']['type'],
+                'database_name' =>  Registry::get('_config')['db']['name'],
+                'server'        =>  Registry::get('_config')['db']['host'],
+                'port'          =>  Registry::get('_config')['db']['port'],
+                'username'      =>  Registry::get('_config')['db']['username'],
+                'password'      =>  Registry::get('_config')['db']['password'],
                 'charset'       =>  'utf8',
                 'option'        =>  [ PDO::ATTR_CASE => PDO::CASE_NATURAL ]
             ];

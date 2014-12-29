@@ -11,6 +11,7 @@ return array(
     'Cache' => $baseDir . '/libs/Cache.php',
     'Content' => $baseDir . '/application/controllers/content.php',
     'Controller' => $baseDir . '/libs/Controller.php',
+    'Db' => $baseDir . '/libs/Db.php',
     'Download' => $baseDir . '/libs/Download.php',
     'Form' => $baseDir . '/libs/Form.php',
     'Generic_Sniffs_Classes_DuplicateClassNameSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Classes/DuplicateClassNameSniff.php',

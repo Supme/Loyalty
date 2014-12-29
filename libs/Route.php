@@ -31,7 +31,11 @@ class Route extends Model
 
         parent::__construct();
 
-        $main = $this->database->select('siteMap', '*', ['pid' => 0]);
+        $main = Cache::get('_mainPage');
+        if(empty($main)) {
+            $main = $this->database->select('siteMap', '*', ['pid' => 0]);
+            Cache::set('_mainPage', $main);
+        }
 
         $this->_siteMap = Cache::get('_siteMap');
         if(empty($this->_siteMap)) {

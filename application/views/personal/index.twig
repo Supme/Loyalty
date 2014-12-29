@@ -36,7 +36,7 @@
                         <td>
                             {{ kpeople }}<br/>
                             {% if people.photo %}
-                                <img src="{{ constant('URL') }}resizer?src=/personal/{{ people.photo }}&w=150&h=200" type="button" data-toggle="modal" data-target="#Modal" onclick="modalPhoto('{{ kpeople }}','{{ constant('URL') }}resizer?src=/personal/{{ people.photo }}&w=480&h=640')"/>
+                                <img src="{{ _config.site.url }}resizer?src=/personal/{{ people.photo }}&w=150&h=200" type="button" data-toggle="modal" data-target="#Modal" onclick="modalPhoto('{{ kpeople }}','{{ _config.site.url }}resizer?src=/personal/{{ people.photo }}&w=480&h=640')"/>
                             {% endif %}
                         </td>
                         <td>
