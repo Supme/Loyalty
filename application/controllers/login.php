@@ -22,17 +22,16 @@ class Login extends Controller {
             if(Registry::get('_auth')->login($_POST['email'], $_POST['password'])){
                 Registry::notification([
                     'success' => [
-                        'You are login as '.Registry::get('_auth')->userName,
+                        Translate::get('You are login as').' '.Registry::get('_auth')->userName,
                     ]
                 ]);
             } else {
                 Registry::notification([
                     'danger' => [
-                        'Error login',
+                        Translate::get('Error login'),
                     ]
                 ]);
             }
-
         }
 
         // Logout user
@@ -40,8 +39,8 @@ class Login extends Controller {
             Registry::get('_auth')->logout();
             Registry::notification([
                 'info' => [
-                    'Success logout',
-                    'Thanks for using service',
+                    Translate::get('Success logout'),
+                    Translate::get('Thanks for using service'),
                 ],
             ]);
         }

@@ -36,16 +36,19 @@ class personalModel extends Model{
     }
 
     function get(){
-        $result = [];
-        $city = $this->database->select( 'personalCity', '*' );
-        foreach($city as $kc => $c){
-            $departament = $this->database->select( 'personalDepartment', '*', ['city_id' => $c['id']] );
-            foreach($departament as $kd => $d){
-                $people = $this->database->select('personalPeople', '*', ['department_id' => $d['id']]);
-                foreach($people as $kp => $p){
-                    $result[$c['name']][$d['name']][$p['name']] = $p;
+        $result = Cache::get('modPersonal');
+        if(empty($result)){
+            $city = $this->database->select( 'personalCity', '*' );
+            foreach($city as $kc => $c){
+                $departament = $this->database->select( 'personalDepartment', '*', ['city_id' => $c['id']] );
+                foreach($departament as $kd => $d){
+                    $people = $this->database->select('personalPeople', '*', ['department_id' => $d['id']]);
+                    foreach($people as $kp => $p){
+                        $result[$c['name']][$d['name']][$p['name']] = $p;
+                    }
                 }
             }
+            Cache::set('modPersonal', $result);
         }
 
         return $result;

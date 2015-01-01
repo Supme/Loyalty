@@ -122,11 +122,11 @@
                         </li>
                         <li class="divider"></li>
                     {% else %}
-                        <a href="{{ _config.site.url }}login/">Login</a>
+                        <a href="{{ _config.site.url }}login/">{{ _lang.get('login') }}</a>
                     {% endif %}
                     {% if _user.isLogin %}
                         <li>
-                            <a href="{{ _config.site.url }}login/?logout">Logout</a>
+                            <a href="{{ _config.site.url }}login/?logout">{{ _lang.get('logout') }}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -161,7 +161,6 @@
                                                         <li>
                                                             <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}">{{ li.title }}</a>
                                                         </li>
-
                                                     {% endfor %}
                                                 </ul>
                                             {% endif %}

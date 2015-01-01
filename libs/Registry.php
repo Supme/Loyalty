@@ -23,11 +23,6 @@ class Registry
     protected function __construct() {}
     protected function __clone() {}
 
-    private static function memcache()
-    {
-
-    }
-
     /**
      * Проверяет существуют ли данные по ключу
      *
@@ -40,7 +35,7 @@ class Registry
     }
 
     /**
-     * Возвращает данные по ключу или null, если не данных нет
+     * Возвращает данные по ключу или null, если данных нет
      *
      * @param string $name
      * @return unknown

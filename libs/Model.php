@@ -7,7 +7,7 @@ class Model
      */
     public $db = null;
 
-    function __construct()
+    public function __construct()
     {
 
         /**

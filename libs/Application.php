@@ -37,6 +37,9 @@ class Application
         Registry::set('_page', $route->sitePage);
         Registry::set('siteTree', $route->siteTree);
 
+        new Translate();
+        Translate::setDefaultLang(Registry::get('_config')['site']['lang']);
+
         // Run application
         if (file_exists(Registry::get('_config')['path']['controller'] .$route->sitePage['controller'].'.php')){
             require Registry::get('_config')['path']['controller'] .$route->sitePage['controller'].'.php';

@@ -92,7 +92,7 @@ abstract class Table extends Model
     function html( $params = false ){
 
         $name = isset($params['name'])?$params['name']:'noname';
-        $lang = isset($params['lang'])?$params['lang']:'Russian'; // ToDo брать из конфига
+        $lang = Translate::langName(Registry::get('_config')['site']['lang']);
         $ordering = isset($params['ordering'])?$params['ordering']:'false';
         $filter = isset($params['filter'])?$params['filter']:'false';
 

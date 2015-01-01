@@ -8,7 +8,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="logout"></label>
                 <div class="col-md-4">
-                    <button id="logout" name="logout" class="btn btn-default">Выход</button>
+                    <button id="logout" name="logout" class="btn btn-default">{{ _lang.get('logout') }}</button>
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
         <fieldset>
 
             <!-- Form Name -->
-            <legend>Вход</legend>
+            <legend>{{ _lang.get('login') }}</legend>
 
             <p>Для входа можно воспользоваться учетной записью:</p>
             <p>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-4 control-label" for="password">Password</label>
+                <label class="col-md-4 control-label" for="password">{{ _lang.get('password') }}</label>
                 <div class="col-md-4">
                     <input id="password" name="password" placeholder="password" class="form-control input-md" required="" type="password">
                     <span class="help-block">Ваш пароль</span>
@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="login"></label>
                 <div class="col-md-4">
-                    <button id="login" name="login" class="btn btn-default">Вход</button>
+                    <button id="login" name="login" class="btn btn-default">{{ _lang.get('login') }}</button>
                 </div>
             </div>
 

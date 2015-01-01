@@ -18,7 +18,6 @@ class Controller
      */
     function __construct()
     {
-        $this->auth = Registry::get('_auth');
         // ToDo придумать как выводить ошибки по человечи
         //if(!$this->auth->read) header('location: ' . URL . 'error/403');
     }
@@ -40,7 +39,8 @@ class Controller
         $twig->addGlobal('_menu', Registry::get('_menu'));
         $twig->addGlobal('_siteTree', Registry::get('siteTree'));
         $twig->addGlobal('_notification', Registry::notification());
-        $twig->addGlobal('_user', $this->auth);
+        $twig->addGlobal('_user', Registry::get('_auth'));
+        $twig->addGlobal('_lang', new Translate());
 
         echo $twig->render('_templates/'.Registry::get('_page')['layout'].Registry::get('_config')['path']['file_type'], $data_array);
     }

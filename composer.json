@@ -2,7 +2,7 @@
     "name": "Supme/Loyalty",
     "type": "project",
     "description": "Web tools for loyalty programs",
-    "keywords": ["mvc", "application"],
+    "keywords": ["mvc", "application", "loyalty"],
     "homepage": "https://github.com/Supme/Loyalty",
     "license": "MIT",
     "authors": [

@@ -40,6 +40,8 @@ if(Registry::get('_config')['site']['debug']){
     printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
     Registry::log(Cache::log());
     var_dump( array_reverse ( Registry::log() ) );
-    print_r( Registry::get('_config') );
+
     echo "</pre>";
 }
+
+//Cache::clear();
