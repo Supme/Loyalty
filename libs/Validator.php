@@ -14,12 +14,11 @@
  *
  */
 
-class Validator {
-
-    public function email($value){
-        if($value=="")return false;
-
-        //return ereg("^[a-zA-Z0-9]+[a-zA-Z0-9_-]+@[a-zA-Z0-9]+[a-zA-Z0-9.-]+[a-zA-Z0-9]+.[a-z]{2,8}$", $value);
-        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-    }
+class Validator extends \Respect\Validation\Validator
+{
+    /*
+     * Use Respect/Validation
+     * https://github.com/Respect/Validation
+     * http://documentup.com/Respect/Validation
+     */
 } 

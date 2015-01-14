@@ -50,6 +50,8 @@ class Test extends Controller
         ]);
 
         $this->render(['form' => $form->render()]);
+
+        echo "--Validator test--";var_dump(Validator::countryCode()->validate('ru'));
     }
 
 }

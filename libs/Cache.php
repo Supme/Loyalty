@@ -94,7 +94,7 @@ class Cache {
     public static function log()
     {
         return
-            "Cache: set ".(isset(self::$log['set'])?self::$log['set']:0).
+            "Cache type: ".Registry::get('_config')['cache']['type'].", status: set ".(isset(self::$log['set'])?self::$log['set']:0).
             " ".
             "get ".(isset(self::$log['get'])?self::$log['get']:0);
     }

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c74ff4f658748aa13f5428c415712cfc",
+    "hash": "67b28403742214044e8c74e441d337b9",
     "packages": [
         {
             "name": "catfan/medoo",
@@ -60,6 +60,62 @@
                 "sqlite"
             ],
             "time": "2014-12-04 07:52:42"
+        },
+        {
+            "name": "respect/validation",
+            "version": "0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Respect/Validation.git",
+                "reference": "0b3012b65cf705362e4cf803c74009af55e3e680"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/0b3012b65cf705362e4cf803c74009af55e3e680",
+                "reference": "0b3012b65cf705362e4cf803c74009af55e3e680",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "symfony/validator": "~2.6",
+                "zendframework/zend-validator": "~2.3"
+            },
+            "suggest": {
+                "ext-bcmath": "Arbitrary Precision Mathematics",
+                "ext-mbstring": "Multibyte String Functions"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Respect\\Validation\\": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD Style"
+            ],
+            "authors": [
+                {
+                    "name": "Respect/Validation Contributors",
+                    "homepage": "https://github.com/Respect/Validation/graphs/contributors"
+                }
+            ],
+            "description": "The most awesome validation engine ever created for PHP",
+            "homepage": "http://respect.li",
+            "keywords": [
+                "respect",
+                "validation",
+                "validator"
+            ],
+            "time": "2015-01-08 02:48:31"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -142,52 +198,6 @@
             ],
             "description": "TimThumb – PHP Image Resizer",
             "time": "2013-02-16 00:25:19"
-        },
-        {
-            "name": "twig/extensions",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twigphp/Twig-extensions.git",
-                "reference": "c0ab818595338dd5569369bfce2552d02cec5d50"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/c0ab818595338dd5569369bfce2552d02cec5d50",
-                "reference": "c0ab818595338dd5569369bfce2552d02cec5d50",
-                "shasum": ""
-            },
-            "require": {
-                "twig/twig": "~1.12"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Twig_Extensions_": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "Common additional features for Twig that do not directly belong in core",
-            "homepage": "https://github.com/fabpot/Twig-extensions",
-            "keywords": [
-                "i18n",
-                "text"
-            ],
-            "time": "2014-07-05 10:01:35"
         },
         {
             "name": "twig/twig",
@@ -322,6 +332,52 @@
                 "standards"
             ],
             "time": "2014-12-04 22:32:15"
+        },
+        {
+            "name": "twig/extensions",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig-extensions.git",
+                "reference": "c0ab818595338dd5569369bfce2552d02cec5d50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/c0ab818595338dd5569369bfce2552d02cec5d50",
+                "reference": "c0ab818595338dd5569369bfce2552d02cec5d50",
+                "shasum": ""
+            },
+            "require": {
+                "twig/twig": "~1.12"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_Extensions_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Common additional features for Twig that do not directly belong in core",
+            "homepage": "https://github.com/fabpot/Twig-extensions",
+            "keywords": [
+                "i18n",
+                "text"
+            ],
+            "time": "2014-07-05 10:01:35"
         }
     ],
     "aliases": [],
@@ -332,6 +388,7 @@
         "swiftmailer/swiftmailer": 0
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.0"
     },

@@ -14,6 +14,10 @@
  */
 
 function edit(){
+
+    $('body').append($('<div/>', {
+        class: 'mce'
+    }));
     // Contents block
     content = $(".content");
 
@@ -68,6 +72,7 @@ function editContent(content)    {
             tinymce.remove();
         } else {
             content.addClass('editable');
+
             tinymce.init({
                 inline : true,
                 fixed_toolbar_container: ".mce",

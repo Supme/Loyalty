@@ -22,7 +22,8 @@
         "twig/twig": "1.*",
         "taha/timthumb": "dev-master",
         "catfan/medoo": "dev-master",
-        "swiftmailer/swiftmailer": "@stable"
+        "swiftmailer/swiftmailer": "@stable",
+        "respect/validation": "0.7.*"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.*"

@@ -7,8 +7,9 @@
 .mce{
     position: fixed;
     top: 0px;
-    margin-left: -15px;
+    margin-left: 0px;
     width: 100%;
+    z-index: 9999;
 }
 
 #newsTitle, #newsDate{
