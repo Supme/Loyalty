@@ -17,8 +17,7 @@
 /**
  * Class Cache
  *
- *
- *
+ * ToDo Redis, APC cache
  */
 
 class Cache {
@@ -163,6 +162,8 @@ class Cache {
      */
     private static function fileGet($name)
     {
+        if(!file_exists(Registry::get('_config')['cache']['file']))
+            self::fileClear();
         if(self::$cache == false){
             self::$cache = json_decode(file_get_contents(Registry::get('_config')['cache']['file']), true);
         }

@@ -51,4 +51,3 @@ if(Registry::get('_config')['site']['debug']){
     var_dump( array_reverse ( Registry::log() ) );
     echo "</pre>";
 }
-Cache::clear();
