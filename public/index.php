@@ -21,27 +21,34 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-// what time is it?
-$start = microtime(true);
 
-require '../vendor/autoload.php';
+try{
+    // what time is it?
+    $start = microtime(true);
 
-// load application config
-if(file_exists('../config.ini'))
-    Registry::set('_config', array_merge(parse_ini_file('../config.dist.ini', true),parse_ini_file('../config.ini', true)));
-else
-    Registry::set('_config', parse_ini_file('../config.dist.ini', true));
+    $loader = require '../vendor/autoload.php';
 
-// start the application
-$app = new Application();
+    // load application config
+    if(file_exists('../config.ini'))
+        Registry::set('_config', array_merge(parse_ini_file('../config.dist.ini', true),parse_ini_file('../config.ini', true)));
+    else
+        Registry::set('_config', parse_ini_file('../config.dist.ini', true));
 
+    // start the application
+    $app = new Application();
+
+} catch (Exception $e) {
+    echo "<pre>Error information:\n";
+    print $e->getMessage();
+    echo "</pre>";
+}
+
+// debug info
 if(Registry::get('_config')['site']['debug']){
     echo "<pre>Debug information:\n";
     printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
     Registry::log(Cache::log());
     var_dump( array_reverse ( Registry::log() ) );
-
     echo "</pre>";
 }
-
-//Cache::clear();
+Cache::clear();

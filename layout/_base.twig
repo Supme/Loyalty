@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Loyality programs">
+    <meta name="author" content="Supme">
+
+    <title>{{ _config.site.name }} :: {{ _page.title }}</title>
+
+    <!-- core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Custom Fonts -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- MetisMenu CSS -->
+    <link href="/assets/sb-admin-2/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/assets/sb-admin-2/css/sb-admin-2.css" rel="stylesheet">
+
+    <!--link href="/css/dashboard.css" rel="stylesheet"/-->
+
+    <!--link href="/css/loyalty.css" rel="stylesheet"/-->
+
+
+    <!-- css additional -->
+    {% for css in _css %}
+    <link href="{{ css }}" rel="stylesheet"/>
+    {% endfor %}
+
+    <!-- core JavaScript -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/assets/sb-admin-2/js/plugins/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/assets/sb-admin-2/js/sb-admin-2.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- js additional -->
+    {% for js in _js %}
+        <script src="{{ js }}"></script>
+    {% endfor %}
+
+</head>
+<body>
+
+<!--div class="mce"></div-->
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ _config.site.url }}">{{ _config.site.name }}</a>
+        </div>
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+
+            <!-- page additional menu -->
+            {% if _menu %}
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-edit fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    {% for name, item in _menu %}
+                    <li>
+                        <a {% for param, value in item %} {{ param }}='{{ value }}'{% endfor %}>{{ name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+
+            <!-- user messages -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                            </div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="text-center" href="#">
+                            <strong>Read All Messages</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- user profile -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    {% if _user.isLogin %}
+                        <li>
+                            <a href="{{ _config.site.url }}login/"><i class="fa fa-user fa-fw"></i>{{ _user.userName }} Profile</a>
+                        </li>
+                        <li class="divider"></li>
+                    {% else %}
+                        <li>
+                            <a href="{{ _config.site.url }}login/">{{ _lang.get('login') }}</a>
+                        </li>
+                    {% endif %}
+                    {% if _user.isLogin %}
+                        <li>
+                            <a href="{{ _config.site.url }}login/?logout">{{ _lang.get('logout') }}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                {% import '_menu.twig' as macros %}
+                <ul class="nav" id="side-menu">
+
+                    <li{% if map.segment == _page.segment %} class="active"{% endif %}>
+                        <a href="{{ _config.site.url }}{{ _siteTree.0.segment }}">{{ _siteTree.0.title }}</a>
+                    </li>
+
+                    {% for link in _siteTree.0.childs if link.visible%}
+                        <li>
+                            <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}">{{ link.title }}</a>
+
+                            {% if link.childs %}
+                                <ul class="nav nav-second-level">
+                                    {% for lin in link.childs if lin.visible%}
+                                        <li>
+                                            <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}">{{ lin.title }}</a>
+
+                                            {% if lin.childs %}
+                                                <ul class="nav nav-third-level">
+                                                    {% for li in lin.childs if li.visible %}
+                                                        <li>
+                                                            <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}">{{ li.title }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- Search -->
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                        </div>
+                    </li>
+                    <!-- /Search -->
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {% if _notification is defined  %}
+                {% for type,noti in _notification %}
+                    {% for n in noti %}
+                        <div class="alert alert-{{ type }} fade in">
+                            {{ n|e}} <a class="close" data-dismiss="alert" href="#">&times;</a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% include _view %}
+
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

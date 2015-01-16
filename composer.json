@@ -30,13 +30,13 @@
     },
     "autoload": {
         "psr-0": {
+
         },
         "psr-4": {
+            "App\\": "app/"
         },
         "classmap": [
-            "application/controllers",
-            "application/models",
-            "libs/"
+            "lib/"
         ],
         "files": [
         ]
