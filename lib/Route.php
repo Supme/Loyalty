@@ -14,7 +14,7 @@
  *
  */
 
-class Route extends Model
+class Route extends Db
 {
 
     public $siteTree;
@@ -33,7 +33,7 @@ class Route extends Model
 
         $main = Cache::get('_mainPage');
         if(empty($main)) {
-            $main = $this->database->select('siteMap', '*', ['pid' => 0]);
+            $main = $this->database->select('core_sitemap', '*', ['pid' => 0]);
             Cache::set('_mainPage', $main);
         }
 
@@ -42,12 +42,12 @@ class Route extends Model
 
             $this->_siteMap = $this->database->query("
           SELECT t1.id, t1.pid, t1.segment, t1.view, t1.layout, t1.module, t1.controller, t1.action, t1.title, t1.visible
-          FROM siteMap t1
-          LEFT JOIN authAccess t2
-           ON t1.id = t2.smapId
-            AND (t2.userId = " . $this->database->quote(Registry::get('_auth')->userId) . "
-            OR t2.groupId = " . $this->database->quote(Registry::get('_auth')->groupId) . ")
-          WHERE t2.smapId IS NULL OR (NOT t2.smapId IS NULL AND t2.right <> '0')
+          FROM core_sitemap t1
+          LEFT JOIN core_auth_access t2
+           ON t1.id = t2.smap_id
+            AND (t2.user_id = " . $this->database->quote(Registry::get('_auth')->user_id) . "
+            OR t2.group_id = " . $this->database->quote(Registry::get('_auth')->group_id) . ")
+          WHERE t2.smap_id IS NULL OR (NOT t2.smap_id IS NULL AND t2.right <> '0')
               ")
                 ->fetchAll();
 

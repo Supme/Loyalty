@@ -53,9 +53,15 @@ class Test extends \Controller
 
         $this->render(['form' => $form->render()]);
 
-        //$test = \Application\Personal\Controller\Personal::class
+        $test = new \App\Core\Model\test();
+        echo "-------------------------\n";
+        print_r($test->dumpTables());
+        echo "-------------------------\n";
+
+
 
         throw new \Exception('test');
     }
 
 }
+

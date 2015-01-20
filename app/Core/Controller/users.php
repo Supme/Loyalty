@@ -19,7 +19,7 @@ namespace App\Core\Controller;
 class users extends \Controller {
 
     function __init(){
-        if(!\Registry::get('_auth')->read) header("Location: ../error/403");
+       // if(!\Registry::get('_auth')->read) header("Location: ../error/403");
     }
 
     function index()

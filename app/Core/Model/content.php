@@ -22,9 +22,9 @@ class content extends \Model
     function get(){
 
         return $this->database->select(
-            'content',
+            'core_content',
             ['id', 'lang', 'position', 'text'],
-            ['smapId' => \Registry::get('_page')['id']]
+            ['smap_id' => \Registry::get('_page')['id']]
         );
 
     }
@@ -32,11 +32,11 @@ class content extends \Model
     function edit($position, $text){
 
         $id = $this->database->select(
-            'content',
+            'core_content',
             'id',
             [
                 'AND' => [
-                    'smapId' => \Registry::get('_page')['id'],
+                    'smap_id' => \Registry::get('_page')['id'],
                     'position' => $position
                 ]
 
@@ -45,15 +45,15 @@ class content extends \Model
 
         if($id) {
             $this->database->update(
-                'content',
+                'core_content',
                 ['text' => $text],
                 ['id' => $id]
             );
         } else {
             $this->database->insert(
-                'content',
+                'core_content',
                 [
-                    'smapId' => \Registry::get('_page')['id'],
+                    'smap_id' => \Registry::get('_page')['id'],
                     'lang' => 1, // Todo реализовать мультиязычность
                     'position' => 1, // ToDo косяк тут, если это не первый блок на странице
                     'text' => $text

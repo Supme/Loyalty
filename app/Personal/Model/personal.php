@@ -23,7 +23,7 @@ class personal extends \Model{
         $cities = $this->database->select( 'personalCity', '*' );
         foreach($cities as $city){
             $departments = $this->database->select(
-                'personalDepartment',
+                'personal_department',
                 '*',
                 ['city_id' => $city['id']]
             );
@@ -38,11 +38,11 @@ class personal extends \Model{
     function get(){
         $result = \Cache::get('modPersonal');
         if(empty($result)){
-            $city = $this->database->select( 'personalCity', '*' );
+            $city = $this->database->select( 'personal_city', '*' );
             foreach($city as $kc => $c){
-                $departament = $this->database->select( 'personalDepartment', '*', ['city_id' => $c['id']] );
+                $departament = $this->database->select( 'personal_department', '*', ['city_id' => $c['id']] );
                 foreach($departament as $kd => $d){
-                    $people = $this->database->select('personalPeople', '*', ['department_id' => $d['id']]);
+                    $people = $this->database->select('personal_people', '*', ['department_id' => $d['id']]);
                     foreach($people as $kp => $p){
                         $result[$c['name']][$d['name']][$p['name']] = $p;
                     }

@@ -28,7 +28,7 @@ class Translate extends Model
         self::$langList = Cache::get('_lang');
         if(empty(self::$langList)){
             self::$langList = $this->database->select(
-                'langLocales',
+                'core_lang_locales',
                 ['code', 'name']
             );
             Cache::set('_lang', self::$langList);
@@ -39,16 +39,16 @@ class Translate extends Model
             foreach(self::$langList as $lang){
                 self::$strs[$lang['code']] = [];
                 foreach($this->database->select(
-                    'langTranslation',
+                    'core_lang_translation',
                     [
-                        '[>]langLocales' => ['locales_id' => 'id'],
+                        '[>]core_lang_locales' => ['locales_id' => 'id'],
                     ],
                     [
-                        'langTranslation.key',
-                        'langTranslation.value'
+                        'core_lang_translation.key',
+                        'core_lang_translation.value'
                     ],
                     [
-                        'langLocales.code' => $lang
+                        'core_lang_locales.code' => $lang
                     ]
                 ) as $tr){
                     self::$strs[$lang['code']][$tr['key']] = $tr['value'];

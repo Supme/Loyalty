@@ -29,7 +29,7 @@ class sender extends \Table
     function getCampaigns( $lenght, $start = 0 )
     {
         return $this->database->select(
-            'senderCampaigns',
+            'sender_campaigns',
             '*',
             [
                 'ORDER' => 'date DESC',
@@ -53,7 +53,7 @@ class sender extends \Table
     {
         if ($time == false) $time = time();
         if ($id != false ) {
-            $result = $this->database->update( 'senderCampaigns',
+            $result = $this->database->update( 'sender_campaigns',
                 [
                     'name' => $name,
                     'subject' => $subject,
@@ -65,7 +65,7 @@ class sender extends \Table
                 ]
             );
         } else {
-            $result = $this->database->insert( 'senderCampaigns',
+            $result = $this->database->insert( 'sender_campaigns',
                 [
                     'name' => $name,
                     'subject' => $subject,
@@ -90,18 +90,18 @@ class sender extends \Table
     {
 
         $data =  $this->database->select(
-            'senderRecipient',
+            'sender_recipient',
             ["id"],
-            ['campaignId' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
+            ['campaign_id' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
         $recipient = [];
         foreach($data as $id){
             $params = $this->database->select(
-                'senderParams',
+                'sender_params',
                 [
                     'name',
                     'value',
                 ],
-                ['recipientId' => $id['id']]
+                ['recipient_id' => $id['id']]
             );
             foreach($params as $param){
                 $recipient[$id['id']][$param['name']] = $param['value'];
@@ -127,13 +127,13 @@ class sender extends \Table
      */
     function addRecipients( $data )
     {
-        if( is_array( $this->database->select( 'senderCampaigns', '*', ['id' => $this->campaignId] ) ) ){
+        if( is_array( $this->database->select( 'sender_campaigns', '*', ['id' => $this->campaignId] ) ) ){
             foreach($data as $recipient){
-                $id = $this->database->insert('senderRecipient',['campaignId'=>$this->campaignId]);
+                $id = $this->database->insert('sender_recipient',['campaignId'=>$this->campaignId]);
                 foreach($recipient as $name => $value){
-                    $this->database->insert( 'senderParams',
+                    $this->database->insert( 'sender_params',
                         [
-                            'recipientId' => $id,
+                            'recipient_id' => $id,
                             'name' => $name,
                             'value' => $value,
                         ]
@@ -147,10 +147,10 @@ class sender extends \Table
     {
         $data = $this->database->query(
                 'SELECT DISTINCT sp.name
-                  FROM senderParams sp
-                  INNER JOIN senderRecipient sr
-                  ON sr.id=sp.recipientId
-                  AND sr.campaignId='.$this->database->quote((int)$this->campaignId)
+                  FROM sender_params sp
+                  INNER JOIN sender_recipient sr
+                  ON sr.id=sp.recipient_id
+                  AND sr.campaign_id='.$this->database->quote((int)$this->campaignId)
             )
             ->fetchAll();
         $result = [];
@@ -166,19 +166,19 @@ class sender extends \Table
     function data( $start, $lenght, $order, $filter )
     {
         $data =  $this->database->select(
-            'senderRecipient',
+            'sender_recipient',
             ["id"],
-            ['campaignId' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
+            ['campaign_id' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
         $recipient = [];
         $i = 0;
         foreach($data as $id){
             $params = $this->database->select(
-                'senderParams',
+                'sender_params',
                 [
                     'name',
                     'value',
                 ],
-                ['recipientId' => $id['id']]
+                ['recipient_id' => $id['id']]
             );
             foreach($params as $param){
                 $recipient[$i][$param['name']] = $param['value'];
@@ -192,9 +192,9 @@ class sender extends \Table
     function total()
     {
         return $this->database->count(
-            'senderRecipient',
+            'sender_recipient',
             ["id"],
-            ['campaignId' => $this->campaignId]);
+            ['campaign_id' => $this->campaignId]);
     }
 
     function filtered(){

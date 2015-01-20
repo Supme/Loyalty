@@ -13,19 +13,19 @@
  *
  */
 
-class Auth extends Model
+class Auth extends Db
 {
     public
-        $userName = 'Guest',
+        $user = 'Guest',
         $isLogin = false,
-        $groupName,
+        $group,
         $right = false,
         $read,
         $add,
         $edit,
         $delete,
-        $userId,
-        $groupId;
+        $user_id,
+        $group_id;
 
     function __construct()
     {
@@ -70,18 +70,18 @@ class Auth extends Model
         //$salt = '';
         // Using prepared statements means that SQL injection is not possible.
         $query = $this->database->pdo->prepare("
-              SELECT t1.id AS id, t1.userName AS userName, t1.password AS password, t1.salt AS salt, t2.name AS groupName
-              FROM authUsers t1
-              LEFT JOIN authGroups t2 ON t1.groupId = t2.id
+              SELECT t1.id AS id, t1.name AS name, t1.password AS password, t1.salt AS salt, t2.name AS 'group'
+              FROM core_auth_user t1
+              LEFT JOIN core_auth_group t2 ON t1.group_id = t2.id
               WHERE t1.email = ?
               LIMIT 1");
 
         $result = $query->execute([$email]);    // Execute the prepared query.
 
         // get variables from result.
-        $query->bindColumn('id',$this->userId);
-        $query->bindColumn('userName', $this->userName);
-        $query->bindColumn('groupName', $this->groupName);
+        $query->bindColumn('id',$this->user_id);
+        $query->bindColumn('name', $this->name);
+        $query->bindColumn('group', $this->group);
         $query->bindColumn('password', $db_password);
         $query->bindColumn('salt', $salt);
         $query->fetch();
@@ -91,7 +91,7 @@ class Auth extends Model
         if ($result) {
             // If the user exists we check if the account is locked
             // from too many login attempts
-            if ($this->checkbrute($this->userId) == true) {
+            if ($this->checkbrute($this->user_id) == true) {
                 // Account is locked
                 // Send an email to user saying their account is locked
                 $this->isLogin = false;
@@ -103,11 +103,11 @@ class Auth extends Model
                     // Get the user-agent string of the user.
                     $user_browser = $_SERVER['HTTP_USER_AGENT'];
                     // XSS protection as we might print this value
-                    $this->userId = preg_replace("/[^0-9]+/", "", $this->userId);
-                    $_SESSION['user_id'] = (int)$this->userId;
+                    $this->user_id = preg_replace("/[^0-9]+/", "", $this->user_id);
+                    $_SESSION['user_id'] = (int)$this->user_id;
                     // XSS protection as we might print this value
-                    $this->userName = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $this->userName);
-                    $_SESSION['username'] = $this->userName;
+                    $this->name = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $this->name);
+                    $_SESSION['username'] = $this->name;
                     $_SESSION['login_string'] = hash('sha512',$password.$user_browser);
                     // Login successful.
                     $this->isLogin = true;
@@ -115,7 +115,7 @@ class Auth extends Model
                     // Password is not correct
                     // We record this attempt in the database
                     $now = time();
-                    $this->database->pdo->exec("INSERT INTO authLogins(userId, time) VALUES ('$this->userId', '$now')");
+                    $this->database->pdo->exec("INSERT INTO core_auth_login(user_id, time) VALUES ('$this->user_id', '$now')");
                     $this->isLogin = false;
                 }
             }
@@ -146,7 +146,7 @@ class Auth extends Model
         // Destroy session
         session_destroy();
 
-        $this->userName = 'Guest';
+        $this->name = 'Guest';
         $this->isLogin = false;
     }
 
@@ -158,10 +158,10 @@ class Auth extends Model
         // All login attempts are counted from the past 2 hours.
         $valid_attempts = $now - (2 * 60 * 60);
 
-        if ($query = $this->database->pdo->prepare("SELECT COUNT(*) FROM authLogins WHERE userId = ? AND time > ?")
+        if ($query = $this->database->pdo->prepare("SELECT COUNT(*) FROM core_auth_login WHERE user_id = ? AND time > ?")
         ) {
             // Execute the prepared query.
-            $query->execute([$this->userId, $valid_attempts]);
+            $query->execute([$this->user_id, $valid_attempts]);
 
             // If there have been more than 5 failed logins
             if ($query->fetch()[0] > 5) {
@@ -184,28 +184,28 @@ class Auth extends Model
         $_SESSION['username'],
         $_SESSION['login_string'])) {
 
-            $this->userId = $_SESSION['user_id'];
+            $this->user_id = $_SESSION['user_id'];
             $login_string = $_SESSION['login_string'];
 
             // Get the user-agent string of the user.
             $user_browser = $_SERVER['HTTP_USER_AGENT'];
 
             if ($query = $this->database->pdo->prepare("
-            SELECT t1.username AS userName, t1.password AS password, t1.groupId AS groupId, t2.name AS groupName
-              FROM authUsers t1
-              LEFT JOIN authGroups t2 ON t1.groupId = t2.id
+            SELECT t1.name AS name, t1.password AS password, t1.group_id AS group_id, t2.name AS group_name
+              FROM core_auth_user t1
+              LEFT JOIN core_auth_group t2 ON t1.group_id = t2.id
               WHERE t1.id = ?
               ")
             ) {
-                $query->execute([$this->userId]);
-                $query->bindColumn('userName', $this->userName);
+                $query->execute([$this->user_id]);
+                $query->bindColumn('name', $this->name);
                 $query->bindColumn('password', $db_password);
-                $query->bindColumn('groupId', $this->groupId);
-                $query->bindColumn('groupName', $this->groupName);
+                $query->bindColumn('group_id', $this->group_id);
+                $query->bindColumn('group_name', $this->group);
                 $query->fetch();
 
                 $password = trim($db_password);
-                if ($this->userName == $_SESSION['username']) {
+                if ($this->name == $_SESSION['username']) {
                     $login_check = hash('sha512', $password.$user_browser);
                     if ($login_check == $login_string) {
                         // Logged In!!!!
@@ -219,18 +219,18 @@ class Auth extends Model
         return $this->isLogin;
     }
 
-    public function access_check($smapId)
+    public function access_check($smap_id)
     {
         // Super admin user or group?
-        if($this->groupId == 0 or $this->userId == 0){
+        if($this->group_id == 0 or $this->user_id == 0){
             $this->read = true;
             $this->add = true;
             $this->edit = true;
             $this->delete = true;
         } else {
 
-            $query = $this->database->pdo->prepare("SELECT right FROM authAccess WHERE (userId = ? OR groupId = ?) AND smapId = ?");
-            $query->execute([$this->userId, $this->groupId, $smapId]);
+            $query = $this->database->pdo->prepare("SELECT right FROM core_auth_access WHERE (user_id = ? OR group_id = ?) AND smap_id = ?");
+            $query->execute([$this->user_id, $this->group_id, $smap_id]);
             $query->bindColumn('right', $this->right);
             $query->fetch();
 
@@ -271,7 +271,7 @@ class Auth extends Model
         return $this->right;
     }
 
-    private function esc_url($url) {
+    /*private function esc_url($url) {
 
         if ('' == $url) {
             return $url;
@@ -300,5 +300,5 @@ class Auth extends Model
         } else {
             return $url;
         }
-    }
+    }*/
 }

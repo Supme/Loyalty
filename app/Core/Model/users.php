@@ -19,35 +19,31 @@ namespace App\Core\Model;
 class users extends \Table
 {
     function total(){
-        return $this->database->count('authUsers', ['id']);
+        return $this->database->count('core_auth_user');
     }
 
-    function filtred(){
+    function filtered(){
         return $this->total();
     }
 
     function column(){
-        return ['userId', 'userName', 'userEmail', 'userGroup'];
-    }
-
-    function filtered(){
-
+        return ['user_id', 'user_name', 'user_email', 'user_group'];
     }
 
     function data($start, $lenght, $order, $filter){
         return $this->database->select(
-            'authUsers',
+            'core_auth_user',
             [
-                '[>]authGroups' => ['groupId' => 'id']
+                '[>]core_auth_group' => ['group_id' => 'id']
             ],
             [
-                'authUsers.id(userId)',
-                'authUsers.userName',
-                'authUsers.email(userEmail)',
-                'authGroups.name(userGroup)',
+                'core_auth_user.id(user_id)',
+                'core_auth_user.name(user_name)',
+                'core_auth_user.email(user_email)',
+                'core_auth_group.name(user_group)',
             ],
             [
-                "ORDER" => ['authUsers.userName ASC'],
+                "ORDER" => ['core_auth_user.name ASC'],
                 "LIMIT" => [[$start, $lenght]],
             ]
         );

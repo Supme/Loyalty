@@ -29,6 +29,8 @@ class Application
 
     public function __construct()
     {
+        $this->isInstall('Core');
+
         // authorize and session
         Registry::set('_auth', new Auth());
 
@@ -40,9 +42,11 @@ class Application
         new Translate();
         Translate::setDefaultLang(Registry::get('_config')['site']['lang']);
 
+        $this->isInstall($route->sitePage['module']);
+
         // Run application
 
-        $classname = "App\\".$route->sitePage['module']."\\Controller\\".$route->sitePage['controller'];
+       $classname = "App\\".$route->sitePage['module']."\\Controller\\".$route->sitePage['controller'];
         if (class_exists($classname)){
             $controller = new $classname;
             if (method_exists($controller, '__init')) {
@@ -63,4 +67,39 @@ class Application
         }
     }
 
+    private function isInstall($module)
+    {
+        //Check module installed
+        $classname = "App\\".$module."\\init";
+        if (class_exists($classname))
+        {
+            if (method_exists($classname, 'isInstalled')) {
+                $init = new $classname;
+                if ($init->{'isInstalled'}() !== true){
+                    if (method_exists($classname, 'install')) {
+                        $install = $init->{'install'}();
+                        if ($install !== true){
+                            throw new \Exception(
+                                "Module '".$module."' method 'install' return error:\n\t".
+                                "> '".$install."'"
+                            );
+                        }
+                    } else{
+                        throw new \Exception(
+                            "Module '".$module."' not installed and not have a method 'install'"
+                        );
+                    }
+                }
+            } else {
+                throw new \Exception(
+                    "Module '".$module."' not have a method 'isInstalled' in class 'init'"
+                );
+            }
+        } else {
+            throw new \Exception(
+                "Module '".$module."' not have a init class"
+            );
+        }
+
+    }
  }

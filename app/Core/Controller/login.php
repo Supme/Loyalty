@@ -24,7 +24,7 @@ class login extends \Controller {
             if(\Registry::get('_auth')->login($_POST['email'], $_POST['password'])){
                 \Registry::notification([
                     'success' => [
-                        \Translate::get('You are login as').' '.\Registry::get('_auth')->userName,
+                        \Translate::get('You are login as').' '.\Registry::get('_auth')->name,
                     ]
                 ]);
             } else {

@@ -14,12 +14,11 @@
  *
  */
 
-namespace App\Core\Model;
+namespace App\Sender;
 
-class test extends \Model
+class init extends \Db
 {
-    function q($sql)
-    {
-        return $this->database->query($sql);
+    function isInstalled(){
+        return $this->database->count("sqlite_master",["name[~]" => "sender_%"])==10?true:false;
     }
 } 
