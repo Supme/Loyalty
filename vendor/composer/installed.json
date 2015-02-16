@@ -32,63 +32,6 @@
         "description": "TimThumb – PHP Image Resizer"
     },
     {
-        "name": "catfan/medoo",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/catfan/Medoo.git",
-            "reference": "019e4f60aa756adae12643c3c6a851dd9c468c08"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/catfan/Medoo/zipball/019e4f60aa756adae12643c3c6a851dd9c468c08",
-            "reference": "019e4f60aa756adae12643c3c6a851dd9c468c08",
-            "shasum": ""
-        },
-        "require": {
-            "ext-pdo": "*",
-            "php": ">=5.1"
-        },
-        "suggest": {
-            "ext-pdo-mysql": "For MySQL or MariaDB databases",
-            "ext-pdo-pqsql": "For PostgreSQL databases",
-            "ext-pdo-sqlite": "For SQLite databases",
-            "ext-pdo_dblib": "For MSSQL or Sybase databases on Liunx/UNIX platform",
-            "ext-pdo_oci": "For Oracle databases",
-            "ext-pdo_sqlsrv": "For MSSQL databases on Windows platform"
-        },
-        "time": "2014-12-04 07:52:42",
-        "type": "framework",
-        "installation-source": "source",
-        "autoload": {
-            "files": [
-                "medoo.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Angel Lai",
-                "email": "angel.lai.cat@gmail.com"
-            }
-        ],
-        "description": "The Lightest PHP database framework to accelerate development",
-        "homepage": "http://medoo.in",
-        "keywords": [
-            "database",
-            "lightweight",
-            "mssql",
-            "mysql",
-            "php framework",
-            "sql",
-            "sqlite"
-        ]
-    },
-    {
         "name": "squizlabs/php_codesniffer",
         "version": "1.5.6",
         "version_normalized": "1.5.6.0",
@@ -221,27 +164,27 @@
     },
     {
         "name": "twig/twig",
-        "version": "v1.16.3",
-        "version_normalized": "1.16.3.0",
+        "version": "v1.18.0",
+        "version_normalized": "1.18.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af"
+            "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
-            "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/4cf7464348e7f9893a93f7096a90b73722be99cf",
+            "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf",
             "shasum": ""
         },
         "require": {
             "php": ">=5.2.4"
         },
-        "time": "2014-12-25 19:58:19",
+        "time": "2015-01-25 17:32:08",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.16-dev"
+                "dev-master": "1.18-dev"
             }
         },
         "installation-source": "dist",
@@ -279,66 +222,18 @@
         ]
     },
     {
-        "name": "twig/extensions",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/twigphp/Twig-extensions.git",
-            "reference": "c0ab818595338dd5569369bfce2552d02cec5d50"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/c0ab818595338dd5569369bfce2552d02cec5d50",
-            "reference": "c0ab818595338dd5569369bfce2552d02cec5d50",
-            "shasum": ""
-        },
-        "require": {
-            "twig/twig": "~1.12"
-        },
-        "time": "2014-07-05 10:01:35",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Twig_Extensions_": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Common additional features for Twig that do not directly belong in core",
-        "homepage": "https://github.com/fabpot/Twig-extensions",
-        "keywords": [
-            "i18n",
-            "text"
-        ]
-    },
-    {
         "name": "respect/validation",
-        "version": "0.7.0",
-        "version_normalized": "0.7.0.0",
+        "version": "0.7.4",
+        "version_normalized": "0.7.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Respect/Validation.git",
-            "reference": "0b3012b65cf705362e4cf803c74009af55e3e680"
+            "reference": "d1af494a48be904e8cba003e603b1ae740b18743"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Respect/Validation/zipball/0b3012b65cf705362e4cf803c74009af55e3e680",
-            "reference": "0b3012b65cf705362e4cf803c74009af55e3e680",
+            "url": "https://api.github.com/repos/Respect/Validation/zipball/d1af494a48be904e8cba003e603b1ae740b18743",
+            "reference": "d1af494a48be904e8cba003e603b1ae740b18743",
             "shasum": ""
         },
         "require": {
@@ -353,7 +248,7 @@
             "ext-bcmath": "Arbitrary Precision Mathematics",
             "ext-mbstring": "Multibyte String Functions"
         },
-        "time": "2015-01-08 02:48:31",
+        "time": "2015-02-05 16:38:11",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -382,6 +277,122 @@
             "respect",
             "validation",
             "validator"
+        ]
+    },
+    {
+        "name": "barryvdh/elfinder-builds",
+        "version": "2.1.x-dev",
+        "version_normalized": "2.1.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/barryvdh/elfinder-builds.git",
+            "reference": "5826d79edbeccf2a63404f7ca8e9ca66758fd762"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/barryvdh/elfinder-builds/zipball/5826d79edbeccf2a63404f7ca8e9ca66758fd762",
+            "reference": "5826d79edbeccf2a63404f7ca8e9ca66758fd762",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "time": "2015-02-11 11:10:51",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.1-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Dmitry Levashov",
+                "email": "dio@std42.ru",
+                "homepage": "http://std42.ru"
+            },
+            {
+                "name": "Troex Nevelin",
+                "email": "troex@fury.scancode.ru",
+                "homepage": "http://std42.ru"
+            },
+            {
+                "name": "Naoki Sawada",
+                "email": "hypweb@gmail.com",
+                "homepage": "http://xoops.hypweb.net"
+            },
+            {
+                "name": "Community contributions",
+                "homepage": "https://github.com/Studio-42/elFinder/contributors"
+            }
+        ],
+        "description": "File manager for web",
+        "homepage": "http://elfinder.org"
+    },
+    {
+        "name": "catfan/medoo",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/catfan/Medoo.git",
+            "reference": "920ae293ee87286f955a5265124509695e172434"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/catfan/Medoo/zipball/920ae293ee87286f955a5265124509695e172434",
+            "reference": "920ae293ee87286f955a5265124509695e172434",
+            "shasum": ""
+        },
+        "require": {
+            "ext-pdo": "*",
+            "php": ">=5.1"
+        },
+        "suggest": {
+            "ext-pdo-mysql": "For MySQL or MariaDB databases",
+            "ext-pdo-pqsql": "For PostgreSQL databases",
+            "ext-pdo-sqlite": "For SQLite databases",
+            "ext-pdo_dblib": "For MSSQL or Sybase databases on Liunx/UNIX platform",
+            "ext-pdo_oci": "For Oracle databases",
+            "ext-pdo_sqlsrv": "For MSSQL databases on Windows platform"
+        },
+        "time": "2015-02-11 03:54:23",
+        "type": "framework",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "medoo.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Angel Lai",
+                "email": "angel.lai.cat@gmail.com"
+            }
+        ],
+        "description": "The Lightest PHP database framework to accelerate development",
+        "homepage": "http://medoo.in",
+        "keywords": [
+            "database",
+            "lightweight",
+            "mssql",
+            "mysql",
+            "php framework",
+            "sql",
+            "sqlite"
         ]
     }
 ]

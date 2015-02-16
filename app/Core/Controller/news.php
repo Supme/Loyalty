@@ -31,7 +31,7 @@ class news extends \Controller {
             switch (count($params)){
                 case 1:
                     $this->render([
-                        'news' => $this->news_model->get($params[0]),
+                        'news' => $this->news_model->load($params[0]),
                     ]);
                     break;
 

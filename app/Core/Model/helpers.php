@@ -16,11 +16,12 @@
 
 namespace App\Core\Model;
 
-class helpers extends \Model
+class helpers extends \Db
 {
-    public function getFileHash($name){
-        if ($this->database->has('files', ['file' => $name])){
-            $hash = $this->database->select('files', 'hash', ['file' => $name])[0];
+    public function getFileHash($name)
+    {
+        if ($this->has('files', ['file' => $name])) {
+            $hash = $this->select('files', 'hash', ['file' => $name])[0];
             return $hash;
         } else {
             return false;

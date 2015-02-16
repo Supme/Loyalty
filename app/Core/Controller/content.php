@@ -26,18 +26,18 @@ class content extends \Controller {
             $content->edit($_POST['position'], $_POST['text']);
             echo 'Ok';
         } else {
-            $result = $content->get();
+            $result = $content->load();
 
             if (\Registry::get('_auth')->edit){
 
                 \Registry::css([
-                    "/css/loyalty.css"
+                    "/assets/ly/css/loyalty.css"
                 ]);
 
                 \Registry::js([
-                    "/js/jquery.datetimepicker.js",
-                    "/js/tinymce/tinymce.min.js",
-                    "/js/loyalty.js",
+                    "/assets/ly/js/jquery.datetimepicker.js",
+                    "/assets/tinymce/tinymce.min.js",
+                    "/assets/ly/js/loyalty.js",
                 ]);
 
                 \Registry::menu([

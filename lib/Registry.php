@@ -13,7 +13,7 @@ class Registry
     /**
      * Статическое хранилище для данных
      */
-    protected static $store = [];
+    public static $store = [];
     protected static $notification = [];
     protected static $log = [];
 
@@ -42,7 +42,7 @@ class Registry
      */
     public static function get($name)
     {
-        return (isset(self::$store[$name])) ? self::$store[$name] : null;
+        if ($name != '*') return (isset(self::$store[$name])) ? self::$store[$name] : null; else return self::$store;
     }
 
     /**

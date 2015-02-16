@@ -19,22 +19,34 @@ namespace App\Core\Controller;
 class users extends \Controller {
 
     function __init(){
-       // if(!\Registry::get('_auth')->read) header("Location: ../error/403");
+       if(!\Registry::get('_auth')->read) header("Location: ../error/403");
     }
 
     function index()
     {
         $users = new \App\Core\Model\users(['name' => 'users']);
-
         if (!$users->isRequest()) {
+            if(isset($_REQUEST['add']))
+            {
+                $result = \Registry::get('_auth')->addUser(
+                    $_REQUEST['login'],
+                    $_REQUEST['name'],
+                    $_REQUEST['email'],
+                    $_REQUEST['password'],
+                    $_REQUEST['group']
+                );
+                if($result !== true)
+                {
+                    \Registry::notification($result);
+                } else {
+                    \Registry::notification(['success' => ['User "'.$_REQUEST['login'].'" successfully created.']]);
+                }
+            }
             $table = $users->html();
-            $this->render(['table' => $table]);
+            $this->render(['table' => $table, 'groups' => \Registry::get('_auth')->getGroups()]);
         } else {
             $users->ajax();
         }
-    }
-    function _index(){
-        $this->render(['users' => $this->users->get()]);
     }
 
     function add(){

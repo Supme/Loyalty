@@ -48,7 +48,7 @@ class Cache {
         if(!in_array($metod, ['file', 'memcached'])) $metod = 'file';
         $function = $metod.'Set';
 
-        return self::$function(Registry::get('_config')['cache']['salt'].$name, $value, time()+Registry::get('_config')['cache']['expiration']);
+        return Registry::get('_config')['cache']['enable']?self::$function(md5(Registry::get('_config')['cache']['salt'].$name), $value, time()+Registry::get('_config')['cache']['expiration']):false;
     }
 
     /**
@@ -66,7 +66,7 @@ class Cache {
         if(!in_array($metod, ['file', 'memcached'])) $metod = 'file';
         $function = $metod.'Get';
 
-        return self::$function(Registry::get('_config')['cache']['salt'].$name);
+        return Registry::get('_config')['cache']['enable']?self::$function(md5(Registry::get('_config')['cache']['salt'].$name)):false;
 
     }
 

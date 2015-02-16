@@ -14,7 +14,7 @@
  *
  */
 
-abstract class Table extends Model
+abstract class Table extends Db
 {
 
     /**

@@ -32,6 +32,7 @@ class Application
         $this->isInstall('Core');
 
         // authorize and session
+        // ToDo убрать свечение коннекта к базе в реестре
         Registry::set('_auth', new Auth());
 
         // routing and site map

@@ -20,19 +20,19 @@ class init extends \Db
 {
     function isInstalled()
     {
-        return $this->database->count("sqlite_master",["name[~]" => "personal_%"])==3?true:false;
+        return $this->tables("personal_%")==3?true:false;
     }
 
     function install()
     {
-        $this->database->query('
+        $this->query('
             CREATE TABLE "personal_city" (
               "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
               "name" text NOT NULL
             )
         ');
 
-        $this->database->query('
+        $this->query('
             CREATE TABLE "personal_department" (
               "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
               "city_id" integer NOT NULL,
@@ -40,7 +40,7 @@ class init extends \Db
               FOREIGN KEY ("city_id") REFERENCES "personal_city" ("id") ON DELETE CASCADE ON UPDATE CASCADE
               )
         ');
-        $this->database->query('
+        $this->query('
             CREATE TABLE "personal_people" (
               "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
               "department_id" integer NOT NULL,

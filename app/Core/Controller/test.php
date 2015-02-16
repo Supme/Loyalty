@@ -51,14 +51,14 @@ class Test extends \Controller
             'input-class' => 'input-large'
         ]);
 
+
+
         $this->render(['form' => $form->render()]);
 
         $test = new \App\Core\Model\test();
-        echo "-------------------------\n";
-        print_r($test->dumpTables());
-        echo "-------------------------\n";
-
-
+        echo "<pre>----- Structure-------\n";
+        print_r(\Registry::get('*'));
+        echo "</pre>";
 
         throw new \Exception('test');
     }

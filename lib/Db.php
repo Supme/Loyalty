@@ -14,26 +14,22 @@
  *
  */
 
-class Db {
+class Db extends medoo {
     /**
      * @var null Database Connection
      */
-    public $db = null;
+    private $db = null;
 
     public function __construct()
     {
-
-        /**
-         * Medoo
-         */
         if (Registry::get('_config')['db']['type'] == 'sqlite'){
-            $connect = [
+            $options = [
                 'database_type' => Registry::get('_config')['db']['type'],
                 'database_file' => Registry::get('_config')['db']['host'],
                 'charset'       =>  'utf8',
             ];
         } else {
-            $connect = [
+            $options = [
                 'database_type' =>  Registry::get('_config')['db']['type'],
                 'database_name' =>  Registry::get('_config')['db']['name'],
                 'server'        =>  Registry::get('_config')['db']['host'],
@@ -44,32 +40,40 @@ class Db {
                 'option'        =>  [ PDO::ATTR_CASE => PDO::CASE_NATURAL ]
             ];
         }
-        $this->database = new medoo($connect);
+        parent::__construct($options);
     }
 
-    function __destruct()
-    {
-        Registry::log($this->database->log());
-    }
-
-    function dumpTables()
+    function structure($tableLike = '%')
     {
         $dump = '';
         if (Registry::get('_config')['db']['type'] == 'sqlite'){
-            $sql = $this->database->query("SELECT sql FROM sqlite_master WHERE name <> 'sqlite_sequence' AND name LIKE 'core_%'");
+            $sql = $this->query("SELECT sql FROM sqlite_master WHERE name <> 'sqlite_sequence' AND name LIKE '$tableLike'");
             foreach($sql as $tables)
             {
                 $dump .= $tables['sql']."\n";
             };
         }
 
-
-
         return $dump;
+    }
+
+    function tables($tableLike = '%')
+    {
+        $count = false;
+        if (Registry::get('_config')['db']['type'] == 'sqlite') {
+            $count = $this->count("sqlite_master", ["name[~]" => "$tableLike"]);
+        }
+
+        return $count;
     }
 
     function dumpData($table = '*')
     {
 
+    }
+
+    function __destruct()
+    {
+        Registry::log($this->log());
     }
 }

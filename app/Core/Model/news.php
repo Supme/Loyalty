@@ -16,12 +16,12 @@
 
 namespace App\Core\Model;
 
-class news extends \Model
+class news extends \Db
 {
 
     function last($count, $from = 0){
 
-        return $this->database->select(
+        return $this->select(
             'core_news',
             [
                 'id',
@@ -41,9 +41,9 @@ class news extends \Model
             );
     }
 
-    function get($id){
+    function load($id){
 
-        return $this->database->select(
+        return $this->select(
             'core_news',
             [
                 'id',
@@ -65,7 +65,7 @@ class news extends \Model
     function edit($title, $announce, $text, $date = FALSE){
 
         if(!$date) $date = time();
-        $query = $this->db->prepare('INSERT INTO core_news (smap_id, title, announce, text, date) VALUES (?, ?, ?, ?)');
+        $query = $this->pdo->prepare('INSERT INTO core_news (smap_id, title, announce, text, date) VALUES (?, ?, ?, ?)');
         $query->execute([\Registry::get('_page')['id'], $title, $announce, $text, $date]);
 
     }

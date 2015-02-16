@@ -16,12 +16,12 @@
 
 namespace App\Core\Model;
 
-class content extends \Model
+class content extends \Db
 {
 
-    function get(){
+    function load(){
 
-        return $this->database->select(
+        return $this->select(
             'core_content',
             ['id', 'lang', 'position', 'text'],
             ['smap_id' => \Registry::get('_page')['id']]
@@ -31,7 +31,7 @@ class content extends \Model
 
     function edit($position, $text){
 
-        $id = $this->database->select(
+        $id = $this->select(
             'core_content',
             'id',
             [
@@ -44,13 +44,13 @@ class content extends \Model
         )[0];
 
         if($id) {
-            $this->database->update(
+            $this->update(
                 'core_content',
                 ['text' => $text],
                 ['id' => $id]
             );
         } else {
-            $this->database->insert(
+            $this->insert(
                 'core_content',
                 [
                     'smap_id' => \Registry::get('_page')['id'],

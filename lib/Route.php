@@ -33,40 +33,31 @@ class Route extends Db
 
         $main = Cache::get('_mainPage');
         if(empty($main)) {
-            $main = $this->database->select('core_sitemap', '*', ['pid' => 0]);
+            $main = $this->select('core_sitemap', '*', ['pid' => 0]);
             Cache::set('_mainPage', $main);
         }
 
-        $this->_siteMap = Cache::get('_siteMap');
-        if(empty($this->_siteMap)) {
+        $this->_siteMap = $this->query("
+          SELECT distinct sitemap.id, sitemap.pid, sitemap.segment, sitemap.view, sitemap.layout, sitemap.module, sitemap.controller, sitemap.action, sitemap.title, sitemap.visible
+          FROM core_sitemap sitemap
+          LEFT JOIN core_auth_access access ON sitemap.id = access.smap_id
+          WHERE access.id IS NULL OR (
+            NOT access.smap_id IS NULL AND access.right <> '0' AND (
+              access.user_id = " . $this->quote(Registry::get('_auth')->user_id) . "
+              OR
+              access.group_id = " . $this->quote(Registry::get('_auth')->group_id) . "
+            )
+          )")->fetchAll();
 
-            $this->_siteMap = $this->database->query("
-          SELECT t1.id, t1.pid, t1.segment, t1.view, t1.layout, t1.module, t1.controller, t1.action, t1.title, t1.visible
-          FROM core_sitemap t1
-          LEFT JOIN core_auth_access t2
-           ON t1.id = t2.smap_id
-            AND (t2.user_id = " . $this->database->quote(Registry::get('_auth')->user_id) . "
-            OR t2.group_id = " . $this->database->quote(Registry::get('_auth')->group_id) . ")
-          WHERE t2.smap_id IS NULL OR (NOT t2.smap_id IS NULL AND t2.right <> '0')
-              ")
-                ->fetchAll();
+        // ToDo add static route for controllers
+        $this->addSystemPage([
+            'resizer' => 'helpers',
+            'error' => 'helpers',
+            'files' => 'helpers',
+        ]);
 
-            // ToDo add static route for controllers
-            $this->addSystemPage([
-                'resizer' => 'helpers',
-                'error' => 'helpers',
-                'files' => 'helpers',
-            ]);
-
-            Cache::set('_siteMap', $this->_siteMap);
-        }
-
-        $this->siteTree = Cache::get('siteTree');
-        if(empty($this->siteTree)){
-            $this->each();
-            $this->siteTree = $this->get();
-            Cache::set('siteTree', $this->siteTree);
-        }
+        $this->each();
+        $this->siteTree = $this->_three;
 
         if (isset($_GET['url'])) {
             $url = rtrim($_GET['url'], '/');
@@ -116,15 +107,6 @@ class Route extends Db
                 ]
             );
         }
-    }
-
-    /**
-     *
-     * @return array
-     */
-    private function get()
-    {
-        return $this->_three;
     }
 
     /**

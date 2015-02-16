@@ -23,8 +23,15 @@ class helpers extends \Controller {
             header("Location: /error/400");
             exit;
         }
-
         \Image::resizer();
+        /*
+        $file = isset($_REQUEST['src'])?\Registry::get('_config')['path']['share_files'].'/'.$_REQUEST['src']:'../data/no_image.jpg';
+        $width = isset($_REQUEST['w'])?$_REQUEST['w']:0;
+        $height = isset($_REQUEST['h'])?$_REQUEST['h']:0;
+        $img = new \Image();
+        $resized = $img->resize($file, $width, $height);
+        $img->send($resized);
+        */
     }
 
     function error($params){
@@ -83,7 +90,7 @@ class helpers extends \Controller {
         if(!isset($params[0])) header("Location: /error/404");
         if(file_exists(\Registry::get('_config')['path']['share_files'].$path)){
             $file = new \Download(\Registry::get('_config')['path']['share_files'].$path);
-            $file->download_file();
+            $file->download();
         } else {
             $model = new \App\Core\Model\helpers();
             if ($real = $model->getFileHash($path)){

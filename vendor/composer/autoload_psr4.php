@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
+    'App\\' => array($baseDir . '/app'),
 );

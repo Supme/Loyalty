@@ -28,7 +28,7 @@ class sender extends \Table
      */
     function getCampaigns( $lenght, $start = 0 )
     {
-        return $this->database->select(
+        return $this->select(
             'sender_campaigns',
             '*',
             [
@@ -53,7 +53,7 @@ class sender extends \Table
     {
         if ($time == false) $time = time();
         if ($id != false ) {
-            $result = $this->database->update( 'sender_campaigns',
+            $result = $this->update( 'sender_campaigns',
                 [
                     'name' => $name,
                     'subject' => $subject,
@@ -65,7 +65,7 @@ class sender extends \Table
                 ]
             );
         } else {
-            $result = $this->database->insert( 'sender_campaigns',
+            $result = $this->insert( 'sender_campaigns',
                 [
                     'name' => $name,
                     'subject' => $subject,
@@ -89,13 +89,13 @@ class sender extends \Table
     function getRecipients( $lenght, $start = 0 )
     {
 
-        $data =  $this->database->select(
+        $data =  $this->select(
             'sender_recipient',
             ["id"],
             ['campaign_id' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
         $recipient = [];
         foreach($data as $id){
-            $params = $this->database->select(
+            $params = $this->select(
                 'sender_params',
                 [
                     'name',
@@ -127,11 +127,11 @@ class sender extends \Table
      */
     function addRecipients( $data )
     {
-        if( is_array( $this->database->select( 'sender_campaigns', '*', ['id' => $this->campaignId] ) ) ){
+        if( is_array( $this->select( 'sender_campaigns', '*', ['id' => $this->campaignId] ) ) ){
             foreach($data as $recipient){
-                $id = $this->database->insert('sender_recipient',['campaignId'=>$this->campaignId]);
+                $id = $this->insert('sender_recipient',['campaignId'=>$this->campaignId]);
                 foreach($recipient as $name => $value){
-                    $this->database->insert( 'sender_params',
+                    $this->insert( 'sender_params',
                         [
                             'recipient_id' => $id,
                             'name' => $name,
@@ -145,12 +145,12 @@ class sender extends \Table
 
     function column()
     {
-        $data = $this->database->query(
+        $data = $this->query(
                 'SELECT DISTINCT sp.name
                   FROM sender_params sp
                   INNER JOIN sender_recipient sr
                   ON sr.id=sp.recipient_id
-                  AND sr.campaign_id='.$this->database->quote((int)$this->campaignId)
+                  AND sr.campaign_id='.$this->quote((int)$this->campaignId)
             )
             ->fetchAll();
         $result = [];
@@ -165,14 +165,14 @@ class sender extends \Table
 
     function data( $start, $lenght, $order, $filter )
     {
-        $data =  $this->database->select(
+        $data =  $this->select(
             'sender_recipient',
             ["id"],
             ['campaign_id' => $this->campaignId, 'LIMIT' => [$start, $lenght]]);
         $recipient = [];
         $i = 0;
         foreach($data as $id){
-            $params = $this->database->select(
+            $params = $this->select(
                 'sender_params',
                 [
                     'name',
@@ -191,7 +191,7 @@ class sender extends \Table
 
     function total()
     {
-        return $this->database->count(
+        return $this->count(
             'sender_recipient',
             ["id"],
             ['campaign_id' => $this->campaignId]);

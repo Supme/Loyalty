@@ -77,7 +77,7 @@
                 <ul class="dropdown-menu dropdown-messages">
                     {% for name, item in _menu %}
                     <li>
-                        <a {% for param, value in item %} {{ param }}='{{ value }}'{% endfor %}>{{ name }}</a>
+                        <a {% for param, value in item %} {{ param }}='{{ value }}'{% endfor %}>{{ _lang.get(name) }}</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -145,24 +145,24 @@
                 <ul class="nav" id="side-menu">
 
                     <li{% if map.segment == _page.segment %} class="active"{% endif %}>
-                        <a href="{{ _config.site.url }}{{ _siteTree.0.segment }}">{{ _siteTree.0.title }}</a>
+                        <a href="{{ _config.site.url }}{{ _siteTree.0.segment }}/">{{ _lang.get(_siteTree.0.title) }}</a>
                     </li>
 
                     {% for link in _siteTree.0.childs if link.visible%}
                         <li>
-                            <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}">{{ link.title }}</a>
+                            <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/">{{ _lang.get(link.title) }}</a>
 
                             {% if link.childs %}
                                 <ul class="nav nav-second-level">
                                     {% for lin in link.childs if lin.visible%}
                                         <li>
-                                            <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}">{{ lin.title }}</a>
+                                            <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/">{{ _lang.get(lin.title) }}</a>
 
                                             {% if lin.childs %}
                                                 <ul class="nav nav-third-level">
                                                     {% for li in lin.childs if li.visible %}
                                                         <li>
-                                                            <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}">{{ li.title }}</a>
+                                                            <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}/">{{ _lang.get(li.title) }}</a>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
@@ -171,7 +171,6 @@
                                         </li>
                                     {% endfor %}
                                 </ul>
-
                         </li>
                         {% endif %}
                     {% endfor %}

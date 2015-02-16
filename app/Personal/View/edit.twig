@@ -1,0 +1,134 @@
+<script type="text/javascript">
+    $(function () {
+        var img = new ImageUploader({
+            img: $("#img"),
+            loaderURL: "/assets/imguploader/images/loader.gif",
+
+            targetWidth: 480,
+            targetHeight: 640,
+
+            hidden: $("#url"), //для сохранения ссылки на картинку
+
+            cropURL: "../crop",
+            cropParams: {},
+
+            uploadURL: "../upload",
+            uploadParams: {},
+
+            allowedExtensions: ["jpg", "jpeg", "gif", "png"],
+
+            uploadBtn: $("#uploadHolder"),
+            deleteBtn: $("#deleteBtn"),
+            cropBtn: $("#cropBtn")
+        });
+
+        img.remove();
+    });
+</script>
+
+<style type="text/css">
+    #uploadHolder, #cropBtn, #deleteBtn {
+        float: left;
+    }
+    #uploadBtn, #cropBtn, #deleteBtn {
+        border-style: solid;
+        border-color: black;
+    }
+
+    #uploadHolder:hover #uploadBtn, #cropBtn:hover, #deleteBtn:hover {
+        border-color: #999;
+    }
+</style>
+
+<form method="POST" class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>{{ data.action }} personal</legend>
+
+            <input type="hidden" name="id" value="{{ data.id }}">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="department">Department</label>
+                <div class="col-md-6">
+                    <select id="department" name="department" class="form-control">
+                        {% for key, department in departments %}
+                            <option value="{{ key }}"{% if data.department_id == key %} selected{% endif %}>{{ department }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="name">Name</label>
+                <div class="col-md-4">
+                    <input id="name" name="name" placeholder="" class="form-control input-md" type="text"{% if data.name %} value="{{ data.name }}" {% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="name">Photo</label>
+                <div class="col-md-4">
+                    <div id="uploadHolder"><input id="uploadBtn" type="button" value="Загрузить" /></div>
+                    <input id="cropBtn" type="button" value="Обрезать"/>
+                    <input id="deleteBtn" type="button" value="Удалить" />
+                    <input type="text" id="url" readonly="readonly" style="width:300px" name="photo"{% if data.photo %} value="{{ data.photo }}"{% endif %}/>
+                    <div><img id="img"/></div>
+                </div>
+            </div>
+
+                    <div class="form-group">
+                <label class="col-md-2 control-label" for="position">Position</label>
+                <div class="col-md-4">
+                    <input id="position" name="position" placeholder="" class="form-control input-md" type="text"{% if data.position %} value="{{ data.position }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="function">Function</label>
+                <div class="col-md-8">
+                    <input id="function" name="function" placeholder="" class="form-control input-md" type="text"{% if data.function %} value="{{ data.function }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="email">Email</label>
+                <div class="col-md-4">
+                    <input id="email" name="email" placeholder="" class="form-control input-md" type="text"{% if data.email %} value="{{ data.email }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="birthday">Birthday</label>
+                <div class="col-md-4">
+                    <input id="birthday" name="birthday" placeholder="" class="form-control input-md" type="text"{% if data.birthday %} value="{{ data.birthday }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="telephone_internal">Telephone int</label>
+                <div class="col-md-4">
+                    <input id="telephone_internal" name="telephone_internal" placeholder="" class="form-control input-md" type="text"{% if data.telephone_internal %} value="{{ data.telephone_internal }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="telephone_mobile">Telephone mob</label>
+                <div class="col-md-4">
+                    <input id="telephone_mobile" name="telephone_mobile" placeholder="" class="form-control input-md" type="text"{% if data.telephone_mobile %} value="{{ data.telephone_mobile }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="telephone_external">Telephone ext</label>
+                <div class="col-md-4">
+                    <input id="telephone_external" name="telephone_external" placeholder="" class="form-control input-md" type="text"{% if data.telephone_external %} value="{{ data.telephone_external }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="change">Change</label>
+                <div class="col-md-8">
+                    <input id="change" name="change" placeholder="" class="form-control input-md" type="text"{% if data.change %} value="{{ data.change }}" {% endif %}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="submit_add_personal"></label>
+                <div class="col-md-4">
+                    <button id="submit_add_personal" name="submit_add_personal" class="btn btn-info" value="yes">{{ data.action }}</button>
+                    <button id="submit_del_personal" name="submit_del_personal" class="btn btn-warning" value="yes">Delete</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>

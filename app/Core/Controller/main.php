@@ -19,30 +19,31 @@ namespace App\Core\Controller;
 class Main extends \Controller
 {
 
-    function __init(){
-        $this->content = new \App\Core\Model\content();
-    }
     public function index()
     {
-        if (\Registry::get('_auth')->edit){
+        $content = new \App\Core\Model\content();
+        if (isset($_POST['save']) && \Registry::get('_auth')->edit) {
+            $content->edit($_POST['position'], $_POST['text']);
+            echo 'Ok';
+        } else {
+            if (\Registry::get('_auth')->edit){
 
-            \Registry::css([
-                "/css/loyalty.css"
-            ]);
+                \Registry::css([
+                    "/assets/ly/css/loyalty.css"
+                ]);
 
-            \Registry::js([
-                "/js/jquery.datetimepicker.js",
-                "/js/tinymce/tinymce.min.js",
-                "/js/loyalty.js",
-            ]);
+                \Registry::js([
+                    "/assets/ly/js/jquery.datetimepicker.js",
+                    "/assets/ly/js/tinymce/tinymce.min.js",
+                    "/assets/ly/js/loyalty.js",
+                ]);
 
-            \Registry::menu([
-                'Edit' => [
-                    'onclick'=>'edit()',
-                ]
-            ]);
-
-        }
+                \Registry::menu([
+                    'Edit' => [
+                        'onclick'=>'edit()',
+                    ]
+                ]);
+            }
 
         \Registry::notification([
             'info' => [
@@ -60,6 +61,7 @@ class Main extends \Controller
             ],
         ]);
 
-        $this->render(['result' => $this->content->get()]);
+        $this->render(['result' => $content->load()]);
+        }
     }
 }

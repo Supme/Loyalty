@@ -20,36 +20,36 @@ class init extends \Db
 {
     function isInstalled()
     {
-        return $this->database->count("sqlite_master",["name[~]" => "core_%"])==10?true:false;
+        return $this->tables("core_%")==10?true:false;
     }
 
     function install()
     {
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_auth_group" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "name" text NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_files" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "file" text(255) NOT NULL,
   "hash" text(255) NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_lang_locales" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "code" text NOT NULL,
   "name" text NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_lang_translation" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "locales_id" integer NOT NULL,
   "key" text NOT NULL,
   "value" text NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_sitemap" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "pid" integer NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE "core_sitemap" (
   "title" text NULL,
   "visible" integer NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_news" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "smap_id" integer NULL,
@@ -71,7 +71,7 @@ CREATE TABLE "core_news" (
   "text" text NULL,
   "date" integer NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_content" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "smap_id" integer NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE "core_content" (
   "position" integer NOT NULL,
   "text" text NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_auth_access" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "smap_id" integer NOT NULL,
@@ -87,12 +87,12 @@ CREATE TABLE "core_auth_access" (
   "group_id" integer NULL,
   "right" integer NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_auth_login" (
   "user_id" integer NOT NULL,
   "time" text NOT NULL
 );');
-        $this->database->query('
+        $this->query('
 CREATE TABLE "core_auth_user" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "group_id" integer NULL,
@@ -103,7 +103,7 @@ CREATE TABLE "core_auth_user" (
 );');
 
         // Create groups and administrator account
-        $this->database->insert("core_auth_user",[
+        $this->insert("core_auth_user",[
             "group_id"  =>  0,
             "name"      =>  "Test User",
             "email"     =>  "test@example.com",
@@ -111,23 +111,23 @@ CREATE TABLE "core_auth_user" (
             "salt"      =>  "f9aab579fc1b41ed0c44fe4ecdbfcdb4cb99b9023abb241a6db833288f4eea3c02f76e0d35204a8695077dcf81932aa59006423976224be0390395bae152d4ef",
             ]);
 
-        $this->database->insert("core_auth_group",[
+        $this->insert("core_auth_group",[
             "id"    =>  0,
             "name"  =>  "Administrators",
             ]);
 
-        $this->database->insert("core_auth_group",[
+        $this->insert("core_auth_group",[
             "id"    =>  1,
             "name"  =>  "Editors",
         ]);
 
-        $this->database->insert("core_auth_group",[
+        $this->insert("core_auth_group",[
             "id"    =>  2,
             "name"  =>  "Members",
         ]);
 
         // Site map data
-        $this->database->insert("core_sitemap",[
+        $this->insert("core_sitemap",[
             "id"            => 1,
             "pid"           => 0,
             "segment"       => "main",
@@ -140,7 +140,7 @@ CREATE TABLE "core_auth_user" (
             "visible"       => true,
         ]);
 
-        $this->database->insert("core_sitemap",[
+        $this->insert("core_sitemap",[
             "id"            => 2,
             "pid"           => 1,
             "segment"       => "news",
@@ -153,7 +153,7 @@ CREATE TABLE "core_auth_user" (
             "visible"       => true,
         ]);
 
-        $this->database->insert("core_sitemap",[
+        $this->insert("core_sitemap",[
             "id"            => 3,
             "pid"           => 1,
             "segment"       => "content",
@@ -166,7 +166,7 @@ CREATE TABLE "core_auth_user" (
             "visible"       => true,
         ]);
 
-        $this->database->insert("core_sitemap",[
+        $this->insert("core_sitemap",[
             "id"            => 4,
             "pid"           => 1,
             "segment"       => "login",
@@ -180,35 +180,35 @@ CREATE TABLE "core_auth_user" (
         ]);
 
         // Text demo data
-        $this->database->insert("core_content",[
+        $this->insert("core_content",[
             "smap_id"           => 1,
             "lang_id"       => 1,
             "position"        => 1,
             "text"          => "<h1>Loyalty programm<br></h1><p>Intranet portal for DMBasis company.<br></p>",
         ]);
 
-        $this->database->insert("core_content",[
+        $this->insert("core_content",[
             "smap_id"           => 1,
             "lang_id"       => 1,
             "position"        => 2,
             "text"          => "<h3>Block 1</h3><p>This is text of block.</p>",
         ]);
 
-        $this->database->insert("core_content",[
+        $this->insert("core_content",[
             "smap_id"           => 1,
             "lang_id"       => 1,
             "position"        => 3,
             "text"          => "<h3>Block 2</h3><p>This is text of block.</p>",
         ]);
 
-        $this->database->insert("core_content",[
+        $this->insert("core_content",[
             "smap_id"           => 1,
             "lang_id"       => 1,
             "position"        => 4,
             "text"          => "<h3>Block 3</h3><p>This is text of block.</p>",
         ]);
 
-        $this->database->insert("core_content",[
+        $this->insert("core_content",[
             "smap_id"           => 3,
             "lang_id"       => 1,
             "position"        => 1,

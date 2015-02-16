@@ -34,9 +34,15 @@
                 {% for kpeople,people in department %}
                     <tr>
                         <td>
-                            {{ kpeople }}<br/>
+                            {% if _user.edit %}
+                                <a href="./edit/{{ people.id }}">{{ kpeople }}</a>
+                            {% else %}
+                                {{ kpeople }}
+                            {% endif %}
+
+                            <br/>
                             {% if people.photo %}
-                                <img src="{{ _config.site.url }}resizer?src=/personal/{{ people.photo }}&w=150&h=200" type="button" data-toggle="modal" data-target="#Modal" onclick="modalPhoto('{{ kpeople }}','{{ _config.site.url }}resizer?src=/personal/{{ people.photo }}&w=480&h=640')"/>
+                                <img src="{{ _config.site.url }}resizer?src=/personal/{{ people.photo }}&w=75&h=100" type="button" data-toggle="modal" data-target="#Modal" onclick="modalPhoto('{{ kpeople }}','{{ _config.site.url }}resizer?src=/personal/{{ people.photo }}&w=480&h=640')"/>
                             {% endif %}
                         </td>
                         <td>

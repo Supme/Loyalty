@@ -26,7 +26,7 @@ try{
     // what time is it?
     $start = microtime(true);
 
-    $loader = require '../vendor/autoload.php';
+    require '../vendor/autoload.php';
 
     // load application config
     if(file_exists('../config.ini'))
@@ -49,5 +49,6 @@ if(Registry::get('_config')['site']['debug']){
     printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
     Registry::log(Cache::log());
     var_dump( array_reverse ( Registry::log() ) );
+    var_dump($_SESSION);
     echo "</pre>";
 }

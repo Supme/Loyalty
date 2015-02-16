@@ -14,7 +14,8 @@
  *
  */
 
-class Download {
+class Download extends Db
+{
 
     /* Example
     $file = new Download("example.zip");                             // use the original file name, disallow resuming, no speed limit
@@ -36,8 +37,9 @@ class Download {
     );
 
     // the constructor
-    public function __construct($path, $name="", $resume="off", $max_speed=0){  // by default, resuming is NOT allowed and there is no speed limit
-        $name = ($name == "") ? substr(strrchr("/".$path,"/"),1) : $name;       // if "name" is not specified, th file won't be renamed
+    public function __construct($path, $name="", $resume="off", $max_speed=0)   // by default, resuming is NOT allowed and there is no speed limit
+    {
+        $name = ($name == "")? substr(strrchr("/".$path,"/"),1) : $name;       // if "name" is not specified, the file won't be renamed
 
         $file_extension = strtolower(substr(strrchr($path,"."),1));             // the file extension
         $content_type = mime_content_type($path);
@@ -69,7 +71,8 @@ class Download {
     }
 
     // public function to get the value of a property
-    public function get_property ($property){
+    public function get_property ($property)
+    {
         if ( array_key_exists($property,$this->properties) )   // check if the property do exist
             return $this->properties[$property];               // get its value
         else
@@ -77,7 +80,8 @@ class Download {
     }
 
     // public function to set the value of a property
-    public function set_property ($property, $value){
+    public function set_property ($property, $value)
+    {
         if ( array_key_exists($property, $this->properties) ){ // check if the property do exist
             $this->properties[$property] = $value;             // set the new value
             return true;
@@ -85,8 +89,18 @@ class Download {
             return false;
     }
 
+    public function getFileHash($name){
+        if ($this->has('files', ['file' => $name])){
+            $hash = $this->select('files', 'hash', ['file' => $name])[0];
+            return $hash;
+        } else {
+            return false;
+        };
+    }
+
     // public function to start the download
-    public function download_file(){
+    public function download()
+    {
         if ( $this->properties['path'] == "" )                 // if the path is unset, then error !
             echo "Nothing to download!";
         else {
@@ -155,5 +169,10 @@ class Download {
             fclose($fp);                                    // close the file
             exit;
         }
+    }
+
+    public function upload()
+    {
+
     }
 }

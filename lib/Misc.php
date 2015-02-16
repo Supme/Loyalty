@@ -14,12 +14,19 @@
  *
  */
 
-namespace App\Core\Model;
+class Misc {
+    protected function __construct() {}
+    protected function __clone() {}
 
-class test extends \Db
-{
-    function q($sql)
+    public static function randomString($lenght = 128)
     {
-        return $this->database->query($sql);
+        $characterList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $num = 0;
+        $string = "";
+        while ($num < $lenght) {
+            $string .= $characterList{mt_rand(0, (strlen($characterList) - 1))};
+            $num++;
+        }
+        return $string;
     }
 } 

@@ -16,7 +16,8 @@
 class Auth extends Db
 {
     public
-        $user = 'Guest',
+        $login = 'guest',
+        $name = 'Guest',
         $isLogin = false,
         $group,
         $right = false,
@@ -63,23 +64,21 @@ class Auth extends Db
         session_regenerate_id();    // regenerated the session, delete the old one.
     }
 
-    public function login($email, $password)
+    public function login($login, $password)
     {
-
-        //$db_password = '';
-        //$salt = '';
         // Using prepared statements means that SQL injection is not possible.
-        $query = $this->database->pdo->prepare("
-              SELECT t1.id AS id, t1.name AS name, t1.password AS password, t1.salt AS salt, t2.name AS 'group'
+        $query = $this->pdo->prepare("
+              SELECT t1.id AS id, t1.login AS login, t1.name AS name, t1.password AS password, t1.salt AS salt, t2.name AS 'group'
               FROM core_auth_user t1
               LEFT JOIN core_auth_group t2 ON t1.group_id = t2.id
-              WHERE t1.email = ?
+              WHERE t1.email = ? OR t1.login = ?
               LIMIT 1");
 
-        $result = $query->execute([$email]);    // Execute the prepared query.
+        $result = $query->execute([$login, $login]);    // Execute the prepared query.
 
         // get variables from result.
         $query->bindColumn('id',$this->user_id);
+        $query->bindColumn('login', $this->login);
         $query->bindColumn('name', $this->name);
         $query->bindColumn('group', $this->group);
         $query->bindColumn('password', $db_password);
@@ -106,8 +105,8 @@ class Auth extends Db
                     $this->user_id = preg_replace("/[^0-9]+/", "", $this->user_id);
                     $_SESSION['user_id'] = (int)$this->user_id;
                     // XSS protection as we might print this value
-                    $this->name = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $this->name);
-                    $_SESSION['username'] = $this->name;
+                    $this->login = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $this->login);
+                    $_SESSION['userlogin'] = $this->login;
                     $_SESSION['login_string'] = hash('sha512',$password.$user_browser);
                     // Login successful.
                     $this->isLogin = true;
@@ -115,7 +114,7 @@ class Auth extends Db
                     // Password is not correct
                     // We record this attempt in the database
                     $now = time();
-                    $this->database->pdo->exec("INSERT INTO core_auth_login(user_id, time) VALUES ('$this->user_id', '$now')");
+                    $this->pdo->exec("INSERT INTO core_auth_login(user_id, time) VALUES ('$this->user_id', '$now')");
                     $this->isLogin = false;
                 }
             }
@@ -146,6 +145,7 @@ class Auth extends Db
         // Destroy session
         session_destroy();
 
+        $this->login = 'guest';
         $this->name = 'Guest';
         $this->isLogin = false;
     }
@@ -158,7 +158,7 @@ class Auth extends Db
         // All login attempts are counted from the past 2 hours.
         $valid_attempts = $now - (2 * 60 * 60);
 
-        if ($query = $this->database->pdo->prepare("SELECT COUNT(*) FROM core_auth_login WHERE user_id = ? AND time > ?")
+        if ($query = $this->pdo->prepare("SELECT COUNT(*) FROM core_auth_login WHERE user_id = ? AND time > ?")
         ) {
             // Execute the prepared query.
             $query->execute([$this->user_id, $valid_attempts]);
@@ -176,12 +176,11 @@ class Auth extends Db
 
     private function login_check() {
 
-        //$db_password = '';
         $this->isLogin = false;
 
         // Check if all session variables are set
         if (isset($_SESSION['user_id'],
-        $_SESSION['username'],
+        $_SESSION['userlogin'],
         $_SESSION['login_string'])) {
 
             $this->user_id = $_SESSION['user_id'];
@@ -190,14 +189,15 @@ class Auth extends Db
             // Get the user-agent string of the user.
             $user_browser = $_SERVER['HTTP_USER_AGENT'];
 
-            if ($query = $this->database->pdo->prepare("
-            SELECT t1.name AS name, t1.password AS password, t1.group_id AS group_id, t2.name AS group_name
+            $query = $this->pdo->prepare("
+            SELECT t1.login AS login, t1.name AS name, t1.password AS password, t1.group_id AS group_id, t2.name AS group_name
               FROM core_auth_user t1
               LEFT JOIN core_auth_group t2 ON t1.group_id = t2.id
               WHERE t1.id = ?
-              ")
-            ) {
+            ");
+
                 $query->execute([$this->user_id]);
+                $query->bindColumn('login', $this->login);
                 $query->bindColumn('name', $this->name);
                 $query->bindColumn('password', $db_password);
                 $query->bindColumn('group_id', $this->group_id);
@@ -205,7 +205,7 @@ class Auth extends Db
                 $query->fetch();
 
                 $password = trim($db_password);
-                if ($this->name == $_SESSION['username']) {
+                if ($this->login == $_SESSION['userlogin']) {
                     $login_check = hash('sha512', $password.$user_browser);
                     if ($login_check == $login_string) {
                         // Logged In!!!!
@@ -213,7 +213,6 @@ class Auth extends Db
 
                     }
                 }
-            }
         }
 
         return $this->isLogin;
@@ -229,7 +228,7 @@ class Auth extends Db
             $this->delete = true;
         } else {
 
-            $query = $this->database->pdo->prepare("SELECT right FROM core_auth_access WHERE (user_id = ? OR group_id = ?) AND smap_id = ?");
+            $query = $this->pdo->prepare("SELECT right FROM core_auth_access WHERE (user_id = ? OR group_id = ?) AND smap_id = ?");
             $query->execute([$this->user_id, $this->group_id, $smap_id]);
             $query->bindColumn('right', $this->right);
             $query->fetch();
@@ -271,6 +270,44 @@ class Auth extends Db
         return $this->right;
     }
 
+    public function addUser($login, $name, $email, $password, $group)
+    {
+        $error = [];
+
+        if (!\Validator::alnum()->validate($login) or $login == '') $error[] = 'Not valid login';
+        if (!\Validator::alnum()->validate($name) or $name == '') $error[] = 'Not valid name';
+        if (!\Validator::email()->validate($email)) $error[] = 'Not valid email';
+        if (!\Validator::int()->validate($group)) $error[] = 'Not valid group';
+
+        if (count($error) == 0){
+            $salt = \Misc::randomString();
+            $password = hash('sha512', $password.$salt);
+            $this->insert('core_auth_user',
+                [
+                    'group_id'  =>  $group,
+                    'login'     =>  $login,
+                    'email'     =>  $email,
+                    'name'      =>  $name,
+                    'password'  =>  $password,
+                    'salt'      =>  $salt
+                ]);
+            $result = true;
+        } else {
+            $result['danger'] = $error;
+        }
+
+        return $result;
+    }
+
+    public function deleteUser($id)
+    {
+
+    }
+
+    public function getGroups()
+    {
+        return $this->select('core_auth_group', ['id','name']);
+    }
     /*private function esc_url($url) {
 
         if ('' == $url) {

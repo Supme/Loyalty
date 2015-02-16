@@ -16,16 +16,17 @@
 
 namespace App\Personal\Model;
 
-class personal extends \Model{
-
-    function departments(){
+class personal extends \Db
+{
+    function departments()
+    {
         $result = [];
-        $cities = $this->database->select( 'personalCity', '*' );
+        $cities = $this->select( 'personal_office', '*' );
         foreach($cities as $city){
-            $departments = $this->database->select(
+            $departments = $this->select(
                 'personal_department',
                 '*',
-                ['city_id' => $city['id']]
+                ['office_id' => $city['id']]
             );
             foreach($departments as $department){
                 $result[$department['id']] = $city['name'].' '.$department['name'];
@@ -35,14 +36,15 @@ class personal extends \Model{
         return $result;
     }
 
-    function get(){
+    function load()
+    {
         $result = \Cache::get('modPersonal');
         if(empty($result)){
-            $city = $this->database->select( 'personal_city', '*' );
+            $city = $this->select( 'personal_office', '*' );
             foreach($city as $kc => $c){
-                $departament = $this->database->select( 'personal_department', '*', ['city_id' => $c['id']] );
+                $departament = $this->select( 'personal_department', '*', ['office_id' => $c['id']] );
                 foreach($departament as $kd => $d){
-                    $people = $this->database->select('personal_people', '*', ['department_id' => $d['id']]);
+                    $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name ASC",]);
                     foreach($people as $kp => $p){
                         $result[$c['name']][$d['name']][$p['name']] = $p;
                     }
@@ -52,5 +54,60 @@ class personal extends \Model{
         }
 
         return $result;
+    }
+
+    function personal($id)
+    {
+        $data = $this->select('personal_people','*', ['id' => (int)$id]);
+        return isset($data[0])?$data[0]:[];
+    }
+
+    function edit($data='')
+    {
+        if ($data['id'] != '')
+        {
+            if($data['photo'] == '') $data['photo'] = $this->select('personal_people','photo', ['id' => (int)$data['id']])[0];
+            print_r($data['photo']);
+            $this->update(
+                'personal_people',
+                [
+                    'department_id' => $data['department_id'],
+                    'name' => $data['name'],
+                    'photo' => $data['photo'],
+                    'position' => $data['position'],
+                    'function' => $data['function'],
+                    'email' => $data['email'],
+                    'birthday' => $data['birthday'],
+                    'telephone_internal' => $data['telephone_internal'],
+                    'telephone_mobile' => $data['telephone_mobile'],
+                    'telephone_external' => $data['telephone_external'],
+                    'change' => $data['change']
+                ],
+                ['id' => $data['id']]
+                );
+        } else {
+            $this->insert(
+                'personal_people',
+                [
+                    'department_id' => $data['department_id'],
+                    'name' => $data['name'],
+                    'photo' => $data['photo'],
+                    'position' => $data['position'],
+                    'function' => $data['function'],
+                    'email' => $data['email'],
+                    'birthday' => $data['birthday'],
+                    'telephone_internal' => $data['telephone_internal'],
+                    'telephone_mobile' => $data['telephone_mobile'],
+                    'telephone_external' => $data['telephone_external'],
+                    'change' => $data['change']
+                ]
+
+            );
+        }
+    }
+
+    function del($id)
+    {
+        $this->delete('personal_people', ['id' => (int)$id]);
     }
 }

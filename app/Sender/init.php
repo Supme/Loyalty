@@ -19,6 +19,7 @@ namespace App\Sender;
 class init extends \Db
 {
     function isInstalled(){
-        return $this->database->count("sqlite_master",["name[~]" => "sender_%"])==10?true:false;
+        return true;
+        //return $this->count("sqlite_master",["name[~]" => "sender_%"])==10?true:false;
     }
 } 
