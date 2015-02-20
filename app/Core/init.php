@@ -20,7 +20,7 @@ class init extends \Db
 {
     function isInstalled()
     {
-        return $this->tables("core_%")==10?true:false;
+        return true; //$this->tables("core_%")==11?true:false;
     }
 
     function install()

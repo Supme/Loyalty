@@ -53,7 +53,8 @@ class Route extends Db
         $this->addSystemPage([
             'resizer' => 'helpers',
             'error' => 'helpers',
-            'files' => 'helpers',
+            'files' => 'files',
+            'fm' => 'files',
         ]);
 
         $this->each();

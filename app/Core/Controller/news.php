@@ -23,12 +23,13 @@ class news extends \Controller {
         $this->news_model = new \App\Core\Model\news();
     }
 
-    function index($params){
+    function index($params)
+    {
 
-        if (isset($_POST["save"])) {
+        if (isset($params[0]) and $params[0] == 'edit') {
             $this->edit($params);
         } else {
-            switch (count($params)){
+            switch (count($params)) {
                 case 1:
                     $this->render([
                         'news' => $this->news_model->load($params[0]),
@@ -61,7 +62,30 @@ class news extends \Controller {
         else
             if(!\Registry::get('_auth')->edit) header('location: ' . URL . '403');
 
-            $this->news_model->edit($_POST["title"], $_POST["text"]);
+        \Registry::$store['_page']['view'] = 'news_edit';
+
+        \Registry::css([
+            "/assets/ly/css/datepicker.css",
+            "/assets/elfinder/css/elfinder.min.css"
+        ]);
+
+        \Registry::js([
+            "/assets/ly/js/bootstrap-datepicker.js",
+            "/assets/tinymce/tinymce.min.js",
+            "/assets/elfinder/js/elfinder.min.js",
+            ]);
+
+        if(isset($params[1]))
+        {
+           $value = $this->news_model->load((int)$params[1]);
+        } else {
+            $value = [];
+        }
+
+        $this->render([
+            'value' => $value,
+        ]);
+            //$this->news_model->edit($_POST["title"], $_POST["text"]);
     }
 
 }

@@ -52,3 +52,8 @@ if(Registry::get('_config')['site']['debug']){
     var_dump($_SESSION);
     echo "</pre>";
 }
+/* elfinder
+function fileAccess($attr, $path, $data, $volume) {
+    return \App\Core\Controller\files::access($attr, $path, $data, $volume);
+}
+*/

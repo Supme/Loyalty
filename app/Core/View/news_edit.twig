@@ -1,3 +1,72 @@
-<div class="content" positionId="title">
-    Title
-</div>
+<script>
+    tinymce.init({
+        selector:'textarea',
+        elements : "announce, text",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image",
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu paste"
+        ],
+        theme: "modern",
+        file_browser_callback : fm
+    });
+
+    function fm(field_name, url, type, win) {
+        tinymce.activeEditor.windowManager.open({
+            file: '/fm',
+            title: 'Browser',
+            width: 900,
+            height: 600,
+            resizable: 'yes'
+        }, {
+            setUrl: function (url) {
+                win.document.getElementById(field_name).value = url.url;
+            }
+        });
+        return false;
+    }
+
+</script>
+
+<form action="#" method="POST" class="form-horizontal">
+    <fieldset>
+
+        <legend>{{ _lang.get('News_editor') }}</legend>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input id="title" name="title" placeholder="" class="form-control input-md" required="" type="text" value="{{ value.title }}">
+                <span class="help-block">{{ _lang.get('News_title') }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input id="date" name="date" placeholder="" class="form-control input-md" required="" type="text" value="{{ value.date|date('d/m/Y H:i:s') }}">
+                <span class="help-block">{{ _lang.get('News_date') }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <textarea class="form-control" id="announce" name="announce"  rows="10">{{ value.announce|raw }}</textarea>
+                <span class="help-block">{{ _lang.get('News_announce') }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <textarea class="form-control" id="text" name="text" rows="20">{{ value.text|raw }}</textarea>
+                <span class="help-block">{{ _lang.get('News_full_text') }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <button id="submit_news" name="submit_news" class="btn btn-default">{{ _lang.get('Submit') }}</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

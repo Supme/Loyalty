@@ -82,25 +82,4 @@ class helpers extends \Controller {
         header('HTTP/1.0 '.$params[0].' '.$HTTPcode[$params[0]]);
         echo 'Error: '.$HTTPcode[$params[0]];
     }
-
-    function files($params){
-
-        $path = str_replace('..','',implode('/',$params));
-
-        if(!isset($params[0])) header("Location: /error/404");
-        if(file_exists(\Registry::get('_config')['path']['share_files'].$path)){
-            $file = new \Download(\Registry::get('_config')['path']['share_files'].$path);
-            $file->download();
-        } else {
-            $model = new \App\Core\Model\helpers();
-            if ($real = $model->getFileHash($path)){
-                $name = substr(strrchr($real, "/"), 1);
-                $file = new \Download(\Registry::get('_config')['path']['private_files'].$real, $name);
-                $file->download_file();
-            } else {
-                header("Location: /error/404");
-            }
-        }
-    }
-
 }
