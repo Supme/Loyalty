@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ZipMerge\\' => array($vendorDir . '/grandt/phpzipmerge/src/ZipMerge'),
     'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
+    'PHPZip\\Zip\\' => array($vendorDir . '/phpzip/phpzip/src/Zip'),
     'App\\' => array($baseDir . '/app'),
 );

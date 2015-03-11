@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fa8d696911696b0ac1c45967e1b8988f",
+    "hash": "5a49acc148e3e37d7ac408799232614f",
     "packages": [
         {
             "name": "catfan/medoo",
@@ -106,17 +106,218 @@
             "time": "2014-08-25 14:45:02"
         },
         {
-            "name": "respect/validation",
-            "version": "0.7.6",
+            "name": "grandt/binstring",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Respect/Validation.git",
-                "reference": "fa90e9a96c350bef64b2cce3d31cbbb85187baa9"
+                "url": "https://github.com/Grandt/PHPBinString.git",
+                "reference": "fc619d3eb291cd953166e0143c43ca2b3137622f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/fa90e9a96c350bef64b2cce3d31cbbb85187baa9",
-                "reference": "fa90e9a96c350bef64b2cce3d31cbbb85187baa9",
+                "url": "https://api.github.com/repos/Grandt/PHPBinString/zipball/fc619d3eb291cd953166e0143c43ca2b3137622f",
+                "reference": "fc619d3eb291cd953166e0143c43ca2b3137622f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "BinString.php",
+                    "BinStringStatic.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "A. Grandt",
+                    "email": "php@grandt.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A class for working around the use of mbstring.func_override",
+            "homepage": "https://github.com/Grandt/PHPBinString",
+            "keywords": [
+                "binary strings",
+                "mbstring"
+            ],
+            "time": "2014-08-05 06:21:17"
+        },
+        {
+            "name": "grandt/phpzipmerge",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Grandt/PHPZipMerge.git",
+                "reference": "e8ad3ac3a5c885422f9c6bc581476e6d1248ebd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Grandt/PHPZipMerge/zipball/e8ad3ac3a5c885422f9c6bc581476e6d1248ebd1",
+                "reference": "e8ad3ac3a5c885422f9c6bc581476e6d1248ebd1",
+                "shasum": ""
+            },
+            "require": {
+                "grandt/binstring": "0.2.0.*@dev",
+                "grandt/relativepath": "1.0.1.*@dev",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZipMerge\\": "src/ZipMerge"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "A. Grandt",
+                    "email": "php@grandt.com",
+                    "homepage": "http://grandt.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Greg Kappatos",
+                    "homepage": "http://websiteconnect.com.au",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Merge and stream multiple Zip files on the fly.",
+            "homepage": "https://github.com/Grandt/PHPZipMerge",
+            "keywords": [
+                "archive",
+                "compressed",
+                "compression",
+                "merge",
+                "phpzip",
+                "pkzip",
+                "stream",
+                "zip"
+            ],
+            "time": "2014-08-14 15:47:34"
+        },
+        {
+            "name": "grandt/relativepath",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Grandt/PHPRelativePath.git",
+                "reference": "72cf09be20d36db02de50c0372962b9f84e37316"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Grandt/PHPRelativePath/zipball/72cf09be20d36db02de50c0372962b9f84e37316",
+                "reference": "72cf09be20d36db02de50c0372962b9f84e37316",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "RelativePath.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "A. Grandt",
+                    "email": "php@grandt.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A class for cleaning up/collapsing relative paths. Like real_path, but without the need for the path to exist on the filesystem.",
+            "homepage": "https://github.com/Grandt/PHPRelativePath",
+            "keywords": [
+                "file path"
+            ],
+            "time": "2014-08-07 18:47:42"
+        },
+        {
+            "name": "phpzip/phpzip",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Grandt/PHPZip.git",
+                "reference": "f58e13ffe6916086295e87917ec05f0669ac5ffb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Grandt/PHPZip/zipball/f58e13ffe6916086295e87917ec05f0669ac5ffb",
+                "reference": "f58e13ffe6916086295e87917ec05f0669ac5ffb",
+                "shasum": ""
+            },
+            "require": {
+                "grandt/binstring": ">=0.2.0",
+                "grandt/phpzipmerge": ">=1.0.1",
+                "grandt/relativepath": ">=1.0.1",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPZip\\Zip\\": "src/Zip"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Schmalhofer",
+                    "email": "Adam.Schmalhofer@gmx.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "A. Grandt",
+                    "email": "php@grandt.com",
+                    "homepage": "http://grandt.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Greg Kappatos",
+                    "homepage": "http://websiteconnect.com.au",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Package to create and stream archives of compressed files in ZIP format with PHP 5.3+",
+            "homepage": "https://github.com/Grandt/PHPZip",
+            "keywords": [
+                "archive",
+                "compressed",
+                "compression",
+                "phpzip",
+                "pkzip",
+                "stream",
+                "zip"
+            ],
+            "time": "2014-08-10 07:53:13"
+        },
+        {
+            "name": "respect/validation",
+            "version": "0.7.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Respect/Validation.git",
+                "reference": "8b5ca946467960a96009f21e09261db1dff27c51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/8b5ca946467960a96009f21e09261db1dff27c51",
+                "reference": "8b5ca946467960a96009f21e09261db1dff27c51",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +360,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2015-02-20 12:36:01"
+            "time": "2015-03-02 17:04:21"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -383,7 +584,8 @@
     "stability-flags": {
         "taha/timthumb": 20,
         "catfan/medoo": 20,
-        "swiftmailer/swiftmailer": 0
+        "swiftmailer/swiftmailer": 0,
+        "phpzip/phpzip": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

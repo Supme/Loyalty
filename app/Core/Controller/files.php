@@ -16,7 +16,7 @@
 
 namespace App\Core\Controller;
 
-use Respect\Validation\Rules\File;
+//use Respect\Validation\Rules\File;
 
 class files extends \Controller
 {
@@ -29,21 +29,17 @@ class files extends \Controller
 
     function files($params){
 
-        $path = htmlspecialchars_decode(str_replace('..','',implode('/',$params)));
+        $path = str_replace('..','',implode('/',$params));
 
         if(!isset($params[0])) header("Location: /error/404");
+
+        // Public file
         if(file_exists(\Registry::get('_config')['path']['share_files'].$path)){
             $file = new \Download(\Registry::get('_config')['path']['share_files'].$path);
             $file->download();
         } else {
-            $model = new \App\Core\Model\helpers();
-            if ($real = $model->getFileHash($path)){
-                $name = substr(strrchr($real, "/"), 1);
-                $file = new \Download(\Registry::get('_config')['path']['private_files'].$real, $name);
-                $file->download();
-            } else {
-                header("Location: /error/404");
-            }
+        // Private file
+            $this->file->downloadFile($_SERVER['REDIRECT_URL']);
         }
     }
 
@@ -130,8 +126,8 @@ class files extends \Controller
     private function confJson()
     {
         $conf = [
-            "FILES_ROOT" => "/root",
-            "RETURN_URL_PREFIX" => "/files/",
+            "FILES_ROOT" => "",
+            "RETURN_URL_PREFIX" => "fm/download", //"/files/",
             "SESSION_PATH_KEY" => "",
             "THUMBS_VIEW_WIDTH" => "140",
             "THUMBS_VIEW_HEIGHT" => "120",
@@ -236,6 +232,7 @@ class files extends \Controller
             "E_UploadNoFiles" => \Translate::get("fm.There are no files to upload or file is too big."),
             "E_UploadInvalidPath" => \Translate::get("fm.Cannot upload files - path doesn't exist"),
             "E_FileExtensionForbidden" => \Translate::get("fm.This type of files cannot be handeled - invalid extension "),
+            "Download" => \Translate::get("fm.Download folder"),
             "DownloadFile" => \Translate::get("fm.Download"),
             "T_DownloadFile" => \Translate::get("fm.Download file"),
             "E_CannotDeleteRoot" => \Translate::get("fm.Cannot delete root folder"),
@@ -256,7 +253,7 @@ class files extends \Controller
 
     private function dirtree($data)
     {
-        return $this->file->getFolder();
+        return $this->file->getFolders();
     }
 
     private function createdir($data)
@@ -299,8 +296,7 @@ class files extends \Controller
 
     private function renamedir($data)
     {
-        $file = new \File();
-        if($file->renameFolder($data['d'], $data['n']))
+        if($this->file->renameFolder($data['d'], $data['n']))
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
@@ -312,8 +308,7 @@ class files extends \Controller
 
     private function fileslist($data)
     {
-        $file = new \File();
-        return $file->getFolderFile($data['d']);
+        return $this->file->getFolderFiles($data['d']);
     }
 
     private function upload($data)
@@ -329,20 +324,21 @@ class files extends \Controller
         return $response;
     }
 
-    //ToDo
     private function download($data)
     {
-        //data['f']
-        $response = ['res' => 'error','msg' => 'Method not found!'];
-
-        return $response;
+        $this->file->downloadFile($data['f']);
     }
 
     //ToDo
     private function downloaddir($data)
     {
-        //$data['d']
-        $response = ['res' => 'error','msg' => 'Error download directory'];
+        $r = $this->file->downloadArchiveFolder($data['d']);
+        if($r === true)
+        {
+            $response = ['res' => 'ok','msg' => ''];
+        } else {
+            $response = ['res' => 'error','msg' => 'Error: $r'];
+        }
 
         return $response;
     }

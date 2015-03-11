@@ -57,9 +57,8 @@ class Test extends \Controller
 
         $test = new \File;
         echo "<pre>----- files-------\n";
-        echo $test->thumbImage('/root/777/папка/вложенная папка/Русский/IMG_0463.jpg',140,120);
-        echo "\nFolder: ";print_r($test->getFilePath('/root/ert tr/445/file.txt'));echo "\n";
-        echo "json = '".json_encode($test->getFolderFile('/folder_1/sub_folder1_1'))."'\n";
+        echo "\nResult: ";print_r($test->fileType('/files/777/folder/virtualization.docx'));echo "\n";
+        //echo "json = '".json_encode($test->getFolderFiles('/folder_1/sub_folder1_1'))."'\n";
         echo "</pre>";
 
     }

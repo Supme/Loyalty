@@ -19,14 +19,14 @@ const TFILE = 'core_fs_file';
 
 class File extends Db {
 
-    public function getFolder()
+    public function getFolders()
     {
-        $folders = $this->select(TFOLDER, ['id', 'path'], ['trash[!]' => true]);
+        $folders = $this->select(TFOLDER, ['id'], ['trash[!]' => true]);
         $i = 0;
         $array = [];
         foreach($folders as $folder)
         {
-            $array[$i]['p'] = $folder['path'];
+            $array[$i]['p'] = $this->getIdPath($folder['id']);
             $array[$i]['f'] = $this->getCountChildFile($folder['id']);
             $array[$i]['d'] = $this->getCountChildFolder($folder['id']);
             ++$i;
@@ -35,9 +35,9 @@ class File extends Db {
         return $array;
     }
 
-    public function getFolderFile($path)
+    public function getFolderFiles($path)
     {
-        $files = $this->select(TFILE, ['name', 'size', 'modification', 'width', 'height'], ['AND' => ['folder_id' => $this->getPathId($path), 'trash[!]' => true]]);
+        $files = $this->select(TFILE, ['name', 'size', 'modification', 'width', 'height'], ['AND' => ['folder_id' => $this->getFolderId($path), 'trash[!]' => true]]);
         $i = 0;
         $array = [];
         foreach($files as $file)
@@ -54,43 +54,44 @@ class File extends Db {
 
     public function isFolder($path, $name)
     {
-        return $this->count(TFOLDER, ['AND' => ['name' => $name, 'pid' => $this->getPathId($path)]]);
+        return $this->count(TFOLDER, ['AND' => ['name' => $name, 'pid' => $this->getFolderId($path)]]);
     }
 
+    // ToDo Проверить, а нет ли в каталоге назначения каталога с таким именем?
     public function createFolder($path, $name)
     {
         if($this->isFolder($path, $name) != 0) return false;
-        $this->insert(TFOLDER, ['pid' => $this->getPathId($path), 'path' => $path.'/'.$name, 'name' => $name, 'trash' => false]);
+        $this->insert(TFOLDER, ['pid' => $this->getFolderId($path), 'name' => $name, 'trash' => false]);
         return true;
     }
 
+    // ToDo Проверить, а нет ли в каталоге назначения каталога с таким именем?
     public function renameFolder($path, $name)
     {
-        $parent = $this->getParentFolder($this->getPathId($path));
-        $this->update(TFOLDER, ['name' => $name, 'path' => $parent.'/'.$name], ['path' => $path]);
+        $this->update(TFOLDER, ['name' => $name], ['id' => $this->getFolderId($path)]);
         return true;
     }
 
     public function deleteFolder($path)
     {
-        $parents = $this->getChildFolder($this->getPathId($path));
+        $parents = $this->getChildFolder($this->getFolderId($path));
         foreach($parents as $parent)
         {
             $this->deleteFolder($parent);
         }
-        $files = $this->getFolderFile($path);
+        $files = $this->getFolderFiles($path);
         foreach($files as $file)
         {
             $this->deleteFile($file['p']);
         }
-        $this->update(TFOLDER,['trash' => true], ['path' => $path]);
+        $this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($path)]);
         return true;
     }
 
+    // ToDo Проверить, а нет ли в каталоге назначения каталога с таким именем?
     public function moveFolder($opath, $npath)
     {
-        $name = $this->getPathName($opath);
-        $this->update(TFOLDER,['pid' => $this->getPathId($npath), 'path' => $npath.'/'.$name, 'name' => $name], ['path' => $opath]);
+        $this->update(TFOLDER,['pid' => $this->getFolderId($npath)], ['id' => $this->getFolderId($opath)]);
         return true;
     }
 
@@ -104,28 +105,47 @@ class File extends Db {
         return $this->count(TFILE, ['AND' => ['folder_id' => $id, 'trash[!]' => true]]);
     }
 
-    private function getPathId($path)
+    private function getFolderId($path)
     {
-        $res = $this->select(TFOLDER, 'id', ['path' => $path]);
-        return isset($res[0])?$res[0]:false;
+        $id = NULL;
+        $array = explode('/', $path);
+        foreach ($array as $name)
+        {
+            $res = $this->select(TFOLDER, ['id'], ['AND' => ['pid' => $id, 'name' => $name]]);
+            $id = isset($res[0])?$res[0]['id']:NULL;
+        }
+
+        return $id;
     }
 
-    private function getPathName($path)
+    private function getIdPath($id)
     {
-        $res = $this->select(TFOLDER, 'name', ['path' => $path]);
-        return isset($res[0])?$res[0]:false;
+        $arr = $this->select(TFOLDER,['pid', 'name'], ['id' => $id]);
+        $path = $arr[0]['name'];
+        if($arr[0] != NULL)
+        {
+            while ($arr[0]['pid'] != NULL)
+            {
+                $arr = $this->select(TFOLDER,['pid', 'name'], ['id' => $arr[0]['pid']]);
+                $path = $arr[0]['name'].'/'.$path;
+            };
+        }
+
+        $path = '/'.$path;
+
+        return $path;
     }
 
-    private function getParentFolder($id)
-    {
-        $pid = $this->select(TFOLDER, 'pid', ['id' => $id]);
-        $res = $this->select(TFOLDER,'path', ['id' => $pid]);
-        return isset($res[0])?$res[0]:false;
-    }
 
     private function getChildFolder($id)
     {
-        return $this->select(TFOLDER, 'path', ['pid' => $id]);
+        $arr = $this->select(TFOLDER, 'id', ['pid' => $id]);
+        $folders = [];
+        foreach ($arr as $folder)
+        {
+            $folders[$folder] = $this->getIdPath($folder);
+        }
+        return $folders;
     }
 
     private function getFilePathName($fullPath)
@@ -137,14 +157,53 @@ class File extends Db {
 
     }
 
-    public function moveFile($path, $dir)
+    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем?
+    public function copyFile($path, $dir)
     {
-        $ofile = $this->getFilePathName($path);
-        $nfile = $this->getFilePathName($dir);
-        $this->update(TFILE,
-            ['folder_id' => $this->getPathId($nfile['path'])],
+        $sourceFile = $this->getFilePathName($path);
+        $destinationFolderId = $this->getFolderId($dir);
+
+        $file = $this->select(TFILE,
+            [
+                'name',
+                'type',
+                'size',
+                'realpath',
+                'width',
+                'height',
+                'trash'
+            ],
             ['AND' =>
-                ['folder_id' => $this->getPathId($ofile['path']), 'name' => $ofile['name']]
+                ['folder_id' => $this->getFolderId($sourceFile['path']), 'name' => $sourceFile['name']]
+            ]);
+
+        $newFile = $this->nameGenerate();
+        copy($file[0]['realpath'], $newFile);
+
+        $this->insert(TFILE, [
+            'folder_id' => $this->getFolderId($dir),
+            'name' => $file[0]['name'],
+            'type' => $file[0]['type'],
+            'size' => $file[0]['size'],
+            'realpath' => $newFile,
+            'modification' => time(),
+            'width' => $file[0]['width'],
+            'height' => $file[0]['height'],
+            'trash' => $file[0]['trash']
+        ]);
+
+        return true;
+    }
+
+    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем?
+    public function moveFile($source, $destination)
+    {
+        $sourceFile = $this->getFilePathName($source);
+        $destinationFolder = $this->getFilePathName($destination);
+        $this->update(TFILE,
+            ['folder_id' => $this->getFolderId($destinationFolder['path'])],
+            ['AND' =>
+                ['folder_id' => $this->getFolderId($sourceFile['path']), 'name' => $sourceFile['name']]
             ]);
         return true;
     }
@@ -155,7 +214,7 @@ class File extends Db {
         $this->update(TFILE,
             ['name' => $name],
             ['AND' => [
-                'folder_id' => $this->getPathId($file['path']),
+                'folder_id' => $this->getFolderId($file['path']),
                 'name' => $file['name']
             ]]
         );
@@ -169,15 +228,16 @@ class File extends Db {
         $this->update(TFILE,
             ['trash' => true],
             ['AND' =>
-                ['folder_id' => $this->getPathId($file['path']), 'name' => $file['name']]
+                ['folder_id' => $this->getFolderId($file['path']), 'name' => $file['name']]
             ]
         );
         return true;
     }
 
+    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем? Если есть добавить что то в имя файла.
     public function uploadFile($path)
     {
-
+        $res = false;
         if(isset($_FILES['files']) and $_FILES['files']['error'] != 0)
         {
             foreach ($_FILES["files"]["error"] as $key => $error) {
@@ -193,7 +253,7 @@ class File extends Db {
                         $w = $h = 0;
                     }
                     $this->insert(TFILE, [
-                        'folder_id' => $this->getPathId($path),
+                        'folder_id' => $this->getFolderId($path),
                         'name' => $_FILES['files']['name'][$key],
                         'type' => $_FILES['files']['type'][$key],
                         'size' => $_FILES['files']['size'][$key],
@@ -204,11 +264,12 @@ class File extends Db {
                         'trash' => false
                     ]);
                     $res = true;
-                } else $res = false;
+                } else
+                    $res = false;
             }
         }
 
-        return $res;
+        return $res; // ToDo Тут с ошибкой все не совсем так, учитывается результат только последнего файла
     }
 
     public function thumbImage($file, $width, $height)
@@ -228,18 +289,134 @@ class File extends Db {
             ['realpath'],
             ['AND' =>
                 [
-                    'folder_id' => $this->getPathId($file['path']),
+                    'folder_id' => $this->getFolderId($file['path']),
                     'name' => $file['name']
                 ]
             ]);
         return isset($res[0]['realpath'])?$res[0]['realpath']:false;
     }
 
-    private function nameGenerate()
+    public function fileType($file)
+    {
+        $file = $this->getFilePathName($file);
+        $res = $this->select(TFILE,
+            ['type'],
+            ['AND' =>
+                [
+                    'folder_id' => $this->getFolderId($file['path']),
+                    'name' => $file['name']
+                ]
+            ]);
+        return isset($res[0]['type'])?$res[0]['type']:false;
+    }
+
+    public function downloadFile($path)
+    {
+        if ($real = $this->fileRealPath($path)){
+            $name = substr(strrchr($path, "/"), 1);
+            $this->download($real, $name, $this->fileType($path));
+        } else {
+           // header("Location: /error/404");
+        }
+    }
+
+    /**
+     * @param $path
+     *
+     * Todo решить проблемы с кириллицей
+     */
+    public function downloadArchiveFolder($path)
+    {
+        $archiveFile = $this->nameGenerate(true);
+        $archive = new PharData($archiveFile['path'].$archiveFile['name'].'.zip', 0, 0, Phar::ZIP);
+        //$archive = new \PHPZip\Zip\File\Zip($archiveFile['path'].$archiveFile['name'].'.zip');
+
+        $folders = $this->getFolderTree($path);
+        foreach ($folders as $folder)
+        {
+            $folderName = str_replace(dirname($path) == '/'?'':dirname($path), '', $folder);
+            $archive->addEmptyDir($folderName);//iconv('utf8', 'cp866', $folderName));
+            $files = $files = $this->select(TFILE,
+                [
+                    'name',
+                    'realpath',
+                ],
+                ['AND' =>
+                    [
+                        'folder_id' => $this->getFolderId($folder),
+                        'trash[!]' => true
+                    ]
+                ]);
+
+            foreach ($files as $file)
+            {
+                $archive->addFile($file['realpath'], $folderName.'/'.$file['name']);
+            }
+        }
+
+        $this->download($archiveFile['path'].$archiveFile['name'].'.zip', str_replace('/', '_', substr($path, 1)).'.zip', 'application/zip');
+
+        unlink($archiveFile['path'].$archiveFile['name'].'.zip');
+
+        return true;
+    }
+
+    public function download($filePath, $fileName, $fileType, $forceDownload = true, $speedLimit = true)
+    {
+        if ($speedLimit and ($speed = \Registry::get('_config')['site']['download_speed']) > 0)
+            $sleep_time = (8 / $speed) * 1e6;
+        else
+            $sleep_time = 0;
+
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: public");
+        header("Content-Description: Download File Transfer");
+        header("Content-Type: ".$fileType);
+        if ($forceDownload)
+            header('Content-Disposition: attachment; filename="'.$fileName.'";');
+        else
+            header('Content-Disposition: inline; filename="'.$fileName.'";');
+        header("Content-Transfer-Encoding: binary");
+
+        $fp=fopen($filePath,"rb");
+        fseek($fp,0);//$byte_from);                          // seek to start of missing part
+        while(!feof($fp)){                              // start buffered download
+            set_time_limit(0);                          // reset time limit for big files (has no effect if php is executed in safe mode)
+            print(fread($fp,1024*8));                   // send 8ko
+            flush();
+            usleep($sleep_time);                        // sleep (for speed limitation)
+        }
+        fclose($fp);
+        //exit;
+    }
+
+
+    private function getFolderTree($path)
+    {
+        $folders = [];
+        $folders[] =$path;
+        $arr = $this->getChildFolder($this->getFolderId($path));
+        foreach ($arr as $folder)
+        {
+            $folders[] = $folder;
+            if ($this->getCountChildFolder($this->getFolderId($folder)) != 0)
+            {
+                $folders = array_merge($folders, $this->getFolderTree($folder));
+            }
+        }
+
+        return $folders;
+    }
+
+    private function nameGenerate($cache = false)
     {
         $file['name'] = \Misc::randomString(30);
-        $file['path'] = \Registry::get('_config')['path']['private_files'].date('d-m-Y_H').'/';
-        if(is_file($file['path'].$file['name'])) $name = $this->nameGenerate();
+        if ($cache)
+            $file['path'] = \Registry::get('_config')['path']['file_cache'];
+        else
+            $file['path'] = \Registry::get('_config')['path']['private_files'].date('d-m-Y_H').'/';
+        if(is_file($file['path'].$file['name'])) $name = $this->nameGenerate($cache);
         if(!is_dir($file['path'])) mkdir($file['path']);
         return ['path' => $file['path'], 'name' => $file['name']];
     }
