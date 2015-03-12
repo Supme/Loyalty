@@ -258,33 +258,32 @@ class files extends \Controller
 
     private function createdir($data)
     {
-        $file = new \File();
-        $response = $file->createFolder($data['d'], $data['n'])?['res' => 'ok','msg' => '']:['res' => 'error','msg' => 'Error create directory'];
-        return $response;
+        $res = $this->file->createFolder($data['d'], $data['n']);
+        if ($res === true)
+        {
+            return ['res' => 'ok','msg' => ''];
+        } else {
+            return ['res' => 'error','msg' => $res];
+        }
     }
 
     private function deletedir($data)
     {
-        $file = new \File();
-        if($file->deleteFolder($data['d']) === true){
-            $response = ['res' => 'ok','msg' => ''];
+        if($this->file->deleteFolder($data['d']) === true){
+            return ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error delete directory'];
+            return ['res' => 'error','msg' => 'Error delete directory'];
         }
-
-        return $response;
     }
 
     private function movedir($data)
     {
-        $file = new \File();
-        if($file->moveFolder($data['d'], $data['n']) === true){
-            $response = ['res' => 'ok','msg' => ''];
+        $res = $this->file->moveFolder($data['d'], $data['n']);
+        if($res === true){
+            return ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error move directory'];
+            return ['res' => 'error','msg' => $res];
         }
-
-        return $response;
     }
 
     private function copydir($data)
@@ -296,11 +295,12 @@ class files extends \Controller
 
     private function renamedir($data)
     {
-        if($this->file->renameFolder($data['d'], $data['n']))
+        $res = $this->file->renameFolder($data['d'], $data['n']);
+        if($res === true)
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error rename directory'];
+            $response = ['res' => 'error','msg' => $res];
         }
 
         return $response;
@@ -329,7 +329,6 @@ class files extends \Controller
         $this->file->downloadFile($data['f']);
     }
 
-    //ToDo
     private function downloaddir($data)
     {
         $r = $this->file->downloadArchiveFolder($data['d']);
@@ -387,9 +386,12 @@ class files extends \Controller
     //ToDo
     private function copyfile($data)
     {
-        //$data['f']
-        //$data['n']
-        $response = ['res' => 'error','msg' => 'Error copy file'];
+        if($this->file->copyFile($data['f'], $data['n']))
+        {
+            $response = ['res' => 'ok','msg' => ''];
+        } else {
+            $response = ['res' => 'error','msg' => 'Error copy file'];
+        }
 
         return $response;
     }

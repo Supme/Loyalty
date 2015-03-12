@@ -57,21 +57,43 @@ class File extends Db {
         return $this->count(TFOLDER, ['AND' => ['name' => $name, 'pid' => $this->getFolderId($path)]]);
     }
 
-    // ToDo Проверить, а нет ли в каталоге назначения каталога с таким именем?
+    /**
+     * @param $path
+     * @param $name
+     * @return bool|string
+     */
     public function createFolder($path, $name)
     {
-        if($this->isFolder($path, $name) != 0) return false;
-        $this->insert(TFOLDER, ['pid' => $this->getFolderId($path), 'name' => $name, 'trash' => false]);
-        return true;
+        if($this->isFolder($path, $name) != 0){
+            return 'Folder with the same name already exists!';
+        } else {
+            $this->insert(TFOLDER, ['pid' => $this->getFolderId($path), 'name' => $name, 'trash' => false]);
+            return true;
+        }
     }
 
-    // ToDo Проверить, а нет ли в каталоге назначения каталога с таким именем?
+    /**
+     * @param $path
+     * @param $name
+     * @return bool|string
+     */
     public function renameFolder($path, $name)
     {
-        $this->update(TFOLDER, ['name' => $name], ['id' => $this->getFolderId($path)]);
-        return true;
+        $arr = explode('/',$path);
+        $arr[count($arr)-1] = $name;
+        if ($this->getFolderId(implode('/', $arr)) !== NULL)
+        {
+            return 'Folder with the same name already exists!';
+        } else {
+            $this->update(TFOLDER, ['name' => $name], ['id' => $this->getFolderId($path)]);
+            return true;
+        }
     }
 
+    /**
+     * @param $path
+     * @return bool
+     */
     public function deleteFolder($path)
     {
         $parents = $this->getChildFolder($this->getFolderId($path));
@@ -88,11 +110,20 @@ class File extends Db {
         return true;
     }
 
-    // ToDo Проверить, а нет ли в каталоге назначения каталога с таким именем?
-    public function moveFolder($opath, $npath)
+    /**
+     * @param $path
+     * @param $folder
+     * @return bool|string
+     */
+    public function moveFolder($path, $folder)
     {
-        $this->update(TFOLDER,['pid' => $this->getFolderId($npath)], ['id' => $this->getFolderId($opath)]);
-        return true;
+        $arr = $this->getFilePathName($path);
+        if($this->getFolderId($folder.'/'.$arr['name']) !== NULL){
+            return 'Folder with the same name already exists!';
+        } else {
+            $this->update(TFOLDER,['pid' => $this->getFolderId($folder)], ['id' => $this->getFolderId($path)]);
+            return true;
+        }
     }
 
     public function getCountChildFolder($id)
@@ -157,13 +188,18 @@ class File extends Db {
 
     }
 
+    /**
+     * @param $path
+     * @param $dir
+     * @return bool|string
+     */
     // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем?
     public function copyFile($path, $dir)
     {
         $sourceFile = $this->getFilePathName($path);
         $destinationFolderId = $this->getFolderId($dir);
 
-        $file = $this->select(TFILE,
+        $fileParams = $this->select(TFILE,
             [
                 'name',
                 'type',
@@ -178,23 +214,28 @@ class File extends Db {
             ]);
 
         $newFile = $this->nameGenerate();
-        copy($file[0]['realpath'], $newFile);
+        copy($fileParams[0]['realpath'], $newFile['path'].$newFile['name']);
 
         $this->insert(TFILE, [
             'folder_id' => $this->getFolderId($dir),
-            'name' => $file[0]['name'],
-            'type' => $file[0]['type'],
-            'size' => $file[0]['size'],
-            'realpath' => $newFile,
+            'name' => $fileParams[0]['name'],
+            'type' => $fileParams[0]['type'],
+            'size' => $fileParams[0]['size'],
+            'realpath' => $newFile['path'].$newFile['name'],
             'modification' => time(),
-            'width' => $file[0]['width'],
-            'height' => $file[0]['height'],
-            'trash' => $file[0]['trash']
+            'width' => $fileParams[0]['width'],
+            'height' => $fileParams[0]['height'],
+            'trash' => $fileParams[0]['trash']
         ]);
 
         return true;
     }
 
+    /**
+     * @param $source
+     * @param $destination
+     * @return bool|string
+     */
     // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем?
     public function moveFile($source, $destination)
     {
@@ -208,6 +249,12 @@ class File extends Db {
         return true;
     }
 
+    /**
+     * @param $file
+     * @param $name
+     * @return bool|string
+     */
+    // ToDo Проверить, а нет ли в каталоге файла с таким именем?
     public function renameFile($file, $name)
     {
         $file = $this->getFilePathName($file);
@@ -222,6 +269,10 @@ class File extends Db {
         return true;
     }
 
+    /**
+     * @param $file
+     * @return bool
+     */
     public function deleteFile($file)
     {
         $file = $this->getFilePathName($file);
@@ -234,7 +285,7 @@ class File extends Db {
         return true;
     }
 
-    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем? Если есть добавить что то в имя файла.
+    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем? Если есть, может добавить что то в имя файла?
     public function uploadFile($path)
     {
         $res = false;
@@ -282,6 +333,10 @@ class File extends Db {
         exit;
     }
 
+    /**
+     * @param $file
+     * @return bool|string
+     */
     public function fileRealPath($file)
     {
         $file = $this->getFilePathName($file);
@@ -296,7 +351,11 @@ class File extends Db {
         return isset($res[0]['realpath'])?$res[0]['realpath']:false;
     }
 
-    public function fileType($file)
+    /**
+     * @param $file
+     * @return bool|string
+     */
+    private function fileType($file)
     {
         $file = $this->getFilePathName($file);
         $res = $this->select(TFILE,
@@ -391,7 +450,10 @@ class File extends Db {
         //exit;
     }
 
-
+    /**
+     * @param $path
+     * @return array
+     */
     private function getFolderTree($path)
     {
         $folders = [];
