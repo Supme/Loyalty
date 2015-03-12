@@ -34,7 +34,7 @@ class Main extends \Controller
 
                 \Registry::js([
                     "/assets/ly/js/jquery.datetimepicker.js",
-                    "/assets/ly/js/tinymce/tinymce.min.js",
+                    "/assets/tinymce/tinymce.min.js",
                     "/assets/ly/js/loyalty.js",
                 ]);
 

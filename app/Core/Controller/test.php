@@ -57,7 +57,7 @@ class Test extends \Controller
 
         $test = new \File;
         echo "<pre>----- files-------\n";
-        echo "\nResult: ";print_r($test->fileType('/files/777/folder/virtualization.docx'));echo "\n";
+        echo "\nResult: ";print_r('/files/777/folder/virtualization.docx');echo "\n";
         //echo "json = '".json_encode($test->getFolderFiles('/folder_1/sub_folder1_1'))."'\n";
         echo "</pre>";
 

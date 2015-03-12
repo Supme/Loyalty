@@ -16,6 +16,7 @@
 
 class Image
 {
+    //ToDo своё казино с кэшем и тп
     public static function resizer(){
         define('FILE_CACHE_DIRECTORY', \Registry::get('_config')['path']['image_cache']);
         define('LOCAL_FILE_BASE_DIRECTORY', \Registry::get('_config')['path']['share_files']);

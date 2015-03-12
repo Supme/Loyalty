@@ -12,11 +12,14 @@
  *
  *	Please see the license.txt file for more information.
  *
+ * ToDo пользователь может иметь много групп, а вот группам уже назначать права
+ * ToDo да и вообще сделать все это наконец
  */
 
 class User extends Model
 {
-    function get($user){
+    function get($user)
+    {
         return $this->database->select(
             'authUsers',
             [
@@ -29,7 +32,7 @@ class User extends Model
                 'authGroups.name(userGroup)'
             ],
             [
-                'OR' =>[
+                'OR' => [
                     'authUsers.userName' => $user,
                     'authUsers.email' => $user
                 ]
@@ -37,28 +40,30 @@ class User extends Model
         );
     }
 
-    function add($userName, $email, $password){
+    function add($userName, $email, $password)
+    {
         $userName = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $userName);
 
-        if($this->database->has('authUsers',
+        if ($this->database->has('authUsers',
             [
                 'OR' => [
                     'userName' => $userName,
                     'email' => $email
                 ]
             ]
-        )){
+        )
+        ) {
             // User already exist
 
             return 'User already exist';
         } else {
 
             $salt = $this->randomString();
-            $password = hash('sha512', $password.$salt);
+            $password = hash('sha512', $password . $salt);
 
-            $groupId = $this->database->select('authGroups','id', ['name' => Registry::get('_config')['user']['default_group']])[0];
+            $groupId = $this->database->select('authGroups', 'id', ['name' => Registry::get('_config')['user']['default_group']])[0];
 
-            return $this->database->insert( 'authUsers',
+            return $this->database->insert('authUsers',
                 [
                     'groupId' => $groupId,
                     'userName' => $userName,
@@ -71,11 +76,12 @@ class User extends Model
         }
     }
 
-    function update($userId,$userName, $groupId, $email, $password){
+    function update($userId, $userName, $groupId, $email, $password)
+    {
         $salt = $this->saltGen();
-        $password = hash('sha512', $password.$salt);
+        $password = hash('sha512', $password . $salt);
 
-        return $this->database->update( 'authUsers',
+        return $this->database->update('authUsers',
             [
                 'groupId' => $groupId,
                 'userName' => $userName,
@@ -89,4 +95,41 @@ class User extends Model
 
     }
 
-} 
+    // ToDo
+    public function deleteUser($id)
+    {
+
+    }
+
+    //ToDo объеденить или еще чё с $this->add
+    public function addUser($login, $name, $email, $password, $group)
+    {
+        $error = [];
+
+        if (!\Validator::alnum()->validate($login) or $login == '') $error[] = 'Not valid login';
+        if (!\Validator::alnum()->validate($name) or $name == '') $error[] = 'Not valid name';
+        if (!\Validator::email()->validate($email)) $error[] = 'Not valid email';
+        if (!\Validator::int()->validate($group)) $error[] = 'Not valid group';
+
+        if (count($error) == 0) {
+            $salt = \Misc::randomString();
+            $password = hash('sha512', $password . $salt);
+            $this->insert('core_auth_user',
+                [
+                    'group_id' => $group,
+                    'login' => $login,
+                    'email' => $email,
+                    'name' => $name,
+                    'password' => $password,
+                    'salt' => $salt
+                ]);
+            $result = true;
+        } else {
+            $result['danger'] = $error;
+        }
+
+        return $result;
+    }
+
+
+}

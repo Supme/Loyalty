@@ -12,6 +12,7 @@
  *
  *	Please see the license.txt file for more information.
  *
+ * ToDo весь функционал доперенести в класс File
  */
 
 class Download extends Db

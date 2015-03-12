@@ -12,6 +12,7 @@
  *
  *	Please see the license.txt file for more information.
  *
+ * ToDo CRUD для групп
  */
 
 const TFOLDER = 'core_fs_folder';
@@ -91,22 +92,43 @@ class File extends Db {
     }
 
     /**
-     * @param $path
+     * @param $folder
      * @return bool
      */
-    public function deleteFolder($path)
+    public function deleteFolder($folder)
     {
-        $parents = $this->getChildFolder($this->getFolderId($path));
+        $parents = $this->getChildFolder($this->getFolderId($folder));
         foreach($parents as $parent)
         {
             $this->deleteFolder($parent);
         }
-        $files = $this->getFolderFiles($path);
+        $files = $this->getFolderFiles($folder);
         foreach($files as $file)
         {
             $this->deleteFile($file['p']);
         }
-        $this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($path)]);
+        $this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($folder)]);
+        return true;
+    }
+
+    /**
+     * @param $path
+     * @return bool
+     */
+    //ToDo ну сделать это надо на основе удаления папок
+    public function copyFolder($folder, $path)
+    {
+        $parents = $this->getChildFolder($this->getFolderId($folder));
+        foreach($parents as $parent)
+        {
+            //$this->deleteFolder($parent);
+        }
+        $files = $this->getFolderFiles($folder);
+        foreach($files as $file)
+        {
+            //$this->deleteFile($file['p']);
+        }
+        //$this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($folder)]);
         return true;
     }
 
@@ -166,7 +188,6 @@ class File extends Db {
 
         return $path;
     }
-
 
     private function getChildFolder($id)
     {
@@ -323,6 +344,7 @@ class File extends Db {
         return $res; // ToDo Тут с ошибкой все не совсем так, учитывается результат только последнего файла
     }
 
+    // ToDo когда будет своё казино в классе Image, использовать его
     public function thumbImage($file, $width, $height)
     {
         $file = $this->fileRealPath($file);
