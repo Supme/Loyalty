@@ -258,12 +258,12 @@ class files extends \Controller
 
     private function createdir($data)
     {
-        $res = $this->file->createFolder($data['d'], $data['n']);
-        if ($res === true)
+        $r = $this->file->createFolder($data['d'], $data['n']);
+        if ($r === true)
         {
             return ['res' => 'ok','msg' => ''];
         } else {
-            return ['res' => 'error','msg' => $res];
+            return ['res' => 'error','msg' => $r];
         }
     }
 
@@ -278,29 +278,32 @@ class files extends \Controller
 
     private function movedir($data)
     {
-        $res = $this->file->moveFolder($data['d'], $data['n']);
-        if($res === true){
+        $r = $this->file->moveFolder($data['d'], $data['n']);
+        if($r === true){
             return ['res' => 'ok','msg' => ''];
         } else {
-            return ['res' => 'error','msg' => $res];
+            return ['res' => 'error','msg' => \Translate::get($r)];
         }
     }
 
     private function copydir($data)
     {
-        $response = ['res' => 'error','msg' => 'Error copy directory'];
-
-        return $response;
+        $r = $this->file->copyFolder($data['d'], $data['n']);
+        if($r === true){
+            return ['res' => 'ok','msg' => ''];
+        } else {
+            return ['res' => 'error','msg' => \Translate::get($r)];
+        }
     }
 
     private function renamedir($data)
     {
-        $res = $this->file->renameFolder($data['d'], $data['n']);
-        if($res === true)
+        $r = $this->file->renameFolder($data['d'], $data['n']);
+        if($r === true)
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => $res];
+            $response = ['res' => 'error','msg' => \Translate::get($r)];
         }
 
         return $response;
@@ -318,7 +321,7 @@ class files extends \Controller
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error: $r'];
+            $response = ['res' => 'error','msg' => \Translate::get($r)];
         }
 
         return $response;
@@ -336,7 +339,7 @@ class files extends \Controller
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error: $r'];
+            $response = ['res' => 'error','msg' => \Translate::get($r)];
         }
 
         return $response;
@@ -383,7 +386,6 @@ class files extends \Controller
         $this->file->thumbImage($data['f'], $data['width'], $data['height']);
     }
 
-    //ToDo
     private function copyfile($data)
     {
         if($this->file->copyFile($data['f'], $data['n']))

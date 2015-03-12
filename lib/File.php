@@ -66,7 +66,7 @@ class File extends Db {
     public function createFolder($path, $name)
     {
         if($this->isFolder($path, $name) != 0){
-            return 'Folder with the same name already exists!';
+            return 'folder with the same name already exists';
         } else {
             $this->insert(TFOLDER, ['pid' => $this->getFolderId($path), 'name' => $name, 'trash' => false]);
             return true;
@@ -84,7 +84,7 @@ class File extends Db {
         $arr[count($arr)-1] = $name;
         if ($this->getFolderId(implode('/', $arr)) !== NULL)
         {
-            return 'Folder with the same name already exists!';
+            return 'folder with the same name already exists';
         } else {
             $this->update(TFOLDER, ['name' => $name], ['id' => $this->getFolderId($path)]);
             return true;
@@ -92,22 +92,25 @@ class File extends Db {
     }
 
     /**
-     * @param $folder
+     * @param $path
      * @return bool
      */
-    public function deleteFolder($folder)
+    public function deleteFolder($path)
     {
-        $parents = $this->getChildFolder($this->getFolderId($folder));
+        $parents = $this->getChildFolder($this->getFolderId($path));
         foreach($parents as $parent)
         {
             $this->deleteFolder($parent);
         }
-        $files = $this->getFolderFiles($folder);
+
+        $files = $this->getFolderFiles($path);
         foreach($files as $file)
         {
             $this->deleteFile($file['p']);
         }
-        $this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($folder)]);
+
+        $this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($path)]);
+
         return true;
     }
 
@@ -116,20 +119,28 @@ class File extends Db {
      * @return bool
      */
     //ToDo ну сделать это надо на основе удаления папок
-    public function copyFolder($folder, $path)
+    public function copyFolder($path, $destination)
     {
-        $parents = $this->getChildFolder($this->getFolderId($folder));
-        foreach($parents as $parent)
-        {
-            //$this->deleteFolder($parent);
+        $arr = $this->getFilePathName($path);
+        if($this->getFolderId($destination.'/'.$arr['name']) !== NULL){
+            return 'folder with the same name already exists';
+        } else {
+            $this->createFolder($destination,$arr['name']);
+
+            $parents = $this->getChildFolder($this->getFolderId($path));
+            foreach($parents as $parent)
+            {
+                $this->copyFolder($parent, $destination.'/'.$arr['name']);
+            }
+
+            $files = $this->getFolderFiles($path);
+            foreach($files as $file)
+            {
+                $this->copyFile($file['p'],$destination.'/'.$arr['name']);
+            }
+
+            return true;
         }
-        $files = $this->getFolderFiles($folder);
-        foreach($files as $file)
-        {
-            //$this->deleteFile($file['p']);
-        }
-        //$this->update(TFOLDER,['trash' => true], ['id' => $this->getFolderId($folder)]);
-        return true;
     }
 
     /**
@@ -137,13 +148,13 @@ class File extends Db {
      * @param $folder
      * @return bool|string
      */
-    public function moveFolder($path, $folder)
+    public function moveFolder($path, $destination)
     {
         $arr = $this->getFilePathName($path);
-        if($this->getFolderId($folder.'/'.$arr['name']) !== NULL){
-            return 'Folder with the same name already exists!';
+        if($this->getFolderId($destination.'/'.$arr['name']) !== NULL){
+            return 'folder with the same name already exists';
         } else {
-            $this->update(TFOLDER,['pid' => $this->getFolderId($folder)], ['id' => $this->getFolderId($path)]);
+            $this->update(TFOLDER,['pid' => $this->getFolderId($destination)], ['id' => $this->getFolderId($path)]);
             return true;
         }
     }
@@ -218,7 +229,6 @@ class File extends Db {
     public function copyFile($path, $dir)
     {
         $sourceFile = $this->getFilePathName($path);
-        $destinationFolderId = $this->getFolderId($dir);
 
         $fileParams = $this->select(TFILE,
             [
@@ -504,6 +514,5 @@ class File extends Db {
         if(!is_dir($file['path'])) mkdir($file['path']);
         return ['path' => $file['path'], 'name' => $file['name']];
     }
-
 
 }
