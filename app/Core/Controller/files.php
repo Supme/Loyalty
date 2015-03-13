@@ -359,11 +359,12 @@ class files extends \Controller
 
     private function movefile($data)
     {
-        if($this->file->moveFile($data['f'], $data['n']))
+        $r = $this->file->moveFile($data['f'], $data['n']);
+        if($r === true)
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error move file'];
+            $response = ['res' => 'error','msg' => \Translate::get($r)];
         }
 
         return $response;
@@ -371,11 +372,12 @@ class files extends \Controller
 
     private function renamefile($data)
     {
-        if($this->file->renameFile($data['f'], $data['n']))
+        $r = $this->file->renameFile($data['f'], $data['n']);
+        if($r === true)
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error move file'];
+            $response = ['res' => 'error','msg' => \Translate::get($r)];
         }
 
         return $response;
@@ -388,11 +390,12 @@ class files extends \Controller
 
     private function copyfile($data)
     {
-        if($this->file->copyFile($data['f'], $data['n']))
+        $r = $this->file->copyFile($data['f'], $data['n']);
+        if($r === true)
         {
             $response = ['res' => 'ok','msg' => ''];
         } else {
-            $response = ['res' => 'error','msg' => 'Error copy file'];
+            $response = ['res' => 'error','msg' => \Translate::get($r)];
         }
 
         return $response;

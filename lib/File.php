@@ -53,9 +53,14 @@ class File extends Db {
         return $array;
     }
 
+    /**
+     * @param $path
+     * @param $name
+     * @return bool
+     */
     public function isFolder($path, $name)
     {
-        return $this->count(TFOLDER, ['AND' => ['name' => $name, 'pid' => $this->getFolderId($path)]]);
+        return $this->count(TFOLDER, ['AND' => ['name' => $name, 'pid' => $this->getFolderId($path)]]) != 0?true:false;
     }
 
     /**
@@ -80,9 +85,8 @@ class File extends Db {
      */
     public function renameFolder($path, $name)
     {
-        $arr = explode('/',$path);
-        $arr[count($arr)-1] = $name;
-        if ($this->getFolderId(implode('/', $arr)) !== NULL)
+        $folder = $this->getFilePathName($path);
+        if ($this->isFolder($folder['path'], $name))
         {
             return 'folder with the same name already exists';
         } else {
@@ -118,11 +122,10 @@ class File extends Db {
      * @param $path
      * @return bool
      */
-    //ToDo ну сделать это надо на основе удаления папок
     public function copyFolder($path, $destination)
     {
         $arr = $this->getFilePathName($path);
-        if($this->getFolderId($destination.'/'.$arr['name']) !== NULL){
+        if($this->isFolder($destination, $arr['name'])){
             return 'folder with the same name already exists';
         } else {
             $this->createFolder($destination,$arr['name']);
@@ -151,7 +154,7 @@ class File extends Db {
     public function moveFolder($path, $destination)
     {
         $arr = $this->getFilePathName($path);
-        if($this->getFolderId($destination.'/'.$arr['name']) !== NULL){
+        if($this->isFolder($destination, $arr['name'])){
             return 'folder with the same name already exists';
         } else {
             $this->update(TFOLDER,['pid' => $this->getFolderId($destination)], ['id' => $this->getFolderId($path)]);
@@ -202,7 +205,7 @@ class File extends Db {
 
     private function getChildFolder($id)
     {
-        $arr = $this->select(TFOLDER, 'id', ['pid' => $id]);
+        $arr = $this->select(TFOLDER, 'id', ['AND' => ['pid' => $id, 'trash[!]' => true]]);
         $folders = [];
         foreach ($arr as $folder)
         {
@@ -220,46 +223,56 @@ class File extends Db {
 
     }
 
+    public function isFile($path, $name)
+    {
+        return $this->count(TFILE, ['AND' => ['name' => $name, 'folder_id' => $this->getFolderId($path)]]) != 0?true:false;
+    }
+
     /**
      * @param $path
      * @param $dir
      * @return bool|string
      */
-    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем?
     public function copyFile($path, $dir)
     {
+
         $sourceFile = $this->getFilePathName($path);
 
-        $fileParams = $this->select(TFILE,
-            [
-                'name',
-                'type',
-                'size',
-                'realpath',
-                'width',
-                'height',
-                'trash'
-            ],
-            ['AND' =>
-                ['folder_id' => $this->getFolderId($sourceFile['path']), 'name' => $sourceFile['name']]
+        if($this->isFile($dir,$sourceFile['name']))
+        {
+            return 'file with the same name already exists';
+        } else {
+            $fileParams = $this->select(TFILE,
+                [
+                    'name',
+                    'type',
+                    'size',
+                    'realpath',
+                    'width',
+                    'height',
+                    'trash'
+                ],
+                ['AND' =>
+                    ['folder_id' => $this->getFolderId($sourceFile['path']), 'name' => $sourceFile['name']]
+                ]);
+
+            $newFile = $this->nameGenerate();
+            copy($fileParams[0]['realpath'], $newFile['path'].$newFile['name']);
+
+            $this->insert(TFILE, [
+                'folder_id' => $this->getFolderId($dir),
+                'name' => $fileParams[0]['name'],
+                'type' => $fileParams[0]['type'],
+                'size' => $fileParams[0]['size'],
+                'realpath' => $newFile['path'].$newFile['name'],
+                'modification' => time(),
+                'width' => $fileParams[0]['width'],
+                'height' => $fileParams[0]['height'],
+                'trash' => $fileParams[0]['trash']
             ]);
 
-        $newFile = $this->nameGenerate();
-        copy($fileParams[0]['realpath'], $newFile['path'].$newFile['name']);
-
-        $this->insert(TFILE, [
-            'folder_id' => $this->getFolderId($dir),
-            'name' => $fileParams[0]['name'],
-            'type' => $fileParams[0]['type'],
-            'size' => $fileParams[0]['size'],
-            'realpath' => $newFile['path'].$newFile['name'],
-            'modification' => time(),
-            'width' => $fileParams[0]['width'],
-            'height' => $fileParams[0]['height'],
-            'trash' => $fileParams[0]['trash']
-        ]);
-
-        return true;
+            return true;
+        }
     }
 
     /**
@@ -267,17 +280,21 @@ class File extends Db {
      * @param $destination
      * @return bool|string
      */
-    // ToDo Проверить, а нет ли в каталоге назначения файла с таким именем?
     public function moveFile($source, $destination)
     {
         $sourceFile = $this->getFilePathName($source);
         $destinationFolder = $this->getFilePathName($destination);
-        $this->update(TFILE,
-            ['folder_id' => $this->getFolderId($destinationFolder['path'])],
-            ['AND' =>
-                ['folder_id' => $this->getFolderId($sourceFile['path']), 'name' => $sourceFile['name']]
-            ]);
-        return true;
+        if($this->isFile($destinationFolder['path'],$destinationFolder['name']))
+        {
+            return 'file with the same name already exists';
+        } else {
+            $this->update(TFILE,
+                ['folder_id' => $this->getFolderId($destinationFolder['path'])],
+                ['AND' =>
+                    ['folder_id' => $this->getFolderId($sourceFile['path']), 'name' => $sourceFile['name']]
+                ]);
+            return true;
+        }
     }
 
     /**
@@ -285,19 +302,23 @@ class File extends Db {
      * @param $name
      * @return bool|string
      */
-    // ToDo Проверить, а нет ли в каталоге файла с таким именем?
     public function renameFile($file, $name)
     {
         $file = $this->getFilePathName($file);
-        $this->update(TFILE,
-            ['name' => $name],
-            ['AND' => [
-                'folder_id' => $this->getFolderId($file['path']),
-                'name' => $file['name']
-            ]]
-        );
+        if($this->isFile($file['path'],$name))
+        {
+            return 'file with the same name already exists';
+        } else {
+            $this->update(TFILE,
+                ['name' => $name],
+                ['AND' => [
+                    'folder_id' => $this->getFolderId($file['path']),
+                    'name' => $file['name']
+                ]]
+            );
 
-        return true;
+            return true;
+        }
     }
 
     /**
