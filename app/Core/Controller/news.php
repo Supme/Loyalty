@@ -29,6 +29,14 @@ class news extends \Controller {
         if (isset($params[0]) and $params[0] == 'edit') {
             $this->edit($params);
         } else {
+
+            if (\Registry::get('_auth')->add)
+                \Registry::menu([
+                    'Add' => [
+                        'href'=>'./edit/',
+                    ]
+                ]);
+
             switch (count($params)) {
                 case 1:
                     $this->render([
@@ -58,9 +66,9 @@ class news extends \Controller {
     private function edit($params){
 
         if($params[0] =='')
-            if(!\Registry::get('_auth')->add) header('location: ' . URL . '403');
+            if (!\Registry::get('_auth')->add) header('location: ' . URL . '403');
         else
-            if(!\Registry::get('_auth')->edit) header('location: ' . URL . '403');
+            if (!\Registry::get('_auth')->edit) header('location: ' . URL . '403');
 
         \Registry::$store['_page']['view'] = 'news_edit';
 

@@ -59,6 +59,8 @@ class Test extends \Controller
         echo "<pre>----- files-------\n";
         echo "\nResult: ";print_r($test->isFolder('/files/777/folder','infolder2'));echo "\n";
         //echo "json = '".json_encode($test->getFolderFiles('/folder_1/sub_folder1_1'))."'\n";
+
+
         echo "</pre>";
 
     }
