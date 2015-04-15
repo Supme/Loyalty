@@ -109,60 +109,6 @@
         ]
     },
     {
-        "name": "swiftmailer/swiftmailer",
-        "version": "v5.3.1",
-        "version_normalized": "5.3.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
-            "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "mockery/mockery": "~0.9.1"
-        },
-        "time": "2014-12-05 14:17:14",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "lib/swift_required.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Chris Corbyn"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Swiftmailer, free feature-rich PHP mailer",
-        "homepage": "http://swiftmailer.org",
-        "keywords": [
-            "mail",
-            "mailer"
-        ]
-    },
-    {
         "name": "twig/twig",
         "version": "v1.18.0",
         "version_normalized": "1.18.0.0",
@@ -383,212 +329,102 @@
         ]
     },
     {
-        "name": "grandt/relativepath",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
+        "name": "swiftmailer/swiftmailer",
+        "version": "v5.4.0",
+        "version_normalized": "5.4.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/Grandt/PHPRelativePath.git",
-            "reference": "72cf09be20d36db02de50c0372962b9f84e37316"
+            "url": "https://github.com/swiftmailer/swiftmailer.git",
+            "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Grandt/PHPRelativePath/zipball/72cf09be20d36db02de50c0372962b9f84e37316",
-            "reference": "72cf09be20d36db02de50c0372962b9f84e37316",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/31454f258f10329ae7c48763eb898a75c39e0a9f",
+            "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.0"
+            "php": ">=5.3.3"
         },
-        "time": "2014-08-07 18:47:42",
+        "require-dev": {
+            "mockery/mockery": "~0.9.1"
+        },
+        "time": "2015-03-14 06:06:39",
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.4-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "RelativePath.php"
+            "files": [
+                "lib/swift_required.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "LGPL-2.1"
+            "MIT"
         ],
         "authors": [
             {
-                "name": "A. Grandt",
-                "email": "php@grandt.com",
-                "role": "Developer"
+                "name": "Chris Corbyn"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
             }
         ],
-        "description": "A class for cleaning up/collapsing relative paths. Like real_path, but without the need for the path to exist on the filesystem.",
-        "homepage": "https://github.com/Grandt/PHPRelativePath",
+        "description": "Swiftmailer, free feature-rich PHP mailer",
+        "homepage": "http://swiftmailer.org",
         "keywords": [
-            "file path"
+            "mail",
+            "mailer"
         ]
     },
     {
-        "name": "grandt/binstring",
-        "version": "0.2.0",
-        "version_normalized": "0.2.0.0",
+        "name": "sunra/php-simple-html-dom-parser",
+        "version": "v1.5.0",
+        "version_normalized": "1.5.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/Grandt/PHPBinString.git",
-            "reference": "fc619d3eb291cd953166e0143c43ca2b3137622f"
+            "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
+            "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Grandt/PHPBinString/zipball/fc619d3eb291cd953166e0143c43ca2b3137622f",
-            "reference": "fc619d3eb291cd953166e0143c43ca2b3137622f",
+            "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/a0b80ace086c7e09085669205e1b3c2c9c7a453c",
+            "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.0"
+            "php": ">=5.3.2"
         },
-        "time": "2014-08-05 06:21:17",
+        "time": "2013-05-04 14:32:03",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "BinString.php",
-                "BinStringStatic.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-2.1"
-        ],
-        "authors": [
-            {
-                "name": "A. Grandt",
-                "email": "php@grandt.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "A class for working around the use of mbstring.func_override",
-        "homepage": "https://github.com/Grandt/PHPBinString",
-        "keywords": [
-            "binary strings",
-            "mbstring"
-        ]
-    },
-    {
-        "name": "grandt/phpzipmerge",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Grandt/PHPZipMerge.git",
-            "reference": "e8ad3ac3a5c885422f9c6bc581476e6d1248ebd1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Grandt/PHPZipMerge/zipball/e8ad3ac3a5c885422f9c6bc581476e6d1248ebd1",
-            "reference": "e8ad3ac3a5c885422f9c6bc581476e6d1248ebd1",
-            "shasum": ""
-        },
-        "require": {
-            "grandt/binstring": "0.2.0.*@dev",
-            "grandt/relativepath": "1.0.1.*@dev",
-            "php": ">=5.3.0"
-        },
-        "time": "2014-08-14 15:47:34",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "ZipMerge\\": "src/ZipMerge"
+            "psr-0": {
+                "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "LGPL-2.1"
+            "MIT"
         ],
         "authors": [
             {
-                "name": "A. Grandt",
-                "email": "php@grandt.com",
-                "homepage": "http://grandt.com",
-                "role": "Developer"
-            },
-            {
-                "name": "Greg Kappatos",
-                "homepage": "http://websiteconnect.com.au",
-                "role": "Developer"
+                "name": "Sunra",
+                "email": "sunra@yandex.ru",
+                "homepage": "http://github.com/sunra"
             }
         ],
-        "description": "Merge and stream multiple Zip files on the fly.",
-        "homepage": "https://github.com/Grandt/PHPZipMerge",
+        "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
+        "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
         "keywords": [
-            "archive",
-            "compressed",
-            "compression",
-            "merge",
-            "phpzip",
-            "pkzip",
-            "stream",
-            "zip"
-        ]
-    },
-    {
-        "name": "phpzip/phpzip",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Grandt/PHPZip.git",
-            "reference": "f58e13ffe6916086295e87917ec05f0669ac5ffb"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Grandt/PHPZip/zipball/f58e13ffe6916086295e87917ec05f0669ac5ffb",
-            "reference": "f58e13ffe6916086295e87917ec05f0669ac5ffb",
-            "shasum": ""
-        },
-        "require": {
-            "grandt/binstring": ">=0.2.0",
-            "grandt/phpzipmerge": ">=1.0.1",
-            "grandt/relativepath": ">=1.0.1",
-            "php": ">=5.3.0"
-        },
-        "time": "2014-08-10 07:53:13",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "PHPZip\\Zip\\": "src/Zip"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-2.1"
-        ],
-        "authors": [
-            {
-                "name": "Adam Schmalhofer",
-                "email": "Adam.Schmalhofer@gmx.de",
-                "role": "Developer"
-            },
-            {
-                "name": "A. Grandt",
-                "email": "php@grandt.com",
-                "homepage": "http://grandt.com",
-                "role": "Developer"
-            },
-            {
-                "name": "Greg Kappatos",
-                "homepage": "http://websiteconnect.com.au",
-                "role": "Developer"
-            }
-        ],
-        "description": "Package to create and stream archives of compressed files in ZIP format with PHP 5.3+",
-        "homepage": "https://github.com/Grandt/PHPZip",
-        "keywords": [
-            "archive",
-            "compressed",
-            "compression",
-            "phpzip",
-            "pkzip",
-            "stream",
-            "zip"
+            "dom",
+            "html",
+            "parser"
         ]
     }
 ]

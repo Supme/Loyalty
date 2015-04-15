@@ -96,8 +96,8 @@ abstract class Table extends Db
         $ordering = isset($params['ordering'])?$params['ordering']:'false';
         $filter = isset($params['filter'])?$params['filter']:'false';
 
-        Registry::js(["//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"]);
-        Registry::css(["//cdn.datatables.net/1.10.4/css/jquery.dataTables.css"]);
+        Registry::js(["/assets/datatables/1.10.6/media/js/jquery.dataTables.min.js"]);
+        Registry::css(["/assets/datatables/1.10.6/media/css/jquery.dataTables.min.css"]);
 
         $hcols = "";foreach ($this->column(1) as $col) $hcols .= "<th>$col</th>";
         $html  = "

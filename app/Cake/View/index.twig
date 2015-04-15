@@ -1,0 +1,88 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+
+<form method="POST" class="form-horizontal">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>КнутоПряник</legend>
+
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="name">Имя</label>
+            <div class="col-md-4">
+                <select id="name" name="name" class="form-control">
+                    {% for people in peoples %}
+                    <option value="{{ people.id }}">{{ people.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- Multiple Radios
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="method"></label>
+            <div class="col-md-4">
+                <div class="radio">
+                    <label for="method-0">
+                        <input type="radio" name="method" id="method-0" value="1" checked="checked">
+                        <img src="/img/cake/prwoman.png" height="135px"/>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label for="method-1">
+                        <input type="radio" name="method" id="method-1" value="2">
+                        <img src="/img/cake/knwoman.png" height="135px"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <!-- Multiple Radios (inline) -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="method"></label>
+            <div class="col-md-4">
+                <label class="radio-inline" for="method-0">
+                    <input type="radio" name="method" id="method-0" value="1" checked="checked">
+                    <img src="/img/cake/prwoman.png" height="175px"/>
+                </label>
+                <label class="radio-inline" for="method-1">
+                    <input type="radio" name="method" id="method-1" value="2">
+                    <img src="/img/cake/knwoman.png" height="175px"/>
+                </label>
+            </div>
+        </div>
+
+
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="comment">Коммент</label>
+            <div class="col-md-4">
+                <textarea class="form-control" id="comment" name="comment"></textarea>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="send"></label>
+            <div class="col-md-4">
+                <button id="send" name="send" class="btn btn-info">Накинуть</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
+        {% if _notification is defined  %}
+            {% for type,noti in _notification %}
+                {% for n in noti %}
+                    <div class="alert alert-{{ type }} fade in">
+                        {{ n|e}} <a class="close" data-dismiss="alert" href="#">&times;</a>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>

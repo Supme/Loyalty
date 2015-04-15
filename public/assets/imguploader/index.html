@@ -1,0 +1,70 @@
+﻿<html>
+<head>
+<title>qq.FileUploader + Jcrop demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="css/jquery.Jcrop.css" type="text/css" />
+<link rel="stylesheet" href="css/fileuploader.css" type="text/css" />
+
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/fileuploader.js"></script>
+<script type="text/javascript" src="js/jquery.Jcrop.js"></script>
+<script type="text/javascript" src="js/image-uploader.js"></script>
+
+
+<style type="text/css">
+#uploadHolder, #cropBtn, #deleteBtn {
+	float: left;
+}
+#uploadBtn, #cropBtn, #deleteBtn {
+	border-style: solid;
+	border-color: black;
+}
+
+#uploadHolder:hover #uploadBtn, #cropBtn:hover, #deleteBtn:hover {
+	border-color: #999;
+}
+</style>
+
+<script type="text/javascript">
+$(function () {
+	var img = new ImageUploader({
+		img: $("#img"),
+		loaderURL: "images/loader.gif",
+			
+		targetWidth: 210,
+		targetHeight: 297,
+			
+		hidden: $("#url"), //для сохранения ссылки на картинку	
+				
+		cropURL: "crop.php",
+		cropParams: {},
+		
+		uploadURL: "upload.php",
+		uploadParams: {},
+			
+		allowedExtensions: ["jpg", "jpeg", "gif", "png"],
+			
+		uploadBtn: $("#uploadHolder"),
+		deleteBtn: $("#deleteBtn"),
+		cropBtn: $("#cropBtn")		
+	});
+	
+	img.remove();
+});
+</script>
+
+</head>
+<body>
+
+<div id="uploadHolder"><input id="uploadBtn" type="button" value="Загрузить" /></div>
+<input id="cropBtn" type="button" value="Обрезать"/>
+<input id="deleteBtn" type="button" value="Удалить" />
+
+<input type="text" id="url" readonly="readonly" style="width:300px" value=""/>
+<div>
+<img id="img"/>
+</div>
+
+</body>
+</html>

@@ -45,7 +45,8 @@ class Controller
         $twig = new Twig_Environment($twig_loader,
             [
                 'cache' => Registry::get('_config')['path']['views_cache'],
-                'debug' => Registry::get('_config')['site']['debug']
+                'debug' => Registry::get('_config')['site']['debug'],
+                'auto_reload' => true,
             ]);
         $twig->addGlobal('_config', Registry::get('_config'));
         $twig->addGlobal('_page', Registry::get('_page'));

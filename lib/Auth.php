@@ -179,9 +179,8 @@ class Auth extends Db
         $this->isLogin = false;
 
         // Check if all session variables are set
-        if (isset($_SESSION['user_id'],
-        $_SESSION['userlogin'],
-        $_SESSION['login_string'])) {
+        if (isset($_SESSION['user_id'], $_SESSION['userlogin'], $_SESSION['login_string']))
+        {
 
             $this->user_id = $_SESSION['user_id'];
             $login_string = $_SESSION['login_string'];

@@ -63,6 +63,11 @@ class Translate extends Model
         self::$currlang = $lang;
     }
 
+    public static function getCurrentLang()
+    {
+        return self::$currlang;
+    }
+
     public static function langName($lang)
     {
         $langName = [

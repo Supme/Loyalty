@@ -25,6 +25,7 @@
         "swiftmailer/swiftmailer": "@stable",
         "respect/validation": "0.7.*",
         "eventviva/php-image-resize": "1.2.*",
+        "sunra/php-simple-html-dom-parser": "v1.5.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "1.*"
