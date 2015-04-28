@@ -38,16 +38,9 @@ class Route extends Db
         }
 
         $this->_siteMap = $this->query("
-          SELECT distinct sitemap.id, sitemap.pid, sitemap.segment, sitemap.view, sitemap.layout, sitemap.module, sitemap.controller, sitemap.action, sitemap.title, sitemap.visible
+          SELECT distinct sitemap.id, sitemap.pid, sitemap.segment, sitemap.view, sitemap.layout, sitemap.module, sitemap.controller, sitemap.action, sitemap.title, sitemap.menu
           FROM core_sitemap sitemap
-          LEFT JOIN core_auth_access access ON sitemap.id = access.smap_id
-          WHERE access.id IS NULL OR (
-            NOT access.smap_id IS NULL AND access.right <> '0' AND (
-              access.user_id = " . $this->quote(Registry::get('_auth')->user_id) . "
-              OR
-              access.group_id = " . $this->quote(Registry::get('_auth')->group_id) . "
-            )
-          )")->fetchAll();
+        ")->fetchAll();
 
         // ToDo add static route for controllers
         $this->addSystemPage([
@@ -104,7 +97,7 @@ class Route extends Db
                     'controller' => $value,
                     'action' => $key,
                     'title' => '',
-                    'visible' => '0',
+                    'menu' => '0',
                 ]
             );
         }

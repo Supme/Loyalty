@@ -39,10 +39,19 @@ class data extends \Db {
         return $r;
     }
 
-    function result($from, $to)
+    function getPersonalById($id)
+    {
+        $res = $this->select(
+            'personal_people',
+            ['name', 'email'],
+            ['id' => $id]);
+        return isset($res[0])?$res[0]:false;
+    }
+
+    function resultScore($from, $to)
     {
         $begdate = strtotime($from);
-        $enddate = strtotime($to);
+        $enddate = strtotime($to)+86400;
 
         return $this->query(
             "select
@@ -61,4 +70,16 @@ class data extends \Db {
         )->fetchAll();
     }
 
+    function resultComment($from, $to)
+    {
+        $begdate = strtotime($from);
+        $enddate = strtotime($to)+86400;
+
+        return $this->select(
+            'cake_log',
+            ['[>]personal_people' => ['people_id' => 'id']],
+            ['personal_people.name', 'cake_log.method', 'cake_log.comment', 'cake_log.date'],
+            ['date[<>]' => [$begdate, $enddate],"ORDER" => "cake_log.date ASC"]
+        );
+    }
 } 

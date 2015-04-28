@@ -1,4 +1,4 @@
-{% if _user.add %}
+{% if _user.canCreate %}
     <a href="./personal/add">Add entry</a>
 {% endif %}
 
@@ -34,7 +34,7 @@
                 {% for kpeople,people in department %}
                     <tr>
                         <td>
-                            {% if _user.edit %}
+                            {% if _user.canUpdate %}
                                 <a href="./edit/{{ people.id }}">{{ kpeople }}</a>
                             {% else %}
                                 {{ kpeople }}

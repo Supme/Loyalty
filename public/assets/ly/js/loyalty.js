@@ -14,56 +14,12 @@
  */
 
 function edit(){
-
     $('body').append($('<div/>', {
         class: 'mce'
     }));
-    // Contents block
+    $( ".mce" ).draggable();
     content = $(".content");
-
-    // News block
-    news = $(".news")
-
-    if (content.length >0) editContent(content);
-    if (news.length >0) editNews(news);
-}
-
-function editNews(news){
-    if (news.hasClass('editable')){
-        news.removeClass('editable');
-        $('#newsTitle').prop('readonly', true);
-        $('#newsDate').prop('readonly', true);
-        $('.submit').hide();
-        tinymce.remove();
-    } else {
-        news.addClass('editable');
-        $('#newsTitle').prop('readonly', false);
-        $('#newsDate').prop('readonly', false);
-        $('.submit').show();
-        tinymce.init({
-            inline : true,
-            fixed_toolbar_container: ".mce",
-            language : 'ru',
-            selector:'div.editable',
-            toolbar:
-                " core |" +
-                    " insertfile undo redo |" +
-                    " styleselect |" +
-                    " bold italic |" +
-                    " alignleft aligncenter alignright alignjustify |" +
-                    " bullist numlist |" +
-                    " link image |" +
-                    " forecolor backcolor |" +
-                    " textcolor |" +
-                    " code",
-            plugins: [
-                "textcolor","advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualcontents code fullscreen",
-                "insertdatetime media table contextmenu paste"
-            ],
-            theme: "modern"
-        });
-    }
+    if (content.length > 0) editContent(content);
 }
 
 function editContent(content)    {
@@ -92,7 +48,7 @@ function editContent(content)    {
                         " code",
                 plugins: [
                     "save","textcolor","advlist autolink lists link image charmap print preview anchor",
-                    "searchreplace visualcontents code fullscreen",
+                    "searchreplace code fullscreen",
                     "insertdatetime media table contextmenu paste"
                 ],
                 save_enablewhendirty: true,
@@ -110,26 +66,36 @@ function editContent(content)    {
                         }
                     });
                 },
-                theme: "modern"
+                theme: "modern",
+                file_browser_callback : fm
             });
         }
+
+
+    function fm(field_name, url, type, win) {
+        var roxyFileman = '/fm';
+        if (roxyFileman.indexOf("?") < 0) {
+            roxyFileman += "?type=" + type;
+        }
+        else {
+            roxyFileman += "&type=" + type;
+        }
+        roxyFileman += '&input=' + field_name + '&value=' + win.document.getElementById(field_name).value;
+        if(tinyMCE.activeEditor.settings.language){
+            roxyFileman += '&langCode=' + tinyMCE.activeEditor.settings.language;
+        }
+        tinyMCE.activeEditor.windowManager.open({
+            file: roxyFileman,
+            title: 'Roxy Fileman',
+            width: 850,
+            height: 650,
+            resizable: "yes",
+            plugins: "media",
+            inline: "yes",
+            close_previous: "no"
+        }, {     window: win,     input: field_name    });
+        return false;
+    }
 }
 
-function saveNews(){
-    $.ajax({
-        type: "POST",
-        url: "#",
-        data: {
-            id: $('.submit').attr('id'),
-            title: $('#newsTitle').val(),
-            date: $('#newsDate').val(),
-            announce: $('[position = "announce"]').html(),
-            text: $('[position = "text"]').html(),
-            save: true
-        },
-        success:function( msg ) {
-            console.log('Save result: ' + msg);
-        }
-    })
-}
 

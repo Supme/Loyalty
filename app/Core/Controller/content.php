@@ -19,23 +19,24 @@ namespace App\Core\Controller;
 class content extends \Controller {
     function index(){
 
-        //$content = $this->loadModel('Content');
+        $user = new \Auth();
         $content = new \App\Core\Model\content();
 
-        if (isset($_POST['save']) && \Registry::get('_auth')->edit) {
+        if (isset($_POST['save']) && $user->canUpdate()) {
             $content->edit($_POST['position'], $_POST['text']);
             echo 'Ok';
         } else {
             $result = $content->load();
 
-            if (\Registry::get('_auth')->edit){
+            if ($user->canUpdate()){
 
                 \Registry::css([
+                    "/assets/jquery-ui-1.11.4/jquery-ui.min.css",
                     "/assets/ly/css/loyalty.css"
                 ]);
 
                 \Registry::js([
-                    "/assets/ly/js/jquery.datetimepicker.js",
+                    "/assets/jquery-ui-1.11.4/jquery-ui.min.js",
                     "/assets/tinymce/tinymce.min.js",
                     "/assets/ly/js/loyalty.js",
                 ]);

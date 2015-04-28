@@ -33,31 +33,69 @@ class main extends \Controller
             "/assets/bootstrap/3.1.1/js/bootstrap.min.js",
         ]);
 
-        if (isset($_REQUEST['send'])){
+        $comment_error = false;
 
-            if($data->put($_REQUEST))
-            {
+        if (isset($_REQUEST['send']))
+        {
+            if ($_REQUEST['method'] == 2 and $_REQUEST['comment'] == ''){
+                $comment_error = true;
                 \Registry::notification([
-                    'info' => [
-                        'Ваше волеизъявление (душеизлияние?) учтено.',
-                    ],
-                    'success' => [
-                        'Можете продолжить действовать в том же духе.',
+                    'warning' => [
+                        'Не обоснованые удары кнутом не принимаются!!!',
                     ],
                 ]);
             } else {
-                \Registry::notification([
-                    'danger' => [
-                        'Что то пошло не так и мы не можем добавить это в нашу реляционную базу даных.',
-                    ],
-                ]);
-            }
+                if($data->put($_REQUEST))
+                {
+                    \Registry::notification([
+                        'info' => [
+                            'Ваше волеизъявление (душеизлияние?) учтено.',
+                        ],
+                        'success' => [
+                            'Можете продолжить действовать в том же духе.',
+                        ],
+                    ]);
+                    if ( $_REQUEST['method'] == 2) //Уведомим письмом человека об ударе
+                    {
+                        $person = $data->getPersonalById($_REQUEST['name']);
+                        // Create the Transport
+                        $transport =
+                            \Swift_SmtpTransport::newInstance(
+                                \Registry::get('_config')['email']['smtp_host'],
+                                \Registry::get('_config')['email']['smtp_port'],
+                                \Registry::get('_config')['email']['smtp_encryption']
+                            )
+                            ->setUsername(\Registry::get('_config')['email']['smtp_username'])
+                            ->setPassword(\Registry::get('_config')['email']['smtp_password'])
+                        ;
 
+                        $mailer = \Swift_Mailer::newInstance($transport);
+
+                        $message = \Swift_Message::newInstance('Вас ударили кнутом')
+                            ->setFrom(['automated.mail@dmbasis.ru' => 'КнутоПряник'])
+                            ->setTo([$person['email'] => $person['name']])
+                            ->setBody(
+                                "Вас ударили кнутом, приговаривая: '" . $_REQUEST['comment']."'"
+                            );
+
+                        $mailer->send($message);
+}
+                } else {
+                    \Registry::notification([
+                        'danger' => [
+                            'Что то пошло не так и мы не можем добавить это в нашу реляционную базу данных.',
+                        ],
+                    ]);
+                }
+            }
         }
 
         $peoples = $data->people();
         $this->render([
             'peoples' => $peoples,
+            'request' => $_REQUEST,
+            'comment_error' => $comment_error
+
         ]);
     }
 
@@ -79,12 +117,25 @@ class main extends \Controller
 
         $from = isset($_REQUEST['from'])?$_REQUEST['from']:'';
         $to = isset($_REQUEST['to'])?$_REQUEST['to']:'';
+        $type = '';
         $res = false;
 
         if (isset($_REQUEST['send'])){
             if (isset($_REQUEST['from']) and $_REQUEST['from'] != '' and isset($_REQUEST['to']) and $_REQUEST['to'] != '')
             {
-                $res = $data->result($from, $to);
+
+                switch ($_REQUEST['type'])
+                {
+                    case 'score':
+                        $type = 'score';
+                        $res = $data->resultScore($from, $to);
+                        break;
+                    case 'comment':
+                        $type = 'comment';
+                        $res = $data->resultComment($from, $to);
+                        break;
+                }
+
             } else {
                 \Registry::notification([
                     'danger' => [
@@ -103,6 +154,7 @@ class main extends \Controller
         $this->render([
             'from' => $from,
             'to' => $to,
+            'type' => $type,
             'res' => $res,
         ]);
     }

@@ -17,7 +17,7 @@ namespace App\Core\Controller;
 
 class news extends \Controller {
 
-    private $news_model;
+    protected $news_model;
 
     function __init(){
         $this->news_model = new \App\Core\Model\news();
@@ -29,8 +29,8 @@ class news extends \Controller {
         if (isset($params[0]) and $params[0] == 'edit') {
             $this->edit($params);
         } else {
-
-            if (\Registry::get('_auth')->add)
+            $user = new \Auth();
+            if ($user->canUpdate())
                 \Registry::menu([
                     'Add' => [
                         'href'=>'./edit/',
@@ -64,26 +64,41 @@ class news extends \Controller {
     }
 
     private function edit($params){
+        $user = new \Auth();
+        if( !isset($params[0]) and $params[0] != 'edit')
+            header('location: ' . URL . '403');
 
-        if($params[0] =='')
-            if (!\Registry::get('_auth')->add) header('location: ' . URL . '403');
+        if ( !isset($params[1]) and !$user->canCreate() )
+            header('location: ' . URL . '403');
         else
-            if (!\Registry::get('_auth')->edit) header('location: ' . URL . '403');
+            if (!$user->canUpdate())
+                header('location: ' . URL . '403');
 
         \Registry::$store['_page']['view'] = 'news_edit';
 
         \Registry::css([
-            "/assets/ly/css/datepicker.css",
-            "/assets/elfinder/css/elfinder.min.css"
+            "/assets/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.min.css",
         ]);
 
         \Registry::js([
-            "/assets/ly/js/bootstrap-datepicker.js",
             "/assets/tinymce/tinymce.min.js",
-            "/assets/elfinder/js/elfinder.min.js",
+            "/assets/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js",
+            "/assets/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.".\Translate::getCurrentLang().".min.js",
             ]);
 
-        if(isset($params[1]))
+        if ( isset($_POST['title']) and isset($_POST['date']) and isset($_POST['announce']) )
+        {
+            $this->news_model->edit(
+                isset( $params[1])?(int)$params[1]:false,
+                $_POST['title'],
+                $_POST['announce'],
+                $_POST['text'] != ''?$_POST['text']:false,
+                strtotime($_POST['date'])
+            );
+
+        }
+
+        if( isset($params[1]) )
         {
            $value = $this->news_model->load((int)$params[1]);
         } else {
@@ -93,7 +108,5 @@ class news extends \Controller {
         $this->render([
             'value' => $value,
         ]);
-            //$this->news_model->edit($_POST["title"], $_POST["text"]);
     }
-
 }

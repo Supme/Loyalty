@@ -24,6 +24,20 @@
         </div>
 
         <div class="form-group">
+            <label class="col-md-4 control-label" for="type"></label>
+            <div class="col-md-4">
+                <label class="radio-inline" for="type-0">
+                    <input type="radio" name="type" id="type-0" value="score" checked="checked">
+                    Баллы
+                </label>
+                <label class="radio-inline" for="type-1">
+                    <input type="radio" name="type" id="type-1" value="comment">
+                    Комментарии
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-md-4 control-label" for="send"></label>
             <div class="col-md-2">
                 <button id="send" name="send" class="btn btn-info">Выбрать</button>
@@ -34,7 +48,7 @@
 </form>
 
 
-{% if res is iterable %}
+{% if type == 'score' %}
     <table class="table">
         <thead>
         <tr>
@@ -53,11 +67,37 @@
         {% endfor %}
         </tbody>
     </table>
+{% elseif type == 'comment' %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Метод</th>
+            <th>Комментарий</th>
+            <th>Когда</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in res %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>
+                    {% if p.method == 1 %}Пряник
+                    {% elseif p.method == 2 %}Кнут
+                    {% endif %}
+                </td>
+                <td>{{ p.comment }}</td>
+                <td>{{ p.date | date("d/m/Y")}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endif %}
 
 <script>
-    $('input').datepicker({
+    $('.form-control').datepicker({
         language: "{{ _lang.getCurrentLang() }}",
+        format:  "dd-mm-yyyy",
         todayHighlight: true,
         autoclose: true
     });

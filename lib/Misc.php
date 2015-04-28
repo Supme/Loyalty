@@ -18,12 +18,18 @@ class Misc {
     protected function __construct() {}
     protected function __clone() {}
 
-    public static function randomString($lenght = 128)
+    /**
+     * Generates a random string of given $length.
+     *
+     * @param Integer $length The string length.
+     * @return String The randomly generated string.
+     */
+    public static function randomString($length = 16)
     {
         $characterList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $num = 0;
         $string = "";
-        while ($num < $lenght) {
+        while ($num < $length) {
             $string .= $characterList{mt_rand(0, (strlen($characterList) - 1))};
             $num++;
         }

@@ -51,15 +51,12 @@ class Test extends \Controller
             'input-class' => 'input-large'
         ]);
 
-
-
         $this->render(['form' => $form->render()]);
 
-        $test = new \File;
-        echo "<pre>----- files-------\n";
-        echo "\nResult: ";print_r($test->isFolder('/files/777/folder','infolder2'));echo "\n";
-        //echo "json = '".json_encode($test->getFolderFiles('/folder_1/sub_folder1_1'))."'\n";
+        $content = new \App\Core\Model\news();
+        echo "<pre>----- content-------\n";
 
+        echo "\n";
 
         echo "</pre>";
 

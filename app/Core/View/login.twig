@@ -1,7 +1,10 @@
 {% if _user.isLogin %}
 
-    Hello, {{ _user.name }}<br/>
-    You group {{ _user.group }} <br/>
+    Hello, {{ _user.getUserName }}!<br/>
+    You group:<br/>
+        {% for group in _user.getGroupName %}
+            - {{ group }}<br/>
+        {% endfor %}
     <form action="#"  method="POST" class="form-horizontal">
         <fieldset>
             <!-- Button -->

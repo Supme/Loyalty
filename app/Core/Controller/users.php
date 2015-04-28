@@ -19,7 +19,8 @@ namespace App\Core\Controller;
 class users extends \Controller {
 
     function __init(){
-       if(!\Registry::get('_auth')->read) header("Location: ../error/403");
+        $this->auth = new \Auth();
+        if(!$this->auth->canRead()) header("Location: ../error/403");
     }
 
     function index()
@@ -28,7 +29,7 @@ class users extends \Controller {
         if (!$users->isRequest()) {
             if(isset($_REQUEST['add']))
             {
-                $result = \Registry::get('_auth')->addUser(
+                $result = $this->auth->addUser(
                     $_REQUEST['login'],
                     $_REQUEST['name'],
                     $_REQUEST['email'],
@@ -43,19 +44,19 @@ class users extends \Controller {
                 }
             }
             $table = $users->html();
-            $this->render(['table' => $table, 'groups' => \Registry::get('_auth')->getGroups()]);
+            $this->render(['table' => $table, 'groups' => $this->auth->getGroupName()]);
         } else {
             $users->ajax();
         }
     }
 
     function add(){
-        if(!\Registry::get('_auth')->add) header("Location: ../error/403");
+        if(!$this->auth->canCreate()) header("Location: ../error/403");
         $this->users->add('n.kozkin','nikolay@kozkin.ru', 'pass');
     }
 
     function edit($params){
-        if(!\Registry::get('_auth')->edit) header("Location: ../error/403");
+        if(!$this->auth->canUpdate()) header("Location: ../error/403");
         $this->users;
     }
 

@@ -5,15 +5,15 @@
     <fieldset>
 
         <!-- Form Name -->
-        <legend>КнутоПряник</legend>
+        <legend><img src="/img/cake/kp.png" height="25px" alt="КнутоПряник"/></legend>
 
         <!-- Select Basic -->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="name">Имя</label>
+            <label class="col-md-4 control-label" for="name">Имя:</label>
             <div class="col-md-4">
                 <select id="name" name="name" class="form-control">
                     {% for people in peoples %}
-                    <option value="{{ people.id }}">{{ people.name }}</option>
+                    <option value="{{ people.id }}" {% if request.name == people.id %}selected {% endif %}>{{ people.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -44,22 +44,22 @@
             <label class="col-md-4 control-label" for="method"></label>
             <div class="col-md-4">
                 <label class="radio-inline" for="method-0">
-                    <input type="radio" name="method" id="method-0" value="1" checked="checked">
+                    <input type="radio" name="method" id="method-0" value="1" {% if request.method == 1 or request.method != 2 %}checked="checked"{% endif %}>
                     <img src="/img/cake/prwoman.png" height="175px"/>
                 </label>
                 <label class="radio-inline" for="method-1">
-                    <input type="radio" name="method" id="method-1" value="2">
+                    <input type="radio" name="method" id="method-1" value="2" {% if request.method == 2 %}checked="checked"{% endif %}>
                     <img src="/img/cake/knwoman.png" height="175px"/>
                 </label>
             </div>
         </div>
 
-
         <!-- Textarea -->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="comment">Коммент</label>
+            <label class="col-md-4 control-label" for="comment">За что:</label>
             <div class="col-md-4">
-                <textarea class="form-control" id="comment" name="comment"></textarea>
+                <textarea class="form-control{% if comment_error %} alert-danger{% endif %}" id="comment" name="comment" ></textarea>
+                <!--span id="comment" class="help-block"></span-->
             </div>
         </div>
 
@@ -86,3 +86,7 @@
 
     </div>
 </div>
+
+<script>
+    setTimeout('$(".alert").alert("close")', 5000);
+</script>

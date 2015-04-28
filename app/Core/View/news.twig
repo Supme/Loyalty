@@ -23,18 +23,18 @@
         <div class="unit">
             <h3>
                 {% if value.text is not null %}
-                    <a href="/{{ _page.segment }}/{{ value.id }}">{{ value.title }}</a>
+                    <a href="/{{ _page.segment }}/{{ key }}">{{ value.title }}</a>
                 {% else %}
                     {{ value.title }}
                 {% endif %}
             </h3>
-            {% if _user.edit %}
+            {% if _user.canUpdate %}
             <div class="overlay">
-                <a href="/{{ _page.segment }}/edit/{{ value.id }}"><i class="fa fa-edit fa-fw"></i></a>
+                <a href="/{{ _page.segment }}/edit/{{ key }}"><i class="fa fa-edit fa-fw"></i></a>
             </div>
             {% endif %}
             <h6>
-                {{ value.date|date('d/m/Y H:i:s') }}
+                {{ value.date|date('d-m-Y') }}
             </h6>
             {{ value.announce|raw }}
             <hr/>
@@ -45,7 +45,7 @@
         {{ news.title }}
     </h3>
     <h6>
-        {{ news.date|date('d/m/Y H:i')}}
+        {{ news.date|date('d-m-Y')}}
     </h6>
     <hr/>
     <div class="news" position="announce">

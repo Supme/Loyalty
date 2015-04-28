@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Acl' => $baseDir . '/lib/Acl.php',
     'Application' => $baseDir . '/lib/Application.php',
     'Auth' => $baseDir . '/lib/Auth.php',
     'Cache' => $baseDir . '/lib/Cache.php',
@@ -69,7 +68,6 @@ return array(
     'Generic_Sniffs_WhiteSpace_DisallowSpaceIndentSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/WhiteSpace/DisallowSpaceIndentSniff.php',
     'Generic_Sniffs_WhiteSpace_DisallowTabIndentSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/WhiteSpace/DisallowTabIndentSniff.php',
     'Generic_Sniffs_WhiteSpace_ScopeIndentSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/WhiteSpace/ScopeIndentSniff.php',
-    'Group' => $baseDir . '/lib/Group.php',
     'Image' => $baseDir . '/lib/Image.php',
     'Misc' => $baseDir . '/lib/Misc.php',
     'Model' => $baseDir . '/lib/Model.php',
@@ -165,6 +163,7 @@ return array(
     'PSR2_Sniffs_Namespaces_NamespaceDeclarationSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PSR2/Sniffs/Namespaces/NamespaceDeclarationSniff.php',
     'PSR2_Sniffs_Namespaces_UseDeclarationSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PSR2/Sniffs/Namespaces/UseDeclarationSniff.php',
     'Registry' => $baseDir . '/lib/Registry.php',
+    'Request' => $baseDir . '/lib/Request.php',
     'Route' => $baseDir . '/lib/Route.php',
     'Squiz_Sniffs_Arrays_ArrayBracketSpacingSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/Arrays/ArrayBracketSpacingSniff.php',
     'Squiz_Sniffs_Arrays_ArrayDeclarationSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/Arrays/ArrayDeclarationSniff.php',
@@ -270,7 +269,6 @@ return array(
     'Squiz_Sniffs_WhiteSpace_SuperfluousWhitespaceSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Squiz/Sniffs/WhiteSpace/SuperfluousWhitespaceSniff.php',
     'Table' => $baseDir . '/lib/Table.php',
     'Translate' => $baseDir . '/lib/Translate.php',
-    'User' => $baseDir . '/lib/User.php',
     'Validator' => $baseDir . '/lib/Validator.php',
     'Zend_Sniffs_Debug_CodeAnalyzerSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Zend/Sniffs/Debug/CodeAnalyzerSniff.php',
     'Zend_Sniffs_Files_ClosingTagSniff' => $vendorDir . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Zend/Sniffs/Files/ClosingTagSniff.php',

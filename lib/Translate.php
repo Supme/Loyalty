@@ -19,14 +19,16 @@ class Translate extends Model
 
     private static $strs;
     private static $langList;
-    private static $currlang = 'en';
+    private static $currlang;
 
     function __construct()
     {
         parent::__construct();
 
+        self::$currlang = Registry::get('_config')['site']['lang'];
+
         self::$langList = Cache::get('_lang');
-        if(empty(self::$langList)){
+        if ( empty( self::$langList ) ){
             self::$langList = $this->database->select(
                 'core_lang_locale',
                 ['code', 'name']
@@ -35,13 +37,13 @@ class Translate extends Model
         }
 
         self::$strs = Cache::get('_tr');
-        if(empty(self::$strs)){
+        if ( empty( self::$strs ) ){
             foreach(self::$langList as $lang){
                 self::$strs[$lang['code']] = [];
                 foreach($this->database->select(
                     'core_lang_translation',
                     [
-                        '[>]core_lang_locale' => ['locales_id' => 'id'],
+                        '[>]core_lang_locale' => ['locale_id' => 'id'],
                     ],
                     [
                         'core_lang_translation.key',
@@ -50,15 +52,33 @@ class Translate extends Model
                     [
                         'core_lang_locale.code' => $lang
                     ]
-                ) as $tr){
+                ) as $tr )
+                {
                     self::$strs[$lang['code']][$tr['key']] = $tr['value'];
                 }
             }
             Cache::set('_tr', self::$strs);
         }
+
+/* ToDo save without cookie
+         if ( !isset( $_COOKIE['lang'] ) ) {
+            if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) )
+            {
+                self::$currlang = @substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 );
+            } else {
+                self::$currlang = Registry::get('_config')['site']['lang'];
+            }
+        } else {
+            self::$currlang = $_COOKIE['lang'];
+            if ( false and !in_array( self::$currlang, self::$langList ) )
+            {
+                self::$currlang = Registry::get('_config')['site']['lang'];
+            }
+        }
+*/
     }
 
-    public static function setDefaultLang($lang)
+    public static function setCurrentLang($lang)
     {
         self::$currlang = $lang;
     }
@@ -70,6 +90,7 @@ class Translate extends Model
 
     public static function langName($lang)
     {
+        // ToDo put in database
         $langName = [
 
             'af' => 'Afrikaans',

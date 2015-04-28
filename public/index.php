@@ -45,10 +45,16 @@ try{
 
 // debug info
 if(Registry::get('_config')['site']['debug']){
-    echo "<pre>Debug information:\n";
+
+    echo "<script type='text/javascript'>function debug_show(){ $('.debug-information').toggle( function(){ $(this).siblings('.debug-information.hide').stop(false, true).slideDown(500);}, function(){ $(this).siblings('.debug-information.hide').stop(false, true).slideUp(500);})};</script>";
+    echo "<p style='text-align: right; font-size: xx-small'><a onclick='debug_show();'>Debug</a></p>";
+    echo "<div class='debug-information' style='display: none;'>\n<pre>";
     printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
-    Registry::log(Cache::log());
+    var_dump( Cache::log() );
+    echo "Application information";
     var_dump( array_reverse ( Registry::log() ) );
-    var_dump($_SESSION);
-    echo "</pre>";
+    echo "User information:\n";
+    $user = new \Auth();
+    var_dump($user->getRight());
+    echo "</pre>\n</div>";
 }

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/catfan/Medoo.git",
-                "reference": "920ae293ee87286f955a5265124509695e172434"
+                "reference": "1d6749a14981ada57eb6f8b2e3d7c4c56af8ae83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/catfan/Medoo/zipball/920ae293ee87286f955a5265124509695e172434",
-                "reference": "920ae293ee87286f955a5265124509695e172434",
+                "url": "https://api.github.com/repos/catfan/Medoo/zipball/1d6749a14981ada57eb6f8b2e3d7c4c56af8ae83",
+                "reference": "1d6749a14981ada57eb6f8b2e3d7c4c56af8ae83",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +59,7 @@
                 "sql",
                 "sqlite"
             ],
-            "time": "2015-02-11 03:54:23"
+            "time": "2015-04-13 07:17:59"
         },
         {
             "name": "eventviva/php-image-resize",
@@ -107,16 +107,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "0.7.7",
+            "version": "0.7.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "8b5ca946467960a96009f21e09261db1dff27c51"
+                "reference": "9dbb9f96cf637224f3b59d83a4980e304e9c24f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/8b5ca946467960a96009f21e09261db1dff27c51",
-                "reference": "8b5ca946467960a96009f21e09261db1dff27c51",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/9dbb9f96cf637224f3b59d83a4980e304e9c24f9",
+                "reference": "9dbb9f96cf637224f3b59d83a4980e304e9c24f9",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2015-03-02 17:04:21"
+            "time": "2015-04-24 22:18:13"
         },
         {
             "name": "sunra/php-simple-html-dom-parser",
@@ -288,20 +288,20 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf"
+                "reference": "9f70492f44398e276d1b81c1b43adfe6751c7b7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/4cf7464348e7f9893a93f7096a90b73722be99cf",
-                "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9f70492f44398e276d1b81c1b43adfe6751c7b7f",
+                "reference": "9f70492f44398e276d1b81c1b43adfe6751c7b7f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.4"
+                "php": ">=5.2.7"
             },
             "type": "library",
             "extra": {
@@ -341,7 +341,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-01-25 17:32:08"
+            "time": "2015-04-19 08:30:27"
         }
     ],
     "packages-dev": [

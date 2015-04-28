@@ -18,13 +18,13 @@ namespace App\Core\Controller;
 
 class login extends \Controller {
     function index(){
-
+        $user = new \Auth();
         // Login user
         if (isset($_REQUEST["login"])) {
-            if(\Registry::get('_auth')->login($_POST['email'], $_POST['password'])){
+            if($user->login($_POST['email'], $_POST['password'])){
                 \Registry::notification([
                     'success' => [
-                        \Translate::get('You are login as').' '.\Registry::get('_auth')->name,
+                        \Translate::get('You are login as').' '.$user->getUserName(),
                     ]
                 ]);
             } else {
@@ -38,7 +38,8 @@ class login extends \Controller {
 
         // Logout user
         if (isset($_REQUEST["logout"])) {
-            \Registry::get('_auth')->logout();
+            $user->logout();
+
             \Registry::notification([
                 'info' => [
                     \Translate::get('Success logout'),
@@ -49,5 +50,4 @@ class login extends \Controller {
 
         $this->render();
     }
-
 }

@@ -149,19 +149,19 @@
                         <a href="{{ _config.site.url }}{{ _siteTree.0.segment }}/">{{ _lang.get(_siteTree.0.title) }}</a>
                     </li>
 
-                    {% for link in _siteTree.0.childs if link.visible%}
+                    {% for link in _siteTree.0.childs if link.menu%}
                         <li>
                             <a {% if link.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/">{{ _lang.get(link.title) }}</a>
 
                             {% if link.childs %}
                                 <ul class="nav nav-second-level">
-                                    {% for lin in link.childs if lin.visible%}
+                                    {% for lin in link.childs if lin.menu%}
                                         <li>
                                             <a {% if lin.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/">{{ _lang.get(lin.title) }}</a>
 
                                             {% if lin.childs %}
                                                 <ul class="nav nav-third-level">
-                                                    {% for li in lin.childs if li.visible %}
+                                                    {% for li in lin.childs if li.menu %}
                                                         <li>
                                                             <a {% if li.segment == _page.segment %} class="active"{% endif %} href="{{ _config.site.url }}{{ link.segment }}/{{ lin.segment }}/{{ li.segment }}/">{{ _lang.get(li.title) }}</a>
                                                         </li>

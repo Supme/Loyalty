@@ -19,47 +19,94 @@ namespace App\Core\Model;
 class content extends \Db
 {
 
-    function load(){
+    function load( $sitemap_id = false ){
 
-        return $this->select(
+        if ( !$sitemap_id ) $sitemap_id = \Registry::get('_page')['id'];
+
+        $last_time = $this->max(
             'core_content',
-            ['id', 'lang', 'position', 'text'],
-            ['smap_id' => \Registry::get('_page')['id']]
+            'time',
+            [
+                'AND' =>
+                    [
+                        'core_content.sitemap_id' => $sitemap_id,
+                        'core_content.visible' => null
+                    ]
+            ]
         );
 
+        $data = $this->select(
+            'core_content',
+            [
+                '[>]core_content_data' => ['id' => 'data_id'],
+//                '[>]core_lang_locale' => ['lang_id' => ['id']],
+
+            ],
+            [
+                'core_content.id(id)',
+//                'core_lang_locale.code(lang)',
+                'core_content_data.key(position)',
+                'core_content_data.value(text)',
+                'core_content.time(time)',
+            ],
+            [
+                'AND' =>
+                    [
+                        'core_content.sitemap_id' => $sitemap_id,
+                        'core_content.visible' => null,
+                        'core_content.time' => $last_time,
+                    ]
+            ]
+        );
+
+        return $data;
     }
 
-    function edit($position, $text){
+    function edit($position, $text, $sitemap_id = false){
 
-        $id = $this->select(
+        if ( !$sitemap_id ) $sitemap_id = \Registry::get('_page')['id'];
+
+        $data = $this->load($sitemap_id);
+
+        $last_id = $this->insert(
             'core_content',
-            'id',
             [
-                'AND' => [
-                    'smap_id' => \Registry::get('_page')['id'],
-                    'position' => $position
-                ]
+                'sitemap_id' => $sitemap_id,
+                'lang_id' => 2,
+                'time' => time()
+            ]);
 
-            ]
-        )[0];
-
-        if($id) {
-            $this->update(
-                'core_content',
-                ['text' => $text],
-                ['id' => $id]
-            );
-        } else {
+        $updated = false;
+        foreach($data as $d)
+        {
+            if ( $d['position'] == $position)
+            {
+                $d['position'] = $position;
+                $d['text'] = $text;
+                $updated = true;
+            }
             $this->insert(
-                'core_content',
+                'core_content_data',
                 [
-                    'smap_id' => \Registry::get('_page')['id'],
-                    'lang' => 1, // Todo реализовать мультиязычность
-                    'position' => 1, // ToDo косяк тут, если это не первый блок на странице
-                    'text' => $text
+                    'data_id' => $last_id,
+                    'key' => $d['position'],
+                    'value' => $d['text']
                 ]
             );
         }
+
+        if ( !$updated )
+        {
+            $this->insert(
+                'core_content_data',
+                [
+                    'data_id' => $last_id,
+                    'key' => $position,
+                    'value' => $text
+                ]
+            );
+        }
+
     }
 
 }

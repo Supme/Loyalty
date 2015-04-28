@@ -127,7 +127,7 @@ class files extends \Controller
     {
         $conf = [
             "FILES_ROOT" => "",
-            "RETURN_URL_PREFIX" => "fm/download", //"/files/",
+            "RETURN_URL_PREFIX" => "/download", //"/files/",
             "SESSION_PATH_KEY" => "",
             "THUMBS_VIEW_WIDTH" => "140",
             "THUMBS_VIEW_HEIGHT" => "120",
@@ -135,7 +135,7 @@ class files extends \Controller
             "PREVIEW_THUMB_HEIGHT" => "100",
             "MAX_IMAGE_WIDTH" => "1000",
             "MAX_IMAGE_HEIGHT" => "1000",
-            "INTEGRATION" => "custom",
+            "INTEGRATION" => "tinymce4",
             "DIRLIST" => "fm/dirtree",
             "CREATEDIR" => "fm/createdir",
             "DELETEDIR" => "fm/deletedir",

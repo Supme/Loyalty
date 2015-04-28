@@ -17,7 +17,8 @@ namespace App\Personal\Controller;
 
 class main extends \Controller {
 
-    protected $personal;
+    protected
+        $personal;
 
     function __init()
     {
@@ -51,8 +52,9 @@ class main extends \Controller {
 
     private function index($params)
     {
+        $user = new \Auth();
         // add submenu
-        if (\Registry::get('_auth')->edit)
+        if ($user->canUpdate())
             \Registry::menu([
                 'Add personal' => [
                     'href'=>'../'.\Registry::get('_page')['segment'].'/edit/',
@@ -67,7 +69,8 @@ class main extends \Controller {
 
     private function edit($params)
     {
-        if(!\Registry::get('_auth')->edit) header("Location: /error/403");
+        $user = new \Auth();
+        if(!$user->canUpdate()) header("Location: /error/403");
 
         \Registry::css([
             "/assets/imguploader/css/jquery.Jcrop.css",

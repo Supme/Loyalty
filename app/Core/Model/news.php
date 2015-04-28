@@ -19,54 +19,210 @@ namespace App\Core\Model;
 class news extends \Db
 {
 
-    function last($count, $from = 0){
+    function last($count, $from = 0, $sitemap_id = false)
+    {
+        if ( !$sitemap_id ) $sitemap_id = \Registry::get('_page')['id'];
 
-        return $this->select(
-            'core_news',
+        $data = $this->select(
+            'core_content',
             [
-                'id',
-                'title',
-                'announce',
-                'text',
-                'date'
+                '[>]core_content_data' => ['id' => 'data_id'],
+//                '[>]core_lang_locale' => ['lang_id' => ['id']],
+
             ],
             [
-                'AND' => [
-                    'smap_id' => \Registry::get('_page')['id'],
-                    'date[<]' => 'NOW()',
-                ],
-                'ORDER' => 'date DESC',
+                'core_content.id(id)',
+//                'core_lang_locale.code(lang)',
+                'core_content_data.key(field)',
+                'core_content_data.value(text)',
+                'core_content.time(date)',
+            ],
+            [
+                'AND' =>
+                    [
+                        'core_content.sitemap_id' => $sitemap_id,
+                        'core_content.visible' => null,
+                    ],
+                "ORDER" => "core_content.time DESC",
                 'LIMIT' => [$from, $count]
             ]
-            );
+        );
+
+        $news = [];
+        foreach ( $data as $n)
+        {
+            $news[$n['id']][$n['field']] = $n['text'];
+            $news[$n['id']]['date'] = $n['date'];
+        }
+
+        return $news;
+
     }
 
-    function load($id){
+    function load($news_id, $sitemap_id = false)
+    {
+        if ( !$sitemap_id ) $sitemap_id = \Registry::get('_page')['id'];
 
-        return $this->select(
-            'core_news',
+        $data = $this->select(
+            'core_content',
             [
-                'id',
-                'title',
-                'announce',
-                'text',
-                'date'
+                '[>]core_content_data' => ['id' => 'data_id'],
+//                '[>]core_lang_locale' => ['lang_id' => ['id']],
+
             ],
             [
-                'AND' => [
-                    'id' => $id,
-                    'smap_id' => \Registry::get('_page')['id']
-                ]
+                'core_content.id(id)',
+//                'core_lang_locale.code(lang)',
+                'core_content_data.key(field)',
+                'core_content_data.value(text)',
+                'core_content.time(date)',
+            ],
+            [
+                'AND' =>
+                    [
+                        'core_content.sitemap_id' => $sitemap_id,
+                        'core_content.id' => $news_id,
+                        'core_content.visible' => null,
+                    ],
             ]
-        )[0];
+        );
 
+        $news = [];
+        foreach ( $data as $n)
+        {
+            $news[$n['field']] = $n['text'];
+            $news['date'] = $n['date'];
+        }
+
+        return $news;
     }
 
-    function edit($title, $announce, $text, $date = FALSE){
+    function edit($id, $title, $announce, $text = false, $date = false, $sitemap_id = false){
 
-        if(!$date) $date = time();
-        $query = $this->pdo->prepare('INSERT INTO core_news (smap_id, title, announce, text, date) VALUES (?, ?, ?, ?)');
-        $query->execute([\Registry::get('_page')['id'], $title, $announce, $text, $date]);
+        if ( !$sitemap_id ) $sitemap_id = \Registry::get('_page')['id'];
+        if( !$date ) $date = time();
 
+        if ( !$id )
+        {
+            // Add news
+
+
+            $last_id = $this->insert(
+                'core_content',
+                [
+                    'sitemap_id' => $sitemap_id,
+                    'lang_id' => 2,
+                    'time' => $date
+                ]);
+
+            //Title
+            $this->insert(
+                'core_content_data',
+                [
+                    'data_id' => $last_id,
+                    'key' => 'title',
+                    'value' => $title
+                ]
+            );
+
+            //Announce
+            $this->insert(
+                'core_content_data',
+                [
+                    'data_id' => $last_id,
+                    'key' => 'announce',
+                    'value' => $announce
+                ]
+            );
+
+            //If exit full text
+            if ( $text )
+            {
+                $this->insert(
+                    'core_content_data',
+                    [
+                        'data_id' => $id,
+                        'key' => 'text',
+                        'value' => $text
+                    ]
+                );
+            }
+        } else {
+
+         // Edit news
+
+            $this->update(
+                'core_content',
+                [
+                    'time' => $date
+                ],
+                [
+                    'AND' =>
+                    [
+                        'id' => $id,
+                        'sitemap_id' => $sitemap_id,
+                        'lang_id' => 2,
+                    ]
+
+                ]);
+
+            //Title
+            $this->update(
+                'core_content_data',
+                [
+                    'value' => $title
+                ],
+                [
+                    'AND' =>
+                        [
+                            'data_id' => $id,
+                            'key' => 'title',
+                        ]
+                ]
+            );
+
+            //Announce
+            $this->update(
+                'core_content_data',
+                [
+                    'value' => $announce
+                ],
+                [
+                    'AND' =>
+                        [
+                            'data_id' => $id,
+                            'key' => 'announce',
+                        ]
+                ]
+            );
+
+            //If exit full text
+            if ( $text )
+            {
+                $this->update(
+                    'core_content_data',
+                    [
+                        'value' => $text
+                    ],
+                    [
+                        'AND' =>
+                            [
+                                'data_id' => $id,
+                                'key' => 'text',
+                            ]
+                    ]
+                );
+            } else {
+                $this->delete(
+                    'core_content_data',
+                    [
+                    'AND' =>
+                        [
+                            'data_id' => $id,
+                            'key' => 'text',
+                        ]
+                    ]);
+            }
+        }
     }
 }

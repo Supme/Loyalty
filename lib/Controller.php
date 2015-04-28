@@ -56,7 +56,7 @@ class Controller
         $twig->addGlobal('_menu', Registry::get('_menu'));
         $twig->addGlobal('_siteTree', Registry::get('siteTree'));
         $twig->addGlobal('_notification', Registry::notification());
-        $twig->addGlobal('_user', Registry::get('_auth'));
+        $twig->addGlobal('_user', new Auth());
         $twig->addGlobal('_lang', new Translate());
 
         echo $twig->render('_'.Registry::get('_page')['layout'].'.twig', $data_array);

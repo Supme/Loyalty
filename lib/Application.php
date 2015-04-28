@@ -31,17 +31,12 @@ class Application
     {
         $this->isInstall('Core');
 
-        // authorize and session
-        // ToDo убрать свечение коннекта к базе в реестре
-        Registry::set('_auth', new Auth());
+        Auth::sec_session_start();
 
         // routing and site map
         $route = new Route();
         Registry::set('_page', $route->sitePage);
         Registry::set('siteTree', $route->siteTree);
-
-        new Translate();
-        Translate::setDefaultLang(Registry::get('_config')['site']['lang']);
 
         $this->isInstall($route->sitePage['module']);
 
@@ -62,7 +57,7 @@ class Application
                 $controller->{'_close'}($route->pageParams);
             }
         } else {
-            echo "------------Беда блин-------------";
+            echo "------------Совсем беда, блин-------------";
             // redirect user to error page (there's a controller for that)
             //header('location: ' . Registry::get('_config')['site']['url'] . 'error/502');
         }
