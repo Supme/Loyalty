@@ -233,7 +233,7 @@ class Auth extends Db
         if ( !$user_id ) $user_id = $this->user_id;
         if ( !$sitemap_id ) $sitemap_id = \Registry::get('_page')['id'];
 
-        if ($this->get('core_auth_user','isAdmin') == 1)
+        if ($this->get('core_auth_user','isAdmin',['id' => $user_id]) == 1)
         {
             $right['create'] = true;
             $right['read'] = true;
