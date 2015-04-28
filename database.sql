@@ -222,7 +222,3 @@ CREATE TABLE 'sender_statistic' (
 'time' INTEGER DEFAULT NULL
 );
 
-
-DROP TABLE IF EXISTS "sqlite_sequence";
-CREATE TABLE sqlite_sequence(name,seq);
-
