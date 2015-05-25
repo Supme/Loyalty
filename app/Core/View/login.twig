@@ -11,7 +11,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="logout"></label>
                 <div class="col-md-4">
-                    <button id="logout" name="logout" class="btn btn-default">{{ _lang.get('logout') }}</button>
+                    <button id="logout" name="logout" class="btn btn-default">{{ _lang.get('Logout') }}</button>
                 </div>
             </div>
 
@@ -20,24 +20,18 @@
 
 {% else %}
 
-    <form action="#"  method="POST" class="form-horizontal">
+    <form action={% if redir %}?redir={{ redir }}{% else %}"#"{% endif %}  method="POST" class="form-horizontal">
         <fieldset>
 
             <!-- Form Name -->
-            <legend>{{ _lang.get('login') }}</legend>
-
-            <p>Для входа можно воспользоваться учетной записью:</p>
-            <p>
-                <strong>Email:</strong> admin<br/>
-                <strong>Password:</strong> admin
-            </p>
+            <legend>{{ _lang.get('Login') }}</legend>
 
             <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="email">Email</label>
+                <label class="col-md-4 control-label" for="username">{{ _lang.get('username') }}</label>
                 <div class="col-md-4">
-                    <input id="email" name="email" placeholder="email@domen.com" class="form-control input-md" required="" type="text">
-                    <span class="help-block">Ваш email</span>
+                    <input id="username" name="username" placeholder="username" class="form-control input-md" required="" type="text">
+                    <span class="help-block">Ваш логин</span>
                 </div>
             </div>
 
@@ -53,7 +47,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="login"></label>
                 <div class="col-md-4">
-                    <button id="login" name="login" class="btn btn-default">{{ _lang.get('login') }}</button>
+                    <button id="login" name="login" class="btn btn-default">{{ _lang.get('Login') }}</button>
                 </div>
             </div>
 

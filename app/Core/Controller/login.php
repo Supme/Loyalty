@@ -21,7 +21,13 @@ class login extends \Controller {
         $user = new \Auth();
         // Login user
         if (isset($_REQUEST["login"])) {
-            if($user->login($_POST['email'], $_POST['password'])){
+            if($user->login($_REQUEST['username'], $_REQUEST['password'])){
+                if(isset($_REQUEST['redir']))
+                {
+                    header('Location: ' . $_REQUEST['redir']);
+                    exit;
+                }
+
                 \Registry::notification([
                     'success' => [
                         \Translate::get('You are login as').' '.$user->getUserName(),
@@ -34,6 +40,7 @@ class login extends \Controller {
                     ]
                 ]);
             }
+
         }
 
         // Logout user
@@ -48,6 +55,19 @@ class login extends \Controller {
             ]);
         }
 
-        $this->render();
+        \Registry::css([
+            "/assets/bootstrap/3.1.1/css/bootstrap.min.css",
+            "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"
+        ]);
+
+        \Registry::js([
+            "/assets/jquery/jquery-2.1.3.min.js",
+            "/assets/bootstrap/3.1.1/js/bootstrap.min.js",
+            "//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js",
+            "//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"
+        ]);
+
+        $redir = isset($_REQUEST['redir'])?urlencode($_REQUEST['redir']):false;
+        $this->render(['redir' => $redir]);
     }
 }

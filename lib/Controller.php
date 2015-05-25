@@ -33,8 +33,20 @@ class Controller
      */
     function __construct()
     {
-        // ToDo придумать как выводить ошибки по человечи
-        //if(!$this->auth->read) header('location: ' . URL . 'error/403');
+        $auth = new \Auth();
+        $url =
+            'http://'.$_SERVER['HTTP_HOST'].'/login?redir='.
+            urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        if($auth->canRead()===false and Registry::get('_page')['segment'] != 'login'){
+            if ($auth->isLogin)
+                header('Location: http://'.$_SERVER['HTTP_HOST'].'/error/403');
+            else
+                header(
+                    'Location: ' .
+                    'http://'.$_SERVER['HTTP_HOST'].'/login?redir='.
+                    urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'])
+                    );
+        }
     }
 
     public function render($data_array = array())

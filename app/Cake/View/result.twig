@@ -53,8 +53,8 @@
         <thead>
         <tr>
             <th>Имя</th>
-            <th>Пряников</th>
-            <th>Кнутов</th>
+            <th>Орлов</th>
+            <th>Решек</th>
         </tr>
         </thead>
         <tbody>
@@ -71,7 +71,8 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Имя</th>
+            <th>Кому</th>
+            <th>От кого</th>
             <th>Метод</th>
             <th>Комментарий</th>
             <th>Когда</th>
@@ -81,9 +82,10 @@
         {% for p in res %}
             <tr>
                 <td>{{ p.name }}</td>
+                <td>{{ p.user }}</td>
                 <td>
-                    {% if p.method == 1 %}Пряник
-                    {% elseif p.method == 2 %}Кнут
+                    {% if p.method == 1 %}Орел
+                    {% elseif p.method == 2 %}Решка
                     {% endif %}
                 </td>
                 <td>{{ p.comment }}</td>

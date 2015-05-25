@@ -26,9 +26,6 @@ class Cache {
     protected static $cache = false;
     protected static $log;
 
-    /**
-     * Защита от создания экземпляров статического класса
-     */
     protected function __construct() {}
     protected function __clone() {}
 
@@ -149,10 +146,10 @@ class Cache {
      */
     private static function fileSet($name, $value, $expiration)
     {
-        self::$cache = json_decode(file_get_contents(Registry::get('_config')['cache']['file']), true);
+        self::$cache = unserialize(file_get_contents(Registry::get('_config')['cache']['file']));
         self::$cache['nm'][$name] = $value;
         self::$cache['ex'][$name] = $expiration;
-        file_put_contents(Registry::get('_config')['cache']['file'], json_encode(self::$cache));
+        file_put_contents(Registry::get('_config')['cache']['file'], serialize(self::$cache));
         return self::$cache;
     }
 
@@ -165,16 +162,16 @@ class Cache {
         if(!file_exists(Registry::get('_config')['cache']['file']))
             self::fileClear();
         if(self::$cache == false){
-            self::$cache = json_decode(file_get_contents(Registry::get('_config')['cache']['file']), true);
+            self::$cache = unserialize(file_get_contents(Registry::get('_config')['cache']['file']));
         }
         if(isset(self::$cache['ex'][$name]) and self::$cache['ex'][$name] >= time()){
             return self::$cache['nm'][$name];
         }
         else {
-            self::$cache = json_decode(file_get_contents(Registry::get('_config')['cache']['file']), true);
+            self::$cache = unserialize(file_get_contents(Registry::get('_config')['cache']['file']));
             unset(self::$cache['ex'][$name]);
             unset(self::$cache['nm'][$name]);
-            file_put_contents(Registry::get('_config')['cache']['file'], json_encode(self::$cache));
+            file_put_contents(Registry::get('_config')['cache']['file'], serialize(self::$cache));
             return null;
         }
     }
@@ -183,7 +180,7 @@ class Cache {
     {
         self::$cache['ex'] = [];
         self::$cache['nm'] = [];
-        return file_put_contents(Registry::get('_config')['cache']['file'], json_encode(self::$cache));
+        return file_put_contents(Registry::get('_config')['cache']['file'], serialize(self::$cache));
     }
 
     //--------------------------------- Filecache end ------------------------------------------------------------------

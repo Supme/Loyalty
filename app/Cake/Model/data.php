@@ -21,14 +21,17 @@ class data extends \Db {
 
     function people()
     {
-        $data = $this->select('personal_people', ['id', 'name'], [	"ORDER" => "name ASC",]);
+        $user = new \Auth();
+        $data = $this->select('personal_people', ['id', 'name'], [	'email[!]' => $user->getUserEmail(), "ORDER" => "name ASC", ]);
         return $data;
     }
 
     function put($data)
     {
+        $user = new \Auth();
         $r = $this->insert('cake_log',
             [
+                'user_id'   => $user->getUserId(),
                 'people_id' =>  $data['name'],
                 'method'    =>  $data['method'],
                 'comment'   =>  $data['comment'],
@@ -77,8 +80,11 @@ class data extends \Db {
 
         return $this->select(
             'cake_log',
-            ['[>]personal_people' => ['people_id' => 'id']],
-            ['personal_people.name', 'cake_log.method', 'cake_log.comment', 'cake_log.date'],
+            [
+                '[>]personal_people' => ['people_id' => 'id'],
+                '[>]core_auth_user' => ['user_id' => 'id']
+            ],
+            ['personal_people.name', 'core_auth_user.name(user)', 'cake_log.method', 'cake_log.comment', 'cake_log.date'],
             ['date[<>]' => [$begdate, $enddate],"ORDER" => "cake_log.date ASC"]
         );
     }

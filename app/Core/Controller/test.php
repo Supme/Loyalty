@@ -53,9 +53,15 @@ class Test extends \Controller
 
         $this->render(['form' => $form->render()]);
 
-        $content = new \App\Core\Model\news();
-        echo "<pre>----- content-------\n";
 
+        echo "<pre>----- content-------\n";
+        echo "\n";
+
+        //$content = new \Auth();
+        $url = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        var_dump(\Registry::get('_page'));
+        var_dump(\Registry::get('_config')['user']['session_lifetime']);
+        var_dump(session_get_cookie_params());
         echo "\n";
 
         echo "</pre>";

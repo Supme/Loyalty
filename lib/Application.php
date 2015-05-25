@@ -29,9 +29,18 @@ class Application
 
     public function __construct()
     {
-        $this->isInstall('Core');
+        // what time is it?
+        $start = microtime(true);
 
         Auth::sec_session_start();
+
+        // load application config
+        if(file_exists('../config.ini'))
+            Registry::set('_config', array_merge(parse_ini_file('../config.dist.ini', true), parse_ini_file('../config.ini', true)));
+        else
+            Registry::set('_config', parse_ini_file('../config.dist.ini', true));
+
+        $this->isInstall('Core');
 
         // routing and site map
         $route = new Route();
@@ -41,8 +50,7 @@ class Application
         $this->isInstall($route->sitePage['module']);
 
         // Run application
-
-       $classname = "App\\".$route->sitePage['module']."\\Controller\\".$route->sitePage['controller'];
+        $classname = "App\\".$route->sitePage['module']."\\Controller\\".$route->sitePage['controller'];
         if (class_exists($classname)){
             $controller = new $classname;
             if (method_exists($controller, '__init')) {
@@ -56,11 +64,29 @@ class Application
             if (method_exists($controller, '__close')) {
                 $controller->{'_close'}($route->pageParams);
             }
+
         } else {
             echo "------------Совсем беда, блин-------------";
             // redirect user to error page (there's a controller for that)
-            //header('location: ' . Registry::get('_config')['site']['url'] . 'error/502');
+            //header('location: http://'.$_SERVER['HTTP_HOST'] . 'error/502');
         }
+
+        // debug info
+        if(Registry::get('_config')['site']['debug']){
+
+            echo "<script type='text/javascript'>function debug_show(){ $('.debug-information').toggle( function(){ $(this).siblings('.debug-information.hide').stop(false, true).slideDown(500);}, function(){ $(this).siblings('.debug-information.hide').stop(false, true).slideUp(500);})};</script>";
+            echo "<p style='text-align: right; font-size: xx-small'><a onclick='debug_show();'>Debug</a></p>";
+            echo "<div class='debug-information' style='display: none;'>\n<pre>";
+            printf('Scripts are executed %.4F seconds.', microtime(true) - $start);
+            var_dump( \Cache::log() );
+            echo "Application information";
+            var_dump( array_reverse( \Registry::log() ) );
+            echo "User information:\n";
+            $user = new \Auth();
+            var_dump($user->getRight());
+            echo "</pre>\n</div>";
+        }
+
     }
 
     private function isInstall($module)

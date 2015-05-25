@@ -49,9 +49,6 @@ class files extends \Controller
             :  null;                                    // else elFinder decide it itself
     }
 
-
-
-
     function fm($params)
     {
         if(isset($params[0]))

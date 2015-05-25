@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Ad' => $baseDir . '/lib/Ad.php',
     'Application' => $baseDir . '/lib/Application.php',
     'Auth' => $baseDir . '/lib/Auth.php',
     'Cache' => $baseDir . '/lib/Cache.php',

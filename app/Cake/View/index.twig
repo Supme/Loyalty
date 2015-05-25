@@ -5,7 +5,7 @@
     <fieldset>
 
         <!-- Form Name -->
-        <legend><img src="/img/cake/kp.png" height="25px" alt="КнутоПряник"/></legend>
+        <legend><img src="/img/cake/or.png" height="25px" alt="КнутоПряник"/></legend>
 
         <!-- Select Basic -->
         <div class="form-group">
@@ -45,11 +45,12 @@
             <div class="col-md-4">
                 <label class="radio-inline" for="method-0">
                     <input type="radio" name="method" id="method-0" value="1" {% if request.method == 1 or request.method != 2 %}checked="checked"{% endif %}>
-                    <img src="/img/cake/prwoman.png" height="175px"/>
+                    <img src="/img/cake/orel.png" height="150px"/>
                 </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label class="radio-inline" for="method-1">
                     <input type="radio" name="method" id="method-1" value="2" {% if request.method == 2 %}checked="checked"{% endif %}>
-                    <img src="/img/cake/knwoman.png" height="175px"/>
+                    <img src="/img/cake/reshka.png" height="150px"/>
                 </label>
             </div>
         </div>
@@ -89,4 +90,5 @@
 
 <script>
     setTimeout('$(".alert").alert("close")', 5000);
+
 </script>

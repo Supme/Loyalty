@@ -41,7 +41,7 @@ class main extends \Controller
                 $comment_error = true;
                 \Registry::notification([
                     'warning' => [
-                        'Не обоснованые удары кнутом не принимаются!!!',
+                        'Не обоснованые решки не принимаются!!!',
                     ],
                 ]);
             } else {
@@ -71,11 +71,11 @@ class main extends \Controller
 
                         $mailer = \Swift_Mailer::newInstance($transport);
 
-                        $message = \Swift_Message::newInstance('Вас ударили кнутом')
-                            ->setFrom(['automated.mail@dmbasis.ru' => 'КнутоПряник'])
+                        $message = \Swift_Message::newInstance('Вам кинули решку')
+                            ->setFrom(['automated.mail@dmbasis.ru' => 'О-решка'])
                             ->setTo([$person['email'] => $person['name']])
                             ->setBody(
-                                "Вас ударили кнутом, приговаривая: '" . $_REQUEST['comment']."'"
+                                "Вам кинули решку за: '" . $_REQUEST['comment']."'"
                             );
 
                         $mailer->send($message);
@@ -150,7 +150,7 @@ class main extends \Controller
                 ],
             ]);
         }
-
+//echo "<pre>"; print_r($res); echo "</pre>";
         $this->render([
             'from' => $from,
             'to' => $to,

@@ -3,7 +3,7 @@
  * @package ly.
  * @author Supme
  * @copyright Supme 2014
- * @license http://opensource.org/licenses/MIT MIT License	
+ * @license http://opensource.org/licenses/MIT MIT License
  *
  *  THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
  *	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -53,7 +53,7 @@ class sender extends \Table
     {
         if ($time == false) $time = time();
         if ($id != false ) {
-            $result = $this->update( 'sender_campaigns',
+            $result = $this->update( 'sender_campaign',
                 [
                     'name' => $name,
                     'subject' => $subject,
@@ -96,9 +96,9 @@ class sender extends \Table
         $recipient = [];
         foreach($data as $id){
             $params = $this->select(
-                'sender_params',
+                'sender_param',
                 [
-                    'name',
+                    'key',
                     'value',
                 ],
                 ['recipient_id' => $id['id']]
@@ -127,14 +127,14 @@ class sender extends \Table
      */
     function addRecipients( $data )
     {
-        if( is_array( $this->select( 'sender_campaigns', '*', ['id' => $this->campaignId] ) ) ){
+        if( is_array( $this->select( 'sender_campaign', '*', ['id' => $this->campaignId] ) ) ){
             foreach($data as $recipient){
                 $id = $this->insert('sender_recipient',['campaignId'=>$this->campaignId]);
                 foreach($recipient as $name => $value){
-                    $this->insert( 'sender_params',
+                    $this->insert( 'sender_param',
                         [
                             'recipient_id' => $id,
-                            'name' => $name,
+                            'key' => $name,
                             'value' => $value,
                         ]
                     );
@@ -146,16 +146,16 @@ class sender extends \Table
     function column()
     {
         $data = $this->query(
-                'SELECT DISTINCT sp.name
-                  FROM sender_params sp
+            'SELECT DISTINCT sp.key
+                  FROM sender_param sp
                   INNER JOIN sender_recipient sr
                   ON sr.id=sp.recipient_id
                   AND sr.campaign_id='.$this->quote((int)$this->campaignId)
-            )
+        )
             ->fetchAll();
         $result = [];
         foreach($data as $column){
-            $result[] = $column['name'];
+            $result[] = $column['key'];
         }
 
         return $result;
@@ -173,15 +173,15 @@ class sender extends \Table
         $i = 0;
         foreach($data as $id){
             $params = $this->select(
-                'sender_params',
+                'sender_param',
                 [
-                    'name',
+                    'key',
                     'value',
                 ],
                 ['recipient_id' => $id['id']]
             );
             foreach($params as $param){
-                $recipient[$i][$param['name']] = $param['value'];
+                $recipient[$i][$param['key']] = $param['value'];
             }
             ++$i;
         }

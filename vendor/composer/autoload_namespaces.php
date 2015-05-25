@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Sunra\\PhpSimple\\HtmlDomParser' => array($vendorDir . '/sunra/php-simple-html-dom-parser/Src'),
+    'Evenement' => array($vendorDir . '/evenement/evenement/src'),
 );

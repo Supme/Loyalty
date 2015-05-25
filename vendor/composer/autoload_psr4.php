@@ -7,5 +7,14 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
+    'React\\Stream\\' => array($vendorDir . '/react/stream/src'),
+    'React\\Socket\\' => array($vendorDir . '/react/socket/src'),
+    'React\\SocketClient\\' => array($vendorDir . '/react/socket-client/src'),
+    'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
+    'React\\EventLoop\\' => array($vendorDir . '/react/event-loop'),
+    'React\\Dns\\' => array($vendorDir . '/react/dns'),
+    'React\\Cache\\' => array($vendorDir . '/react/cache'),
+    'Clue\\React\\Ami\\' => array($vendorDir . '/clue/ami-react/src'),
     'App\\' => array($baseDir . '/app'),
+    'Adldap\\' => array($vendorDir . '/adldap2/adldap2/src'),
 );
