@@ -53,12 +53,12 @@ class Request {
             $_SESSION[ 'csrf_' . $key ] = null;
 
         // Origin checks
-        if( sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) != substr( base64_decode( $hash ), 10, 40 ) )
+        if( sha1( self::ip()) != substr( base64_decode( $hash ), 10, 40 ) )
         {
             self::$csrfError =  'Form origin does not match token origin.';
             return false;
         }
-
+echo "origin: ".$origin[ $key ]." hash: ".$hash;
         // Check if session token matches form token
         if ( $origin[ $key ] != $hash )
         {
@@ -85,11 +85,10 @@ class Request {
      */
     public static function csrfGet( $key )
     {
-        $extra = sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] );
         // token generation (basically base64_encode any random complex string, time() is used for token expiration)
         $token = base64_encode(
             time() .
-            sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) .
+            sha1( self::ip() ) .
             \Misc::randomString( 32 )
         );
         // store the one-time token in session
@@ -107,6 +106,29 @@ class Request {
         return self::$csrfError;
     }
 
+    /**
+     *	Return TRUE if XMLHttpRequest detected
+     *	@return bool
+     **/
+    public static function ajax() {
+        return
+            isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            and
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+    }
 
+    /**
+     *	Client IP address
+     *	@return string
+     **/
+    public static function ip() {
+        return
+            isset($_SERVER['Client-IP'])?
+                $_SERVER['Client-IP']:
+                (isset($_SERVER['X-Forwarded-For'])?
+                    $_SERVER['X-Forwarded-For']:
+                    (isset($_SERVER['REMOTE_ADDR'])?
+                        $_SERVER['REMOTE_ADDR']:''));
+    }
 
 }

@@ -22,6 +22,7 @@ class Main extends \Controller
     public function index()
     {
         $content = new \App\Core\Model\content();
+        $csrf = false;
         $user = new \Auth();
 
         if (isset($_POST['save']) && $user->canUpdate()) {
@@ -29,7 +30,7 @@ class Main extends \Controller
             echo 'Ok';
         } else {
             if ($user->canUpdate()){
-
+                $csrf = \Request::csrfGet('csrf');
                 \Registry::css([
                     "/assets/ly/css/loyalty.css",
                     "/assets/jquery-ui-1.11.4/jquery-ui.min.css",
@@ -64,7 +65,10 @@ class Main extends \Controller
             ],
         ]);
 
-        $this->render(['result' => $content->load()]);
+        $this->render([
+            'result' => $content->load(),
+            'csrf' => $csrf
+        ]);
         }
     }
 }

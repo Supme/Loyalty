@@ -1,7 +1,8 @@
 {% for key, content in result %}
     <div class="content" positionId="{{ loop.index }}">
         {{ content.text|raw }}
-        <div class="modified">{{ content.time|date('d-m-Y h:m')}}</div>
     </div>
+    <div class="modified">{{ content.time|date('d-m-Y h:m')}}</div>
 {% endfor %}
 
+{% if csrf %}<div class="csrf" value="{{ csrf }}"/>{% endif %}

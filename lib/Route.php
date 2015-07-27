@@ -44,6 +44,7 @@ class Route extends Db
 
         // ToDo add static route for controllers
         $this->addSystemPage([
+            'auth' => 'helpers',
             'resizer' => 'helpers',
             'error' => 'helpers',
             'files' => 'files',

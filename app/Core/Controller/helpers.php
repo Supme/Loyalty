@@ -18,6 +18,65 @@ namespace App\Core\Controller;
 
 class helpers extends \Controller {
 
+    function auth(){
+        $user = new \Auth();
+        // Login user
+        if (isset($_REQUEST["login"]) and \Request::csrfCheck('csrf', $_REQUEST))
+        {
+            if($user->login($_REQUEST['username'], $_REQUEST['password'])){
+                if (isset($_REQUEST['redir'])){
+                    header('Location: ' . $_REQUEST['redir']);
+                } else {
+                   //header('Location: ' . getenv("HTTP_REFERER"));
+                }
+                exit;
+            }
+        }
+
+        // Logout user
+        if (isset($_REQUEST["logout"])) {
+            $user->logout();
+            header('Location: ' . getenv("HTTP_REFERER"));
+            exit;
+        }
+
+        $html = '';
+        new \Translate();
+
+        if ($user->isLogin)
+        {
+            $html .= "
+                <form action='#'  method='POST'>
+                    <fieldset>
+                         <legend>".$user->getUserName()."</legend>
+                         <button name='logout'>".\Translate::get('Logout')."</button>
+                    </fieldset>
+                </form>
+            ";
+        } else {
+            $html .= "
+                <form action='#' method='POST'>
+                    <fieldset>
+                        <legend>".\Translate::get('Login')."</legend>
+                        <p>
+                        ".\Translate::get('username').":
+                        <input name='username' type='text'>
+                        </p>
+                        <p>
+                        ".\Translate::get('password').":
+                        <input name='password' type='password'>
+                        </p>
+                        <input name='csrf' type='hidden' value='".\Request::csrfGet('csrf')."'>
+                        <button name='login'>".\Translate::get('Login')."</button>
+                    </fieldset>
+                </form>
+            ";
+
+        }
+
+        echo $html;
+    }
+
     function resizer(){
         if (strpos($_SERVER['QUERY_STRING'], '../') !== false) {
             header("Location: /error/400");

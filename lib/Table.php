@@ -35,7 +35,7 @@ abstract class Table extends Db
     }
 
     function isRequest(){
-        return isset($_REQUEST['draw']);
+        return \Request::ajax() and isset($_REQUEST['draw']);
     }
 
     /**

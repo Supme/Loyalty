@@ -19,16 +19,23 @@ namespace App\Core\Controller;
 class content extends \Controller {
     function index(){
 
+        $csrf = false;
         $user = new \Auth();
         $content = new \App\Core\Model\content();
 
-        if (isset($_POST['save']) && $user->canUpdate()) {
-            $content->edit($_POST['position'], $_POST['text']);
-            echo 'Ok';
+        if (\Request::ajax() and $user->canUpdate()) {
+            if (\Request::csrfCheck('csrf', $_REQUEST, null, true))
+            {
+                $content->edit($_POST['position'], $_POST['text']);
+                echo 'Ok';
+            } else {
+                echo \Request::csrfErrorString();
+            }
         } else {
             $result = $content->load();
 
             if ($user->canUpdate()){
+                $csrf = \Request::csrfGet('csrf');
 
                 \Registry::css([
                     "/assets/jquery-ui-1.11.4/jquery-ui.min.css",
@@ -54,6 +61,7 @@ class content extends \Controller {
             }
             $this->render([
                 'result' => $result,
+                'csrf' => $csrf
             ]);
         }
     }

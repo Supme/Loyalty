@@ -26,12 +26,11 @@ class main extends \Controller {
     {
         $sender = new \App\Sender\Model\sender(['name' => 'recipients']);
         $sender->campaignId = 2;
-
-        if (!$sender->isRequest()) {
+        if ($sender->isRequest()) {
+            $sender->ajax();
+        } else {
             $table = $sender->html();
             $this->render(['table' => $table]);
-        } else {
-            $sender->ajax();
         }
     }
 

@@ -16,4 +16,6 @@
             </div>
     {% endif %}
 {% endfor %}
-</div>
+       </div>
+
+{% if csrf %}<div class="csrf">{{ csrf }}</div>{% endif %}

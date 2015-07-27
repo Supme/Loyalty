@@ -22,17 +22,12 @@ class login extends \Controller {
         // Login user
         if (isset($_REQUEST["login"])) {
             if($user->login($_REQUEST['username'], $_REQUEST['password'])){
-                if(isset($_REQUEST['redir']))
-                {
+                if (isset($_REQUEST['redir'])){
                     header('Location: ' . $_REQUEST['redir']);
-                    exit;
+                } else {
+                    header('Location: ' . getenv("HTTP_REFERER"));
                 }
-
-                \Registry::notification([
-                    'success' => [
-                        \Translate::get('You are login as').' '.$user->getUserName(),
-                    ]
-                ]);
+                exit;
             } else {
                 \Registry::notification([
                     'danger' => [
@@ -40,19 +35,13 @@ class login extends \Controller {
                     ]
                 ]);
             }
-
         }
 
         // Logout user
         if (isset($_REQUEST["logout"])) {
             $user->logout();
-
-            \Registry::notification([
-                'info' => [
-                    \Translate::get('Success logout'),
-                    \Translate::get('Thanks for using service'),
-                ],
-            ]);
+            header('Location: ' . getenv("HTTP_REFERER"));
+            exit;
         }
 
         \Registry::css([
@@ -67,7 +56,7 @@ class login extends \Controller {
             "//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"
         ]);
 
-        $redir = isset($_REQUEST['redir'])?urlencode($_REQUEST['redir']):false;
-        $this->render(['redir' => $redir]);
+        $redirect = isset($_REQUEST['redir'])?$_REQUEST['redir']:urlencode(getenv("HTTP_REFERER"));
+        $this->render(['redir' => $redirect]);
     }
 }

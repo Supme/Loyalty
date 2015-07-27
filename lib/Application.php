@@ -34,6 +34,10 @@ class Application
 
         Auth::sec_session_start();
 
+        header('X-Powered-By: Loyalty portal');
+        header('X-XSS-Protection: 1; mode=block');
+        header('X-Content-Type-Options: nosniff');
+
         // load application config
         if(file_exists('../config.ini'))
             Registry::set('_config', array_merge(parse_ini_file('../config.dist.ini', true), parse_ini_file('../config.ini', true)));
