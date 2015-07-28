@@ -22,7 +22,7 @@ class data extends \Db {
     function people()
     {
         $user = new \Auth();
-        $data = $this->select('personal_people', ['id', 'name'], [	'email[!]' => $user->getUserEmail(), "ORDER" => "name ASC", ]);
+        $data = $this->select('personal_people', ['id', 'name'], [	'AND' => ['email[!]' => $user->getUserEmail(), 'id[!]' => '98'], 'ORDER' => 'name ASC', ]);
         return $data;
     }
 

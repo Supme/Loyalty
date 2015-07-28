@@ -45,45 +45,54 @@ class main extends \Controller
                     ],
                 ]);
             } else {
-                if($data->put($_REQUEST))
+                if ($_REQUEST['name'] != 0)
                 {
-                    \Registry::notification([
-                        'info' => [
-                            'Ваше волеизъявление (душеизлияние?) учтено.',
-                        ],
-                        'success' => [
-                            'Можете продолжить действовать в том же духе.',
-                        ],
-                    ]);
-                    if ( $_REQUEST['method'] == 2) //Уведомим письмом человека об ударе
+                    if($data->put($_REQUEST))
                     {
-                        $person = $data->getPersonalById($_REQUEST['name']);
-                        // Create the Transport
-                        $transport =
-                            \Swift_SmtpTransport::newInstance(
-                                \Registry::get('_config')['email']['smtp_host'],
-                                \Registry::get('_config')['email']['smtp_port'],
-                                \Registry::get('_config')['email']['smtp_encryption']
-                            )
-                            ->setUsername(\Registry::get('_config')['email']['smtp_username'])
-                            ->setPassword(\Registry::get('_config')['email']['smtp_password'])
-                        ;
+                        \Registry::notification([
+                            'info' => [
+                                'Ваше волеизъявление (душеизлияние?) учтено.',
+                            ],
+                            'success' => [
+                                'Можете продолжить действовать в том же духе.',
+                            ],
+                        ]);
+                        if ( $_REQUEST['method'] == 2) //Уведомим письмом человека об ударе
+                        {
+                            $person = $data->getPersonalById($_REQUEST['name']);
+                            // Create the Transport
+                            $transport =
+                                \Swift_SmtpTransport::newInstance(
+                                    \Registry::get('_config')['email']['smtp_host'],
+                                    \Registry::get('_config')['email']['smtp_port'],
+                                    \Registry::get('_config')['email']['smtp_encryption']
+                                )
+                                    ->setUsername(\Registry::get('_config')['email']['smtp_username'])
+                                    ->setPassword(\Registry::get('_config')['email']['smtp_password'])
+                            ;
 
-                        $mailer = \Swift_Mailer::newInstance($transport);
+                            $mailer = \Swift_Mailer::newInstance($transport);
 
-                        $message = \Swift_Message::newInstance('Вам кинули решку')
-                            ->setFrom(['automated.mail@dmbasis.ru' => 'О-решка'])
-                            ->setTo([$person['email'] => $person['name']])
-                            ->setBody(
-                                "Вам кинули решку за: '" . $_REQUEST['comment']."'"
-                            );
+                            $message = \Swift_Message::newInstance('Вам кинули решку')
+                                ->setFrom(['automated.mail@dmbasis.ru' => 'О-решка'])
+                                ->setTo([$person['email'] => $person['name']])
+                                ->setBody(
+                                    "Вам кинули решку за: '" . $_REQUEST['comment']."'"
+                                );
 
-                        $mailer->send($message);
-}
+                            $mailer->send($message);
+                        }
+                    } else {
+                        \Registry::notification([
+                            'danger' => [
+                                'Что то пошло не так и мы не можем добавить это в нашу реляционную базу данных.',
+                            ],
+                        ]);
+                    }
                 } else {
                     \Registry::notification([
                         'danger' => [
-                            'Что то пошло не так и мы не можем добавить это в нашу реляционную базу данных.',
+                            'Нужно выбрать кому хотите это вручить.',
                         ],
                     ]);
                 }

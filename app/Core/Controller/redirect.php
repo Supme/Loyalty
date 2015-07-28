@@ -21,7 +21,6 @@ class Redirect extends \Controller
 
     public function index()
     {
-        // ToDo View fields in database is redirect page
-        header("Location: http://192.168.1.162:8081");
+        header("Location: ".\Registry::get('_page')['view']);
     }
 }

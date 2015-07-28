@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ly.
+ * @package Loyality Portal.
  * @author Supme
  * @copyright Supme 2014
  * @license http://opensource.org/licenses/MIT MIT License	
@@ -14,7 +14,6 @@
  *
  */
 
-use Adldap\Adldap;
 
 class Ad {
 
@@ -25,6 +24,7 @@ class Ad {
 
     function __construct()
     {
+        /*
         $config = [
             'account_suffix' => Registry::get('_config')['ad']['account_suffix'],
             'domain_controllers' => explode(",",str_replace(" ", '', \Registry::get('_config')['ad']['domain_controllers'])),
@@ -32,8 +32,16 @@ class Ad {
             'admin_username' => Registry::get('_config')['ad']['admin_username'],
             'admin_password' => Registry::get('_config')['ad']['admin_password'],
         ];
+        */
 
-        $this->ad = new Adldap($config);
+        $config = new \Adldap\Connections\Configuration();
+        $config->setAccountSuffix(\Registry::get('_config')['ad']['account_suffix']);
+        $config->setDomainControllers(explode(",",str_replace(" ", '', \Registry::get('_config')['ad']['domain_controllers'])));
+        $config->setBaseDn(\Registry::get('_config')['ad']['base_dn']);
+        $config->setAdminUsername(\Registry::get('_config')['ad']['admin_username']);
+        $config->setAdminPassword(\Registry::get('_config')['ad']['admin_password']);
+
+        $this->ad = new \Adldap\Adldap($config);
     }
 
     private function authenticate($login, $password)
@@ -56,7 +64,14 @@ class Ad {
             'mobile',
             'ipphone'
         ];
-        return $this->ad->user()->find($login, $filds);
+        $userAttr =  $this->ad->users()->find($login, $filds)->getAttributes();
+        $user = [];
+        foreach ($filds as $attr)
+        {
+            $user[$attr] = $userAttr[$attr][0];
+        }
+        return $user;
+
     }
 
     public function login($login, $password)
@@ -64,7 +79,6 @@ class Ad {
         if ($this->authenticate($login, $password))
         {
             $user = $this->userInfo($login);
-
             $auth = new \Auth();
 
             if ($auth->isUser($login))

@@ -16,6 +16,8 @@
 
 namespace App\Core\Controller;
 
+use Adldap\Adldap;
+
 class Test extends \Controller
 {
     function index()
@@ -57,11 +59,7 @@ class Test extends \Controller
         echo "<pre>----- content-------\n";
         echo "\n";
 
-        var_dump(\Registry::get('_page'));
-        var_dump(\Registry::get('_config')['user']['session_lifetime']);
-        var_dump(\Request::ip());
         echo "\n";
-
         echo "</pre>";
 
     }
