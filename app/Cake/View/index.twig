@@ -12,33 +12,13 @@
             <label class="col-md-4 control-label" for="name">Имя:</label>
             <div class="col-md-4">
                 <select id="name" name="name" class="form-control">
-                    <option value="0">-- Выберите героя --</option>
+                    <option></option>
                     {% for people in peoples %}
                     <option value="{{ people.id }}" {% if request.name == people.id %}selected {% endif %}>{{ people.name }}</option>
                     {% endfor %}
                 </select>
             </div>
         </div>
-
-        <!-- Multiple Radios
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="method"></label>
-            <div class="col-md-4">
-                <div class="radio">
-                    <label for="method-0">
-                        <input type="radio" name="method" id="method-0" value="1" checked="checked">
-                        <img src="/img/cake/prwoman.png" height="135px"/>
-                    </label>
-                </div>
-                <div class="radio">
-                    <label for="method-1">
-                        <input type="radio" name="method" id="method-1" value="2">
-                        <img src="/img/cake/knwoman.png" height="135px"/>
-                    </label>
-                </div>
-            </div>
-        </div>
-        -->
 
         <!-- Multiple Radios (inline) -->
         <div class="form-group">
@@ -91,5 +71,11 @@
 
 <script>
     setTimeout('$(".alert").alert("close")', 5000);
-
+    $(document).ready(function() {
+        $("#name").select2({
+            placeholder: "-- Выберите героя --",
+            allowClear: true,
+            language: "es"
+        });
+    });
 </script>
