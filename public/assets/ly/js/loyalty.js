@@ -35,7 +35,7 @@ function editContent(content)    {
                 language : 'ru',
                 selector:'div.editable',
                 toolbar:
-                    " core |" +
+                        " core |" +
                         " save |" +
                         " insertfile undo redo |" +
                         " styleselect |" +
@@ -59,6 +59,7 @@ function editContent(content)    {
                         data: {
                             position: $(".mce-edit-focus").attr("positionId"),
                             text: $(".mce-edit-focus").html(),
+                            csrf: $(".csrf").attr("value"),
                             save: true
                         },
                         success:function( msg ) {

@@ -33,3 +33,7 @@
 #newsDate{
     font-size: 12px;
 }
+
+#csrf, .csrf{
+    display: none;
+}

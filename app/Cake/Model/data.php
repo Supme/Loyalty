@@ -55,8 +55,8 @@ class data extends \Db {
     {
         $begdate = strtotime($from);
         $enddate = strtotime($to)+86400;
-
-        return $this->query(
+/*
+        $in = $this->query(
             "select
                     p.id,
                     p.name,
@@ -68,9 +68,55 @@ class data extends \Db {
                         where l2.people_id = p.id
                           and method = 2
                           and date between $begdate and $enddate) as whips
-                  from personal_people p ORDER BY name
+                  from personal_people p
+                   ORDER BY name
         "
         )->fetchAll();
+
+        $out = $this->query("select
+                    p.id,
+                    p.name,
+                    ( select count(*) from cake_log l1
+                        where l1.user_id = u.id
+                          and method = 1
+                          and date between $begdate and $enddate) as cakes,
+                    ( select count(*) from cake_log l2
+                        where l2.user_id = u.id
+                          and method = 2
+                          and date between $begdate and $enddate) as whips
+                  from personal_people p
+                  left join core_auth_user u on u.email = p.email
+                   ORDER BY p.name"
+        )->fetchAll();
+
+        $people = $this->select('personal_people', ['id', 'name']);
+
+        return ['people' => $people, 'in' => $in , 'out' => $out];
+*/
+        return $this->query(
+            "select
+                    p.id,
+                    p.name,
+                    ( select count(*) from cake_log l1
+                        where l1.people_id = p.id
+                          and method = 1
+                          and date between $begdate and $enddate) as cakes_in,
+                    ( select count(*) from cake_log l2
+                        where l2.people_id = p.id
+                          and method = 2
+                          and date between $begdate and $enddate) as whips_in,
+                   ( select count(*) from cake_log l1
+                        where l1.user_id = u.id
+                          and method = 1
+                          and date between $begdate and $enddate) as cakes_out,
+                    ( select count(*) from cake_log l2
+                        where l2.user_id = u.id
+                          and method = 2
+                          and date between $begdate and $enddate) as whips_out
+                  from personal_people p
+                  left join core_auth_user u on u.email = p.email
+                   ORDER BY p.name"
+        );
     }
 
     function resultComment($from, $to)

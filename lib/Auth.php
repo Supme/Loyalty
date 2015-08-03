@@ -47,6 +47,9 @@ class Auth extends Db
             exit();
         }
 
+        ini_set('session.gc_maxlifetime', $session_lifetime);
+        ini_set('session.cookie_lifetime', $session_lifetime);
+
         // Gets current cookies params.
         $cookieParams = session_get_cookie_params();
         session_set_cookie_params(

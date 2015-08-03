@@ -53,16 +53,28 @@
         <thead>
         <tr>
             <th>Имя</th>
-            <th>Орлов</th>
-            <th>Решек</th>
+            <th>Орлов получено</th>
+            <th>Решек получено</th>
+            <th>Орлов роздано</th>
+            <th>Решек роздано</th>
+            <th>Баллы</th>
         </tr>
         </thead>
         <tbody>
         {% for p in res %}
             <tr>
                 <td>{{ p.name }}</td>
-                <td>{{ p.cakes }}</td>
-                <td>{{ p.whips }}</td>
+                <td>{{ p.cakes_in }}</td>
+                <td>{{ p.whips_in }}</td>
+                <td>{{ p.cakes_out }}</td>
+                <td>{{ p.whips_out }}</td>
+                {#
+                 за каждого полученного "орла" = 1 балл,
+                 за каждого выданного Орла = 1 балл,
+                 за каждую выданную "решку" = 3 балла,
+                 за каждую полученную "решку" = минус 3 балла.
+                 #}
+                <td>{{ p.cakes_in + p.cakes_out + (p.whips_out * 3) - (p.whips_in * 3) }}</td>
             </tr>
         {% endfor %}
         </tbody>

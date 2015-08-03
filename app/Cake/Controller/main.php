@@ -38,7 +38,7 @@ class main extends \Controller
 
         $comment_error = false;
 
-        if (isset($_REQUEST['send']) and isset($_REQUEST['name']) and $_REQUEST['name'] != '')
+        if (isset($_REQUEST['send']) and (isset($_REQUEST['name']) and $_REQUEST['name'] != ''))
         {
             if ($_REQUEST['method'] == 2 and $_REQUEST['comment'] == ''){
                 $comment_error = true;
@@ -69,8 +69,7 @@ class main extends \Controller
                                 \Registry::get('_config')['email']['smtp_encryption']
                             )
                                 ->setUsername(\Registry::get('_config')['email']['smtp_username'])
-                                ->setPassword(\Registry::get('_config')['email']['smtp_password'])
-                        ;
+                                ->setPassword(\Registry::get('_config')['email']['smtp_password']);
 
                         $mailer = \Swift_Mailer::newInstance($transport);
 
@@ -92,11 +91,12 @@ class main extends \Controller
                 }
             }
         } else {
-            \Registry::notification([
-                'danger' => [
-                    'Кто то где то что то не выбрал.',
-                ],
-            ]);
+            if(isset($_REQUEST['name']) and $_REQUEST['name'] == '')
+                \Registry::notification([
+                    'danger' => [
+                        'Кто то где то что то не выбрал.',
+                    ],
+                ]);
         }
 
         $peoples = $data->people();
