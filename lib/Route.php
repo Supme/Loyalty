@@ -175,6 +175,6 @@ class Route extends Db
 
     protected function _clear()
     {
-        $this->_three = array();
+        $this->_three = [];
     }
 }

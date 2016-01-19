@@ -421,10 +421,9 @@ class Auth extends Db
 
     }
 
-    // ToDo
     public function deleteUser($id)
     {
-
+        return $this->delete('core_auth_user', ['id' => $id]);
     }
 
     //ToDo объеденить или еще чё с $this->add

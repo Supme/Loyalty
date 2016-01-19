@@ -134,4 +134,21 @@ class data extends \Db {
             ['date[<>]' => [$begdate, $enddate],"ORDER" => "cake_log.date ASC"]
         );
     }
+
+    function sendStatistic($from, $to)
+    {
+        $begdate = strtotime($from);
+        $enddate = strtotime($to)+86400;
+        //select count(cake_log.user_id), core_auth_user.name from cake_log INNER JOIN core_auth_user ON cake_log.user_id = core_auth_user.id group by cake_log.user_id
+
+        return $this->query(
+            "SELECT
+              core_auth_user.name as name, COUNT(cake_log.user_id) as cnt
+              FROM cake_log INNER JOIN core_auth_user ON cake_log.user_id = core_auth_user.id
+              WHERE cake_log.date between $begdate and $enddate
+              GROUP BY cake_log.user_id
+            "
+        );
+    }
+
 } 

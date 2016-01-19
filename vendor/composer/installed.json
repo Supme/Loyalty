@@ -155,60 +155,6 @@
         ]
     },
     {
-        "name": "swiftmailer/swiftmailer",
-        "version": "v5.4.0",
-        "version_normalized": "5.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/31454f258f10329ae7c48763eb898a75c39e0a9f",
-            "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "mockery/mockery": "~0.9.1"
-        },
-        "time": "2015-03-14 06:06:39",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "lib/swift_required.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Chris Corbyn"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Swiftmailer, free feature-rich PHP mailer",
-        "homepage": "http://swiftmailer.org",
-        "keywords": [
-            "mail",
-            "mailer"
-        ]
-    },
-    {
         "name": "sunra/php-simple-html-dom-parser",
         "version": "v1.5.0",
         "version_normalized": "1.5.0.0",
@@ -251,122 +197,6 @@
             "dom",
             "html",
             "parser"
-        ]
-    },
-    {
-        "name": "twig/twig",
-        "version": "v1.18.1",
-        "version_normalized": "1.18.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/twigphp/Twig.git",
-            "reference": "9f70492f44398e276d1b81c1b43adfe6751c7b7f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/9f70492f44398e276d1b81c1b43adfe6751c7b7f",
-            "reference": "9f70492f44398e276d1b81c1b43adfe6751c7b7f",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.7"
-        },
-        "time": "2015-04-19 08:30:27",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.18-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Twig_": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Armin Ronacher",
-                "email": "armin.ronacher@active-4.com",
-                "role": "Project Founder"
-            },
-            {
-                "name": "Twig Team",
-                "homepage": "http://twig.sensiolabs.org/contributors",
-                "role": "Contributors"
-            }
-        ],
-        "description": "Twig, the flexible, fast, and secure template language for PHP",
-        "homepage": "http://twig.sensiolabs.org",
-        "keywords": [
-            "templating"
-        ]
-    },
-    {
-        "name": "catfan/medoo",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/catfan/Medoo.git",
-            "reference": "1d6749a14981ada57eb6f8b2e3d7c4c56af8ae83"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/catfan/Medoo/zipball/1d6749a14981ada57eb6f8b2e3d7c4c56af8ae83",
-            "reference": "1d6749a14981ada57eb6f8b2e3d7c4c56af8ae83",
-            "shasum": ""
-        },
-        "require": {
-            "ext-pdo": "*",
-            "php": ">=5.1"
-        },
-        "suggest": {
-            "ext-pdo-mysql": "For MySQL or MariaDB databases",
-            "ext-pdo-pqsql": "For PostgreSQL databases",
-            "ext-pdo-sqlite": "For SQLite databases",
-            "ext-pdo_dblib": "For MSSQL or Sybase databases on Liunx/UNIX platform",
-            "ext-pdo_oci": "For Oracle databases",
-            "ext-pdo_sqlsrv": "For MSSQL databases on Windows platform"
-        },
-        "time": "2015-04-13 07:17:59",
-        "type": "framework",
-        "installation-source": "source",
-        "autoload": {
-            "files": [
-                "medoo.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Angel Lai",
-                "email": "angel.lai.cat@gmail.com"
-            }
-        ],
-        "description": "The Lightest PHP database framework to accelerate development",
-        "homepage": "http://medoo.in",
-        "keywords": [
-            "database",
-            "lightweight",
-            "mssql",
-            "mysql",
-            "php framework",
-            "sql",
-            "sqlite"
         ]
     },
     {
@@ -471,52 +301,6 @@
         "keywords": [
             "event-loop"
         ]
-    },
-    {
-        "name": "react/promise",
-        "version": "v2.2.0",
-        "version_normalized": "2.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/reactphp/promise.git",
-            "reference": "365fcee430dfa4ace1fbc75737ca60ceea7eeeef"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/reactphp/promise/zipball/365fcee430dfa4ace1fbc75737ca60ceea7eeeef",
-            "reference": "365fcee430dfa4ace1fbc75737ca60ceea7eeeef",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0"
-        },
-        "time": "2014-12-30 13:32:42",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "React\\Promise\\": "src/"
-            },
-            "files": [
-                "src/functions_include.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jan Sorgalla",
-                "email": "jsorgalla@googlemail.com"
-            }
-        ],
-        "description": "A lightweight implementation of CommonJS Promises/A for PHP"
     },
     {
         "name": "evenement/evenement",
@@ -838,29 +622,250 @@
         ]
     },
     {
+        "name": "swiftmailer/swiftmailer",
+        "version": "v5.4.1",
+        "version_normalized": "5.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/swiftmailer/swiftmailer.git",
+            "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+            "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "mockery/mockery": "~0.9.1,<0.9.4"
+        },
+        "time": "2015-06-06 14:19:39",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/swift_required.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Chris Corbyn"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            }
+        ],
+        "description": "Swiftmailer, free feature-rich PHP mailer",
+        "homepage": "http://swiftmailer.org",
+        "keywords": [
+            "email",
+            "mail",
+            "mailer"
+        ]
+    },
+    {
+        "name": "catfan/medoo",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/catfan/Medoo.git",
+            "reference": "a65ad338d69fcb105cdbc5c380e6305acea6cba5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/catfan/Medoo/zipball/a65ad338d69fcb105cdbc5c380e6305acea6cba5",
+            "reference": "a65ad338d69fcb105cdbc5c380e6305acea6cba5",
+            "shasum": ""
+        },
+        "require": {
+            "ext-pdo": "*",
+            "php": ">=5.1"
+        },
+        "suggest": {
+            "ext-pdo-mysql": "For MySQL or MariaDB databases",
+            "ext-pdo-pqsql": "For PostgreSQL databases",
+            "ext-pdo-sqlite": "For SQLite databases",
+            "ext-pdo_dblib": "For MSSQL or Sybase databases on Liunx/UNIX platform",
+            "ext-pdo_oci": "For Oracle databases",
+            "ext-pdo_sqlsrv": "For MSSQL databases on Windows platform"
+        },
+        "time": "2015-05-09 05:53:00",
+        "type": "framework",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "medoo.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Angel Lai",
+                "email": "angel.lai.cat@gmail.com"
+            }
+        ],
+        "description": "The Lightest PHP database framework to accelerate development",
+        "homepage": "http://medoo.in",
+        "keywords": [
+            "database",
+            "lightweight",
+            "mssql",
+            "mysql",
+            "php framework",
+            "sql",
+            "sqlite"
+        ]
+    },
+    {
+        "name": "react/promise",
+        "version": "v2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/promise.git",
+            "reference": "3b6fca09c7d56321057fa8867c8dbe1abf648627"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/promise/zipball/3b6fca09c7d56321057fa8867c8dbe1abf648627",
+            "reference": "3b6fca09c7d56321057fa8867c8dbe1abf648627",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2015-07-03 13:48:55",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "React\\Promise\\": "src/"
+            },
+            "files": [
+                "src/functions_include.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jan Sorgalla",
+                "email": "jsorgalla@gmail.com"
+            }
+        ],
+        "description": "A lightweight implementation of CommonJS Promises/A for PHP"
+    },
+    {
+        "name": "twig/twig",
+        "version": "v1.21.1",
+        "version_normalized": "1.21.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twigphp/Twig.git",
+            "reference": "ca8d3aa90b6a01c82e07909fe815d6b443e75a23"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/ca8d3aa90b6a01c82e07909fe815d6b443e75a23",
+            "reference": "ca8d3aa90b6a01c82e07909fe815d6b443e75a23",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.7"
+        },
+        "require-dev": {
+            "symfony/debug": "~2.7",
+            "symfony/phpunit-bridge": "~2.7"
+        },
+        "time": "2015-08-26 08:58:31",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.21-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Twig_": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Armin Ronacher",
+                "email": "armin.ronacher@active-4.com",
+                "role": "Project Founder"
+            },
+            {
+                "name": "Twig Team",
+                "homepage": "http://twig.sensiolabs.org/contributors",
+                "role": "Contributors"
+            }
+        ],
+        "description": "Twig, the flexible, fast, and secure template language for PHP",
+        "homepage": "http://twig.sensiolabs.org",
+        "keywords": [
+            "templating"
+        ]
+    },
+    {
         "name": "adldap2/adldap2",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/Adldap2/Adldap2.git",
-            "reference": "aee1acbfeb88d4185a6980069c46b0ad59f82e41"
+            "reference": "9c4003f028a200c5eb50a31952bcd6f3eb3677bc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Adldap2/Adldap2/zipball/aee1acbfeb88d4185a6980069c46b0ad59f82e41",
-            "reference": "aee1acbfeb88d4185a6980069c46b0ad59f82e41",
+            "url": "https://api.github.com/repos/Adldap2/Adldap2/zipball/9c4003f028a200c5eb50a31952bcd6f3eb3677bc",
+            "reference": "9c4003f028a200c5eb50a31952bcd6f3eb3677bc",
             "shasum": ""
         },
         "require": {
             "ext-ldap": "*",
-            "php": ">=5.4.0"
+            "php": ">=5.4.26"
         },
         "require-dev": {
             "mockery/mockery": "0.9.*",
             "phpunit/phpunit": "4.6.*"
         },
-        "time": "2015-04-29 15:56:02",
+        "time": "2015-08-28 20:47:31",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -874,23 +879,12 @@
         ],
         "authors": [
             {
-                "name": "Scott Barnett",
-                "email": "scott@wiggumworld.com",
-                "role": "Developer"
-            },
-            {
-                "name": "Richard Hyland",
-                "email": "adldap@richardhyland.com",
-                "role": "Developer"
-            },
-            {
                 "name": "Steve Bauman",
                 "email": "steven_bauman@outlook.com",
                 "role": "Developer"
             }
         ],
         "description": "A PHP LDAP Library for Active Directory Manipulation",
-        "homepage": "http://adldap.sourceforge.net",
         "keywords": [
             "active directory",
             "ldap",

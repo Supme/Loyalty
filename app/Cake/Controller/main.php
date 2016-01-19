@@ -40,13 +40,22 @@ class main extends \Controller
 
         if (isset($_REQUEST['send']) and (isset($_REQUEST['name']) and $_REQUEST['name'] != ''))
         {
-            if ($_REQUEST['method'] == 2 and $_REQUEST['comment'] == ''){
-                $comment_error = true;
-                \Registry::notification([
-                    'warning' => [
-                        'Не обоснованые решки не принимаются!!!',
-                    ],
-                ]);
+            if ($_REQUEST['comment'] == ''){
+                if ($_REQUEST['method'] == 2){
+                    $comment_error = true;
+                    \Registry::notification([
+                        'warning' => [
+                            'Не обоснованые решки не принимаются!!!',
+                        ],
+                    ]);
+                } else {
+                    $comment_error = true;
+                    \Registry::notification([
+                        'warning' => [
+                            'Без комментария нельзя послать орла!',
+                        ],
+                    ]);
+                }
             } else {
                 if($data->put($_REQUEST))
                 {
@@ -58,30 +67,38 @@ class main extends \Controller
                             'Можете продолжить действовать в том же духе.',
                         ],
                     ]);
+
+                    $person = $data->getPersonalById($_REQUEST['name']);
+                    // Create the Transport
+                    $transport =
+                        \Swift_SmtpTransport::newInstance(
+                            \Registry::get('_config')['email']['smtp_host'],
+                            \Registry::get('_config')['email']['smtp_port'],
+                            \Registry::get('_config')['email']['smtp_encryption']
+                        )
+                            ->setUsername(\Registry::get('_config')['email']['smtp_username'])
+                            ->setPassword(\Registry::get('_config')['email']['smtp_password']);
+
+                    $mailer = \Swift_Mailer::newInstance($transport);
+
                     if ( $_REQUEST['method'] == 2) //Уведомим письмом человека об ударе
                     {
-                        $person = $data->getPersonalById($_REQUEST['name']);
-                        // Create the Transport
-                        $transport =
-                            \Swift_SmtpTransport::newInstance(
-                                \Registry::get('_config')['email']['smtp_host'],
-                                \Registry::get('_config')['email']['smtp_port'],
-                                \Registry::get('_config')['email']['smtp_encryption']
-                            )
-                                ->setUsername(\Registry::get('_config')['email']['smtp_username'])
-                                ->setPassword(\Registry::get('_config')['email']['smtp_password']);
-
-                        $mailer = \Swift_Mailer::newInstance($transport);
-
                         $message = \Swift_Message::newInstance('Вам кинули решку')
                             ->setFrom(['automated.mail@dmbasis.ru' => 'О-решка'])
                             ->setTo([$person['email'] => $person['name']])
                             ->setBody(
                                 "Вам кинули решку за: '" . $_REQUEST['comment']."'"
                             );
-
-                        $mailer->send($message);
+                    } else {
+                        $message = \Swift_Message::newInstance('Вам дали орла')
+                            ->setFrom(['automated.mail@dmbasis.ru' => 'О-решка'])
+                            ->setTo([$person['email'] => $person['name']])
+                            ->setBody(
+                                "Вам дали орла за: '" . $_REQUEST['comment']."'"
+                            );
                     }
+
+                    $mailer->send($message);
                 } else {
                     \Registry::notification([
                         'danger' => [
@@ -142,6 +159,10 @@ class main extends \Controller
                     case 'comment':
                         $type = 'comment';
                         $res = $data->resultComment($from, $to);
+                        break;
+                    case 'activity':
+                        $type = 'activity';
+                        $res = $data->sendStatistic($from, $to);
                         break;
                 }
 

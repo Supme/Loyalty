@@ -16,7 +16,7 @@
 
 namespace App\Core\Controller;
 
-use Adldap\Adldap;
+use Thybag\SharePointAPI;
 
 class Test extends \Controller
 {
@@ -58,6 +58,20 @@ class Test extends \Controller
 
         echo "<pre>----- content-------\n";
         echo "\n";
+
+        $config = new \Adldap\Connections\Configuration();
+        $config->setAccountSuffix(\Registry::get('_config')['ad']['account_suffix']);
+        $config->setDomainControllers(explode(",",str_replace(" ", '', \Registry::get('_config')['ad']['domain_controllers'])));
+        $config->setBaseDn(\Registry::get('_config')['ad']['base_dn']);
+        $config->setAdminUsername(\Registry::get('_config')['ad']['admin_username']);
+        $config->setAdminPassword(\Registry::get('_config')['ad']['admin_password']);
+
+        $ad = new \Adldap\Adldap($config);
+
+        $users = $ad->groups()->find('jira-ADusers')->getMembers();
+        foreach ($users as $user) {
+            echo $user['cn'][0].'<br>';
+        }
 
         echo "\n";
         echo "</pre>";

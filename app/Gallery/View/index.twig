@@ -1,0 +1,64 @@
+<style>
+    .pic{
+        float:left;
+        margin:0 15px 15px 0;
+        border:5px solid white;
+        width:200px;
+        height:250px;
+    }
+    .pic a{
+        width:200px;
+        height:250px;
+        text-indent:-99999px;
+        display:block;
+    }
+    #gallery{
+        width:880px;
+        height: 600px;
+        margin:10px auto;
+        overflow: auto;
+    }
+    .folders {
+        width:800px;
+        height: 100px;
+        overflow: auto;
+        padding: 2px 20px;
+        margin:10px auto;
+        border: 1px solid #999999;
+    }
+    .clear{	/* clearfix класс */
+        clear:both;
+    }
+</style>
+
+<div class="folders">
+    {% if back != '' %}<a href="/{{ root }}{{ back }}">...назад</a><br/>{% endif %}
+    {% for name, path in folders %}
+        <a href="/{{ root }}{{ path }}">{{ name }}</a><br/>
+    {%  endfor %}
+</div>
+
+<div id="gallery">
+    {% for name, path in pictures %}
+        <div class="pic" style="background:url('{{ _config.site.url }}resizer?src={{ root }}{{ path }}&w=200&h=250') no-repeat 50% 50%;">
+            <a href="{{ _config.site.url }}resizer?src={{ root }}{{ path }}&h=600" title="{{ name }}" target="_blank">{{ name }}</a>
+        </div>
+    {%  endfor %}
+</div>
+
+<div class="clear"></div> <!-- using clearfix -->
+
+<script language="JavaScript">
+    $(document).ready(function(){
+
+        $('.pic a').lightBox({
+
+            imageLoading: '/assets/lightbox/images/loading.gif',
+            imageBtnClose: '/assets/lightbox/images/close.gif',
+            imageBtnPrev: '/assets/lightbox/images/prev.gif',
+            imageBtnNext: '/assets/lightbox/images/next.gif'
+
+        });
+
+    });
+</script>

@@ -25,14 +25,18 @@
 
         <div class="form-group">
             <label class="col-md-4 control-label" for="type"></label>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="radio-inline" for="type-0">
-                    <input type="radio" name="type" id="type-0" value="score" checked="checked">
+                    <input type="radio" name="type" id="type-0" value="score" {% if type == 'score' %}checked="checked"{% endif %}>
                     Баллы
                 </label>
                 <label class="radio-inline" for="type-1">
-                    <input type="radio" name="type" id="type-1" value="comment">
+                    <input type="radio" name="type" id="type-1" value="comment" {% if type == 'comment' %}checked="checked"{% endif %}>
                     Комментарии
+                </label>
+                <label class="radio-inline" for="type-1">
+                    <input type="radio" name="type" id="type-2" value="activity" {% if type == 'activity' %}checked="checked"{% endif %}>
+                    Активность
                 </label>
             </div>
         </div>
@@ -69,12 +73,12 @@
                 <td>{{ p.cakes_out }}</td>
                 <td>{{ p.whips_out }}</td>
                 {#
-                 за каждого полученного "орла" = 1 балл,
+                 за каждого полученного "орла" = 2 балла,
                  за каждого выданного Орла = 1 балл,
                  за каждую выданную "решку" = 3 балла,
                  за каждую полученную "решку" = минус 3 балла.
                  #}
-                <td>{{ p.cakes_in + p.cakes_out + (p.whips_out * 3) - (p.whips_in * 3) }}</td>
+                <td>{{ (p.cakes_in * 2)+ p.cakes_out + (p.whips_out * 3) - (p.whips_in * 3) }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -103,6 +107,23 @@
                 <td>{{ p.comment }}</td>
                 <td>{{ p.date | date("d/m/Y")}}</td>
             </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% elseif type == 'activity' %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Кто</th>
+                <th>Сколько</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in res %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.cnt }}</td>
+        </tr>
         {% endfor %}
         </tbody>
     </table>
