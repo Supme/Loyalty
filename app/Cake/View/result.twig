@@ -59,9 +59,11 @@
             <th>Имя</th>
             <th>Орлов получено</th>
             <th>Решек получено</th>
+            <th>Баллы получено</th>
             <th>Орлов роздано</th>
             <th>Решек роздано</th>
-            <th>Баллы</th>
+            <th>Баллы роздано</th>
+            <th>Итого</th>
         </tr>
         </thead>
         <tbody>
@@ -70,8 +72,10 @@
                 <td>{{ p.name }}</td>
                 <td>{{ p.cakes_in }}</td>
                 <td>{{ p.whips_in }}</td>
+                <td>{{ (p.cakes_in * 2) - (p.whips_in * 3) }}</td>
                 <td>{{ p.cakes_out }}</td>
                 <td>{{ p.whips_out }}</td>
+                <td>{{ p.cakes_out + (p.whips_out * 3) }}</td>
                 {#
                  за каждого полученного "орла" = 2 балла,
                  за каждого выданного Орла = 1 балл,

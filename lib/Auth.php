@@ -97,14 +97,14 @@ class Auth extends Db
                 if (trim($user['password']) === $password) {
                     // Password is correct!
                     // Get the user-agent string of the user.
-                    $user_browser = $_SERVER['HTTP_USER_AGENT'];
+                    //$user_browser = $_SERVER['HTTP_USER_AGENT'];
                     // XSS protection as we might print this value
                     $this->user_id = preg_replace("/[^0-9]+/", "", $user['id']);
                     $_SESSION['user_id'] = (int)$this->user_id;
                     // XSS protection as we might print this value
                     $this->login = preg_replace("/[^a-zA-Z0-9_.\-]+/", "", $user['login']);
                     $_SESSION['userlogin'] = $this->login;
-                    $_SESSION['login_string'] = hash('sha512',$password.$user_browser);
+                    $_SESSION['login_string'] = hash('sha512',$password.$user['login']);
 
                     $this->name = $user['name'];
 
@@ -166,14 +166,14 @@ class Auth extends Db
             $login_string = $_SESSION['login_string'];
 
             // Get the user-agent string of the user.
-            $user_browser = $_SERVER['HTTP_USER_AGENT'];
+            //$user_browser = $_SERVER['HTTP_USER_AGENT'];
 
             $user = $this->get('core_auth_user',['login', 'name', 'email', 'password'],['id' => $this->user_id]);
             $this->name = $user['name'];
             $this->email = $user['email'];
             $this->login = $user['login'];
             if ($this->login == $_SESSION['userlogin']) {
-                $login_check = hash('sha512', $user['password'].$user_browser);
+                $login_check = hash('sha512', $user['password'].$user['login']);
                 if ($login_check == $login_string) {
                     // Logged In!!!!
                     $this->isLogin = true;
