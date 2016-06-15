@@ -26,7 +26,7 @@
         "respect/validation": "0.7.*",
         "eventviva/php-image-resize": "1.2.*",
         "sunra/php-simple-html-dom-parser": "v1.5.0",
-        "adldap2/adldap2": "dev-master",
+        "adldap2/adldap2": "5.0.*",
         "clue/ami-react": "~0.3.0"
     },
     "require-dev": {
