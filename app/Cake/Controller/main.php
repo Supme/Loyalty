@@ -37,8 +37,8 @@ class main extends \Controller
         ]);
 
         $comment_error = false;
-
-        if (isset($_REQUEST['send']) and (isset($_REQUEST['name']) and $_REQUEST['name'] != ''))
+        $user = new \Auth();
+        if (isset($_REQUEST['send']) and (isset($_REQUEST['name']) and $_REQUEST['name'] != '') and $user->isLogin)
         {
             if ($_REQUEST['comment'] == ''){
                 if ($_REQUEST['method'] == 2){
@@ -57,11 +57,11 @@ class main extends \Controller
                     ]);
                 }
             } else {
-                if($data->put($_REQUEST))
+                if($data->put($user->getUserId(), $_REQUEST))
                 {
                     \Registry::notification([
                         'info' => [
-                            "А ты уверен, что на сегодня это всё?",
+                            $data->getRandQuestion(),
 //                            'Ваше волеизъявление (душеизлияние?) учтено.',
                         ],
                         'success' => [
@@ -100,7 +100,7 @@ class main extends \Controller
                             );
                     }
 
-                    $mailer->send($message);
+//                    $mailer->send($message);
                 } else {
                     \Registry::notification([
                         'danger' => [
