@@ -100,7 +100,7 @@ class main extends \Controller
                             );
                     }
 
-//                    $mailer->send($message);
+                    $mailer->send($message);
                 } else {
                     \Registry::notification([
                         'danger' => [
