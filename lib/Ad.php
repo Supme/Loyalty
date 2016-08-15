@@ -42,11 +42,13 @@ class Ad {
         $config->setAdminPassword(\Registry::get('_config')['ad']['admin_password']);
 
         $this->ad = new \Adldap\Adldap($config);
+        //$this->ad = new \Adldap\Connections\Provider($config);
     }
 
     private function authenticate($login, $password)
     {
-        return $this->ad->authenticate($login, $password);
+         return $this->ad->authenticate($login, $password);
+//        return $this->ad->auth()->attempt($login, $password);
     }
 
     private function userInfo($login)
