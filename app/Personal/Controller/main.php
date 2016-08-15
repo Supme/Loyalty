@@ -40,6 +40,10 @@ class main extends \Controller {
                 case 'crop':
                     $this->crop();
                     break;
+                case 'birthday':
+                    \Registry::$store['_page']['view'] = 'clear';
+                    $this->bday($params);
+                    break;
                 default:
                     $this->index($params);
                     break;
@@ -48,6 +52,16 @@ class main extends \Controller {
         } else {
             $this->index($params);
         }
+    }
+
+    private function bday($params) {
+        $range = 0;
+        if(isset($params[1]))
+        {
+            $range = $params[1];
+        }
+        $this->json($this->personal->birthday($range));
+
     }
 
     private function index($params)
@@ -75,12 +89,14 @@ class main extends \Controller {
         \Registry::css([
             "/assets/imguploader/css/jquery.Jcrop.css",
             "/assets/imguploader/css/fileuploader.css",
+            "/assets/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.min.css",
         ]);
 
         \Registry::js([
             "/assets/imguploader/js/fileuploader.js",
             "/assets/imguploader/js/jquery.Jcrop.js",
             "/assets/imguploader/js/image-uploader.js",
+            "/assets/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js",
         ]);
 
         $data = [];
@@ -130,6 +146,11 @@ class main extends \Controller {
             if(isset($_REQUEST['birthday']))
             {
                 $data['birthday'] = html_entity_decode($_REQUEST['birthday']);
+            }
+            if(isset($_REQUEST['birthday_date']))
+            {
+                $bdate = \DateTime::createFromFormat('!d-m-Y', $_REQUEST['birthday_date']);
+                $data['birthday_date'] = $bdate->format('U');
             }
             if(isset($_REQUEST['telephone_internal']))
             {

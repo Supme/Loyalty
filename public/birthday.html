@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Birthday</title>
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+
+<!-- HTML block  -->
+<style type="text/css">
+    .birthday{border:2px solid red;width:350px;padding: 5px;}
+    .container{overflow:hidden;}
+    .box{white-space:nowrap;vertical-align: middle;}
+    .box div{display:inline-block; vertical-align: middle;}
+    .name{text-shadow: 4px 4px 2px #ccc;font-size:28px;font-weight: bold; font-style: italic;}
+</style>
+<script language="JavaScript">
+    site = 'http://ly.dmbasis.ru/'; // 'http://dm-personnel.dmbasis.ru/';
+    $.ajax({
+        url: site +"per/birthday/-2",
+        type: "GET"
+    }).done(function(data) {
+        data.forEach(function (item) {
+            d = new Date(item['date'] * 1000);
+            $('#past').append(d.getDate()+"/"+ (d.getMonth()+1) + " " + item['days'] + " д. назад " + item['name'] + "<br/>");
+        });
+    });
+    $.ajax({
+        url: site + "per/birthday/",
+        type: "GET"
+    }).done(function(data) {
+        data.forEach(function (item) {
+            $('#now').append(
+                    '<div class="box"><div class="name" id="image"> <img id="foto" src="' + site + 'resizer?src=/personal/' + item['foto'] + '&w=75&h=100"/> </div><div class="name" id="name">&nbsp; '+item['name']+' </div></div>'
+            );
+        });
+    });
+    $.ajax({
+        url: site +"per/birthday/3",
+        type: "GET"
+    }).done(function(data) {
+        data.forEach(function (item) {
+            d = new Date(item['date'] * 1000);
+            $('#todo').append(d.getDate()+"/"+ (d.getMonth()+1)+" через " + item['days'] + " д. " + item['name'] + "<br/>");
+        });
+    });
+</script>
+<div class="birthday">
+    Праздновали:
+    <div class="container">
+        <div class="box">
+            <div id="past"></div>
+        </div>
+    </div>
+    <div class="container" id="now"></div>
+    Будем праздновать:
+    <div class="container">
+        <div class="box">
+            <div id="todo"></div>
+        </div>
+    </div>
+</div>
+<!-- /HTML block  -->
+
+
+</body>
+</html>

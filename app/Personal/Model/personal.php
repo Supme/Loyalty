@@ -44,7 +44,13 @@ class personal extends \Db
             foreach($city as $kc => $c){
                 $departament = $this->select( 'personal_department', '*', ['office_id' => $c['id']] );
                 foreach($departament as $kd => $d){
-                    $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name ASC",]);
+                    //this only for me
+                    if ($d['id'] == "2")
+                        $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name DESC",]);
+                    else
+                        $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name ASC",]);
+                    //this original
+                    //$people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name ASC",]);
                     foreach($people as $kp => $p){
                         $result[$c['name']][$d['name']][$p['name']] = $p;
                     }
@@ -78,6 +84,7 @@ class personal extends \Db
                     'function' => $data['function'],
                     'email' => $data['email'],
                     'birthday' => $data['birthday'],
+                    'birthday_date' => $data['birthday_date'],
                     'telephone_internal' => $data['telephone_internal'],
                     'telephone_mobile' => $data['telephone_mobile'],
                     'telephone_external' => $data['telephone_external'],
@@ -96,6 +103,7 @@ class personal extends \Db
                     'function' => $data['function'],
                     'email' => $data['email'],
                     'birthday' => $data['birthday'],
+                    'birthday_date' => $data['birthday_date'],
                     'telephone_internal' => $data['telephone_internal'],
                     'telephone_mobile' => $data['telephone_mobile'],
                     'telephone_external' => $data['telephone_external'],
@@ -109,5 +117,44 @@ class personal extends \Db
     function del($id)
     {
         $this->delete('personal_people', ['id' => (int)$id]);
+    }
+
+    function birthday($range)
+    {
+        $direction = true;
+        if ($range[0] =="-")
+        {
+            $range = substr($range, 1);
+            $direction = false;
+        }
+        $range = (int)$range;
+        $data = [];
+        $people = $this->select('personal_people',['name', 'photo', 'birthday_date'], ["ORDER" => "birthday_date ASC"]);
+        $dateNow =new \DateTime();
+        $dateNow->setTime(0,0,0);
+        $dateBirthday = new \DateTime();
+        foreach ($people as $p)
+        {
+            $dateBirthday->setTimestamp($p['birthday_date']);
+            $dateBirthday->add(new \DateInterval('P'.(string)((int)date('Y') - (int)date('Y', $p['birthday_date'])).'Y'));
+            $diff = $dateNow->diff($dateBirthday, true)->days;
+            if ($range == 0)
+            {
+                $condition = $dateBirthday == $dateNow;
+            } else {
+                $condition = $direction?(($dateBirthday > $dateNow) and ($diff <= $range)):(($dateBirthday < $dateNow) and ($diff <= $range));
+            }
+
+            if ($condition)
+            {
+                $data[] = [
+                    "name"=>$p['name'],
+                    "foto"=>$p['photo'],
+                    "date"=>$p['birthday_date'],
+                    "days"=>$diff,
+                ];
+            }
+        }
+        return $data;
     }
 }

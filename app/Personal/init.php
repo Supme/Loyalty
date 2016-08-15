@@ -20,7 +20,8 @@ class init extends \Db
 {
     function isInstalled()
     {
-        return $this->tables("personal_%")==3?true:false;
+        return true;
+        //return $this->tables("personal_%")==3?true:false;
     }
 
     function install()

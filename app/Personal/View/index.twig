@@ -55,7 +55,7 @@
                             {% if people.email %}<a href="mailto:{{ people.email }}">{{ people.email }}</a>{% endif %}
                         </td>
                         <td>
-                            {% if people.birthday %}{{ people.birthday }}{% endif %}
+                            <!--{% if people.birthday %}{{ people.birthday }}{% endif %}--> {% if people.birthday_date %} {{ people.birthday_date|date('j') }} {{ _lang.get(people.birthday_date|date('F')) }} {% endif %}
                         </td>
                         <td>
                             {% if people.telephone_internal %}{{ people.telephone_internal }}<br />{% endif %}
