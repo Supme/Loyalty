@@ -1,0 +1,88 @@
+{% if _notification is defined  %}
+    {% for type,noti in _notification %}
+        {% for n in noti %}
+            <div class="alert alert-{{ type }} fade in">
+                {{ n|e}} <a class="close" data-dismiss="alert" href="#">&times;</a>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+
+<table border="0px">
+    <tr>
+        <td>
+            <img id="ball" onclick="imgClick(this)"/>
+        </td>
+        <td>
+            <div id="peoples" style="width: 300px; height: 150px; overflow-y: auto"></div>
+        </td>
+    </tr>
+</table>
+<script>
+
+<script>
+//    $site ="http://dm-personnel.dmbasis.ru";
+    var $status;
+    setInterval(getPeoples, 5000);
+
+    function imgClick(t) {
+        setStatus();
+    }
+
+    function setStatus() {
+        $send = $status == "off"?"on":"off";
+        console.log("set status "+ $send);
+        $.ajax({
+            type: "GET",
+            url: $site + '/voleyball/',
+            dataType: "json",
+            data: {"set": $send}
+        }).done(
+            function (data) {
+                console.log("status done");
+                console.log(data);
+                getStatus();
+                getPeoples();
+            });
+    }
+
+    function getPeoples() {
+        console.log("get people");
+        $.ajax({
+                type: "GET",
+                url: $site + '/voleyball/',
+                dataType: "json",
+                data: {"get": "people"}
+            }).done(
+                function (data) {
+                    console.log("people done");
+                    $('#peoples').empty();
+                    data.forEach(function (item) {
+                        $('#peoples').append("<h4>"+item.name+"</h4>");
+                    })
+
+                });
+    }
+    function getStatus() {
+        console.log("get status");
+        $.ajax({
+            type: "GET",
+            url: $site + '/voleyball/',
+            dataType: "json",
+            data: {"get": "status"}
+        }).done(
+            function (data) {
+                console.log("status done");
+                $status = data.status?"on":"off";
+                console.log($status);
+                $("#ball").attr("src", $site + "/img/voleyball/"+$status+".png");
+                console.log(data);
+            });
+    }
+
+    getStatus();
+    getPeoples();
+    $(document).ready(function() {
+    });
+</script>
