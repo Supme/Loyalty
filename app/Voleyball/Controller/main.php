@@ -27,7 +27,7 @@ class main extends \Controller
         $diff = date("w", $dateNow->getTimestamp());
         $diff = $diff == 0?6:$diff-1;
         $dateMon = new \DateTime();
-        $dateMon->sub(\DateInterval::createFromDateString($diff.' days'));
+        $dateMon->sub(\DateInterval::createFromDateString($diff.' days 12 hour'));
         $dateSat = new \DateTime();
         $dateSat->sub(\DateInterval::createFromDateString($diff.' days'));
         $dateSat->add(\DateInterval::createFromDateString('6 days'));
@@ -43,20 +43,19 @@ class main extends \Controller
         ]);
 
         $user = new \Auth();
-        $peoples = $data->people($dateMon->getTimestamp(), $dateSat->getTimestamp());
-        $status = $data->status($user->getUserId(), $dateMon->getTimestamp(), $dateSat->getTimestamp());
-        if (isset($_REQUEST['get']) /*and $user->isLogin*/) {
+
+        if (isset($_REQUEST['get']) and $user->isLogin) {
             if ($_REQUEST['get'] == "people") {
-                $this->json($peoples);
+                $this->json($data->people($dateMon->getTimestamp(), $dateSat->getTimestamp()));
                 return;
             }
-            if ($_REQUEST['get'] == "status") {
-                $this->json(["status" => $status]);
+            if ($_REQUEST['get'] == "status" and $user->isLogin) {
+                $this->json(["status" => $data->status($user->getUserId(), $dateMon->getTimestamp(), $dateSat->getTimestamp())]);
                 return;
             }
 
         }
-        if (isset($_REQUEST['set']) /*and $user->isLogin*/) {
+        if (isset($_REQUEST['set']) and $user->isLogin) {
             if ($_REQUEST['set'] == "on") {
                 $res = $data->set($user->getUserId());
                 $this->json(["status" => $res]);
@@ -68,10 +67,7 @@ class main extends \Controller
                 return;
             }
         }
-
-        $this->render([
-            'peoples' => $peoples,
-            'check' => $status,
-        ]);
+var_dump($dateMon->getTimestamp()." ".$dateSat->getTimestamp());
+        $this->render();
     }
 }

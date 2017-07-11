@@ -22,7 +22,7 @@ class data extends \Db {
     function people($begin, $end) {
         $data = $this->select(
             'voleyball',
-            [  '[>]core_auth_user' => ['user_id' => 'id']],
+            ['[>]core_auth_user' => ['user_id' => 'id']],
             ['core_auth_user.name'],
             ['date[<>]' => [$begin, $end]]
         );
@@ -30,12 +30,17 @@ class data extends \Db {
     }
 
     function status($user, $begin, $end) {
-        return $this->count('voleyball', ['AND' => ['date[<>]' => [$begin, $end], 'user_id' => $user]]) != 0;
+        return $this->count(
+            'voleyball',
+                ['AND' => ['date[<>]' => [$begin, $end],
+                'user_id' => $user]]
+            ) != 0;
     }
 
     function set($user) {
         //insert
-        return $this->insert('voleyball',
+        return $this->insert(
+            'voleyball',
             [
                 'user_id' =>  $user,
                 'date' =>  time(),
@@ -45,7 +50,11 @@ class data extends \Db {
 
     function del($user, $begin, $end) {
         //delete
-        $this->delete('voleyball', ['AND' => ['date[<>]' => [$begin, $end], 'user_id' => $user]]);
+        $this->delete(
+            'voleyball',
+                ['AND' => ['date[<>]' => [$begin, $end],
+                    'user_id' => $user]]
+        );
         return ;
     }
 
