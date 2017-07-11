@@ -40,17 +40,11 @@ class personal extends \Db
     {
         $result = \Cache::get('modPersonal');
         if(empty($result)){
-            $city = $this->select( 'personal_office', '*' );
+            $city = $this->select( 'personal_office', '*', ["ORDER" => "sort ASC"]);
             foreach($city as $kc => $c){
-                $departament = $this->select( 'personal_department', '*', ['office_id' => $c['id']] );
+                $departament = $this->select( 'personal_department', '*', ['office_id' => $c['id'], "ORDER" => "sort ASC"] );
                 foreach($departament as $kd => $d){
-                    //this only for me
-                    if ($d['id'] == "2")
-                        $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name DESC",]);
-                    else
-                        $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name ASC",]);
-                    //this original
-                    //$people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => "name ASC",]);
+                    $people = $this->select('personal_people', '*', ['department_id' => $d['id'], "ORDER" => ["sort DESC", "name ASC"]]);
                     foreach($people as $kp => $p){
                         $result[$c['name']][$d['name']][$p['name']] = $p;
                     }
