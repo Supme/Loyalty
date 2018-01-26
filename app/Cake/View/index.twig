@@ -1,9 +1,8 @@
 <div id="page-wrapper">
     <div class="container-fluid">
 
-<form method="POST" class="form-horizontal">
+<form id="cake" method="POST" class="form-horizontal" onsubmit="document.getElementById('send').disabled=true; document.getElementById('cake').submit();">
     <fieldset>
-
         <!-- Form Name -->
         <legend><img src="/img/cake/or.png" height="25px" alt="КнутоПряник"/></legend>
 
@@ -70,7 +69,50 @@
 </div>
 
 <script>
+//    formUploader = {
+//        prepareForm: function(form){
+//            // Каждая значимая кнопка формы при клике должна создать одноименное hidden поле,
+//            // чтобы на сервер передалась информация о том, какая кнопка была кликнута
+//            var allFormFields = form.getElementsByTagName('input');
+//            for (var i=0; i<allFormFields.length; i++){
+//                if(allFormFields[i].type == 'submit' && allFormFields[i].name){
+//                    allFormFields[i].onclick = function(){
+//                        formUploader.createHiddenField(this);
+//                    }
+//                }
+//            }
+//            // Визуализируем форму как отправляемую на сервер на событии onsubmit
+//            // (в т.ч. делаем все кнопки неактивными)
+//            form.onsubmit = function(){
+//                formUploader.setFormLoading(form);
+//            };
+//            // Очищаем визуализацию формы (в т.ч. делаем все кнопки вновь активными)
+//            // при уходе со страницы - по глобальному событию onunload
+//            window.onunload = function(){
+//                formUploader.clearFormLoading(form)
+//            }
+//        },
+//        setFormLoading: function(form){
+//            // Создаем визуализацию загрузки формы и делаем все кнопки неактивными
+//            // disabled=true;
+//        },
+//        clearFormLoading: function(form){
+//            // Очищаем форму от визуализации загрузки и возвращаем кнопки в активное состояние
+//            // disabled=false;
+//        },
+//        createHiddenField: function(button){
+//            var input = document.createElement('input');
+//            input.type = 'hidden';
+//            input.name = button.name;
+//            input.value = button.value;
+//            button.parentNode.insertBefore(input, button);
+//        }
+//    };
+//
+//    formUploader.prepareForm(document.getElementById('cake'));
+
     setTimeout('$(".alert").alert("close")', 10000);
+
     $(document).ready(function() {
         $("#name").select2({
             placeholder: "-- Выберите героя --",
@@ -78,4 +120,5 @@
             language: "ru"
         });
     });
+
 </script>

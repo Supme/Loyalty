@@ -38,7 +38,7 @@ class main extends \Controller
 
         $comment_error = false;
         $user = new \Auth();
-        if (isset($_REQUEST['send']) and (isset($_REQUEST['name']) and $_REQUEST['name'] != '') and $user->isLogin)
+        if ((isset($_REQUEST['name']) and $_REQUEST['name'] != '') and $user->isLogin)
         {
             if ($_REQUEST['comment'] == ''){
                 if ($_REQUEST['method'] == 2){
@@ -60,7 +60,14 @@ class main extends \Controller
                 if($data->put($user->getUserId(), $_REQUEST))
                 {
                     \Registry::notification([
+                        'success' => [
+                            $data->getRandPhrase(),
+                            ],
+                        ]);
+/*
+                    \Registry::notification([
                         'info' => [
+                            $data->getRandPhrase(),
                             $data->getRandQuestion(),
 //                            'Ваше волеизъявление (душеизлияние?) учтено.',
                         ],
@@ -69,7 +76,7 @@ class main extends \Controller
 //                            'Можете продолжить действовать в том же духе.',
                         ],
                     ]);
-
+*/
                     $person = $data->getPersonalById($_REQUEST['name']);
                     // Create the Transport
                     $transport =
